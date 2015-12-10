@@ -19,8 +19,22 @@
   "dependencies": {
     "aws-sign": "^0.1.1",
     "hapi": "^6.2.0",
+    "mysql": "^2.5.4",
+    "rx": "^4.0.7",
     "s3-policy": "^0.2.0",
-    "mysql": "^2.5.4"
+    "tsd": "^0.6.5",
+    "typescript": "^1.7.3"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-util": "^3.0.7",
+    "gulp-tslint": "~2.0.0",    
+    "gulp-sourcemaps": "~1.5.2",
+    "gulp-typescript": "~2.7.7",
+    "wrench": "~1.5.8",
+    "gulp-load-plugins": "~0.10.0",
+    "gulp-concat": "~2.5.2",
+    "gulp-size": "~1.2.1"
   },
   "engines": {
     "node": ">=0.10.x"

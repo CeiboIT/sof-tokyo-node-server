@@ -1,16 +1,14 @@
 var Hapi = require('hapi');
-var mysql = require('mysql');
 var internals = {};
 
 internals.get = function (request, reply) {
 
   var db_config =
   {
-    host     : '50.87.150.200',
-    port     :  3306,
-    user     : 'mfpla359',
-    password : 'rupetch87',
-    database : 'mfpla359_unilever',
+    host     : 'localhost',
+    user     : 'root',
+    password : '',
+    database : 'sof_tokyo',
     debug    :  false,
     insecureAuth: true
   };
