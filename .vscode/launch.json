@@ -5,7 +5,7 @@
 			"name": "Launch",
 			"type": "node",
 			"request": "launch",
-			"program": "main.js",
+			"program": "tmp/index.module.js",
 			"stopOnEntry": false,
 			"args": [],
 			"cwd": ".",

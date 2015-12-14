@@ -1,4 +1,3 @@
-module server.products {
-	
-	
-}
+
+import Hapi = require("hapi");
+
