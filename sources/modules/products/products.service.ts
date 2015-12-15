@@ -11,7 +11,7 @@ export class ProductsService {
 	}
 
 	getProductsList() {
-		 var deferred = Q.defer();
+		var deferred = Q.defer();
 		this.db.connect((err, result) => {
 			this.db.query('SELECT * from wp2_posts', function(err, rows) {
 				deferred.resolve(rows)
@@ -19,6 +19,17 @@ export class ProductsService {
 		})
 		
 		return deferred.promise;
+	}
+	
+	getProductById(productId) {
+		var deferred = Q.defer();
+		this.db.connect((err, result) => {
+			this.db.query('SELECT * from wp2_posts WHERE ID=' + productId , function(err, rows) {
+				deferred.resolve(rows)
+			})
+		})
+		
+		return deferred.promise; 
 	}
 
 }

@@ -22,7 +22,12 @@ this.server.route({
 	method: 'GET',
 	path: '/api',
 	handler: (request, reply) => {
-		reply(this.server.table());
+		 var _table = this.server.table();
+		 var _answer = {};
+          _table.map((element) => {
+            _answer[element.path] = element.path
+        })
+        reply(_answer);
 	}
 })
 
