@@ -2,7 +2,7 @@
   "name": "sof-tokyo-node-server",
   "version": "0.0.0",
   "description": "description",
-  "main": "main.js",
+  "main": "tmp/index.js",
   "repository": {
     "type": "git",
     "url": "url"

@@ -25,7 +25,10 @@ this.server.route({
 		 var _table = this.server.table();
 		 var _answer = {};
           _table.map((element) => {
-            _answer[element.path] = element.path
+            _answer[element.fingerprint] = {
+				 path: element.path,
+				 method: element.method
+			}
         })
         reply(_answer);
 	}
