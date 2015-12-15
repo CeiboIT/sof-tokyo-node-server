@@ -7,8 +7,13 @@ import ProductsRoutes = require("./modules/products/products.routes");
 var _server = new hapi.Server()
 
 this.server = new hapi.Server();
-console.log(process.env);
-this.server._host = process.env.HOSTNAME || 'localhost';
+
+if(process.env.NODE_ENV != 'development') {
+	this.server._host = '0.0.0.0';	
+} else {
+	this.server._host='localhost';
+}
+
 this.server._port = process.env.PORT||9000;
 
 // add products api routes
