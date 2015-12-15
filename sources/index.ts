@@ -2,32 +2,32 @@
 'use strict';
 
 import hapi = require("hapi");
-import ProductsService = require("./modules/products/products.service");
+import ProductsRoutes = require("./modules/products/products.routes");
 
-class ServerService {
-	private server;
+var _server = new hapi.Server()
 
+this.server = new hapi.Server();
+this.server._host = 'localhost';
+this.server._port = 9000;
 
-	constructor() {
-		this.server = new hapi.Server()
-
-		this.server.route({
-			method: 'GET',
-			path: '/',
-			handler: ProductsService.service.getProductsList()
-		});
-	}
-
-	startServer() {
-		this.server.start(function() {
-			console.log('Started');
-		})
-	}
-
-
-
+// add products api routes
+for (var route in ProductsRoutes) {
+	ProductsRoutes[route].path = '/api' + ProductsRoutes[route].path;
+	this.server.route(ProductsRoutes[route])
 }
 
-var start = new ServerService();
-start.startServer();
+//help for see all the routes
+
+this.server.route({
+	method: 'GET',
+	path: '/api',
+	handler: (request, reply) => {
+		reply(this.server.table());
+	}
+})
+
+//this.server.connection({ port: process.env.PORT ||3000 });
+this.server.start(() => {
+	console.log('Started: ' + this.server.info.uri);
+})
 

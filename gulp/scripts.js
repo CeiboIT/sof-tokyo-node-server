@@ -18,7 +18,7 @@ var $ = require('gulp-load-plugins')();
     .pipe($.tslint())
     .pipe($.tslint.report('prose', { emitError: false }))
     .pipe($.typescript(tsProject)).on('error', conf.errorHandler('TypeScript'))
-    .pipe($.concat('index.module.js'))
+    //.pipe($.concat('index.module.js'))
     .pipe($.sourcemaps.write())
     .pipe(gulp.dest(path.join(conf.paths.tmp, '')))
     .pipe($.size())
