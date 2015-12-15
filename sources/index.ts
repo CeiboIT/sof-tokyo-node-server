@@ -8,8 +8,8 @@ var _server = new hapi.Server()
 
 this.server = new hapi.Server();
 console.log(process.env);
-this.server._host = process.env.hostname || 'localhost';
-this.server._port = process.env.port||9000;
+this.server._host = process.env.HOSTNAME || 'localhost';
+this.server._port = process.env.PORT||9000;
 
 // add products api routes
 for (var route in ProductsRoutes) {
