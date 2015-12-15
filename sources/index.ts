@@ -7,8 +7,9 @@ import ProductsRoutes = require("./modules/products/products.routes");
 var _server = new hapi.Server()
 
 this.server = new hapi.Server();
-this.server._host = 'localhost';
-this.server._port = 9000;
+console.log(process.env);
+this.server._host = process.env.hostname || 'localhost';
+this.server._port = process.env.port||9000;
 
 // add products api routes
 for (var route in ProductsRoutes) {
