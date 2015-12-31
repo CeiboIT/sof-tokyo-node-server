@@ -2,11 +2,18 @@
 'use strict';
 
 import mysql = require("mysql");
+import Rx = require("rx");
+
+
+interface IConnectionService {
+	getConnectionStream()
+}
 
 export class ConnectionService
  {
 	 private connection;
-
+	 private connectionStream;
+	 
 	 constructor() {
 		 var _dbConfig =
 			{
@@ -18,13 +25,17 @@ export class ConnectionService
 				debug    	: false,
 				insecureAuth: true
 			};
+			
 
 			this.connection = mysql.createConnection(_dbConfig);
 	 }
-
-	 getConnection() {
-		 return this.connection;
+	 
+	 
+	 
+	 getConnectionStream() {
+		 
 	 }
+
 
  }
 

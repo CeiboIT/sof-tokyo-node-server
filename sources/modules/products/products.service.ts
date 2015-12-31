@@ -28,6 +28,7 @@ export class ProductsService {
 			this.db.query('SELECT * from wp2_posts WHERE ID=' + productId , function(err, rows) {
 				if(err) throw err;
 				deferred.resolve(rows)
+				this.db.end();
 			})
 		})
 		
