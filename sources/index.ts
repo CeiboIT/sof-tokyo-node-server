@@ -9,7 +9,7 @@ var _server = new hapi.Server()
 this.server = new hapi.Server();
 
 if(process.env.NODE_ENV != 'development') {
-	this.server._host = '0.0.0.0';	
+	this.server._host = '0.0.0.0';
 } else {
 	this.server._host='localhost';
 }
@@ -23,7 +23,6 @@ for (var route in ProductsRoutes) {
 }
 
 //help for see all the routes
-
 this.server.route({
 	method: 'GET',
 	path: '/api',

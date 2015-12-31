@@ -14,7 +14,7 @@ var products = [
 	path: _prefix + '/list',
 	handler: function(request, reply) {
 		ProductsService.getProductsList().then((data) => {
-				reply(data); 	
+				reply(data);
 			})
 		}
 	},
@@ -23,7 +23,7 @@ var products = [
 	path: _prefix + '/product/{productId}',
 	handler: function(request, reply) {
 		ProductsService.getProductById(request.params.productId).then((data) => {
-				reply(data); 	
+				reply(data);
 			})
 		}
 	}
