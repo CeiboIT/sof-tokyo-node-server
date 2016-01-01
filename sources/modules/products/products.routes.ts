@@ -13,7 +13,7 @@ var products = [
 	method: 'GET',
 	path: _prefix + '/list',
 	handler: function(request, reply) {
-		ProductsService.getProductsList().then((data) => {
+		ProductsService.getProductsList().then((data: Array<any>) => {
 				reply(data);
 			})
 		}

@@ -18,3 +18,4 @@
 /// <reference path="gulp-sourcemaps/gulp-sourcemaps.d.ts" />
 /// <reference path="gulp-size/gulp-size.d.ts" />
 /// <reference path="q/Q.d.ts" />
+/// <reference path="lodash/lodash.d.ts" />
