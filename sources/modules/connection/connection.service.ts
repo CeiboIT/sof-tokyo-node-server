@@ -23,7 +23,6 @@ export class ConnectionService
 	 
 	 query (query) {
 		 var defer = q.defer();
-		 var _rows;
 		 var _connection = mysql.createConnection(this.dbConfig);
 		 _connection.query(query, (err, rows) => {
 			 _connection.end();
