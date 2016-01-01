@@ -4,35 +4,23 @@
 import Q = require("q");
 import connection = require('../connection/connection.service')
 
-export class ProductsService {
+export interface IProductsService {
+	getProductsList(): Q.IPromise<{}>
+	getProductById(productId): Q.IPromise<{}>
+}
+
+
+export class ProductsService implements IProductsService {
 	private db;
 	constructor() {
-		this.db = connection.service.getConnection();
+		this.db = connection.service;
 	}
 
-	getProductsList() {
-		var deferred = Q.defer();
-		this.db.connect((err, result) => {
-			this.db.query('SELECT * from wp2_posts', function(err, rows) {
-				if(err) throw err;
-				deferred.resolve(rows)
-			})
-		})
-		
-		return deferred.promise;
-	}
-	
-	getProductById(productId) {
-		var deferred = Q.defer();
-		this.db.connect((err, result) => {
-			this.db.query('SELECT * from wp2_posts WHERE ID=' + productId , function(err, rows) {
-				if(err) throw err;
-				deferred.resolve(rows)
-				this.db.end();
-			})
-		})
-		
-		return deferred.promise; 
+	getProductsList(): Q.IPromise<{}> {
+		return this.db.query('SELECT * from wp2_posts')
 	}
 
-}
+	getProductById(productId): Q.IPromise<{}> {
+		return this.db.query('SELECT * from wp2_posts WHERE ID=' + productId)
+	}
+};
