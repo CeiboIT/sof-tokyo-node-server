@@ -18,7 +18,7 @@
   "readmeFilename": "README.md",
   "dependencies": {
     "aws-sign": "^0.1.1",
-    "hapi": "^6.2.0",
+    "hapi": "^11.1.4",
     "lodash": "^3.10.1",
     "mysql": "^2.5.4",
     "q": "^1.4.1",
