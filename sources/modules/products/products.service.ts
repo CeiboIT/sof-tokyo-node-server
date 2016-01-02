@@ -3,6 +3,8 @@
 
 import Q = require("q");
 import connection = require('../connection/connection.service')
+import _ = require("lodash");
+import http = require("http");
 
 export interface IProductsService {
     getProductsList(): Q.IPromise<{}>
@@ -11,25 +13,23 @@ export interface IProductsService {
 
 
 export class ProductsService implements IProductsService {
-    private db;
+    private db = connection.service;
 
     // TODO Necesitamos implementar paginacion Urgente!!!! 
-    private postCriterias = {
-        order: { byDate: ' ORDER BY post_date DESC' },
-        defaultSize: '5'
-    }
 
-    constructor() {
-        this.db = connection.service;
-    }
 
     getProductsList(): Q.IPromise<{}> {
-        return this.db.query(
-            'SELECT * from wp2_posts  JOIN wp2_users ON wp2_users.ID = wp2_posts.post_author WHERE post_content AND post_status="publish"' + this.postCriterias.order.byDate + ' LIMIT 5'
-        )
+        var _listPromise = Q.defer();
+
+        this.db.query('?json=get_recent_posts')
+            .then((results) => {
+                _listPromise.resolve(results['posts']);
+            })
+
+        return _listPromise.promise;
     }
 
     getProductById(productId): Q.IPromise<{}> {
-        return this.db.query('SELECT * from wp2_posts WHERE ID=' + productId)
+        return this.db.query('SELECT * FROM wp2_posts JOIN wp2_postmeta ON wp2_postmeta.post_id = wp2_posts.ID JOIN wp2_users ON wp2_users.ID = wp2_posts.post_author WHERE wp2_posts.ID=' + productId)
     }
 };

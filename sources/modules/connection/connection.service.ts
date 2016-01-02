@@ -3,37 +3,28 @@
 
 import mysql = require("mysql");
 import q = require("q");
+import request = require("request");
 
-export class ConnectionService
- {
-	 private connectionStream;
-	 private dbConfig;
-	 
-	 constructor() {
-		this.dbConfig = { 
-			host		: 'gator2009.hostgator.com',
-                user		: 'tdnb1207_sof',
-                password	: 'pkc~^_9WZ(us',
-                //database	: 'tdnb1207_sof', // production
-                database	: 'tdnb1207_sof_develop', // develop
-				debug    	: false,
-				insecureAuth: true
-			}
-	 }
-	 
-	 query (query) {
-		 var defer = q.defer();
-		 var _connection = mysql.createConnection(this.dbConfig);
-		 _connection.query(query, (err, rows) => {
-			 _connection.end();
-			 if(err) {
-				 defer.reject(err); throw err
-			};
-			defer.resolve(rows);
-		 })
-		 return defer.promise;
-	 }
+export interface IConnectionService {
+    query(params): q.IPromise<{}>
+}
 
- }
+export class ConnectionService implements IConnectionService {
+    private connectionStream;
+    private options;
+    constructor() { }
 
- export var service = new ConnectionService();
+    query(params): q.IPromise<{}> {
+        var _queryPromise = q.defer();
+        request('http://www.sof.tokyo/?json=get_recent_posts', function(error, response, body) {
+            if (!error && response.statusCode == 200) {
+                _queryPromise.resolve(JSON.parse(body)) // Show the HTML for the Google homepage. 
+            }
+        })
+
+        return _queryPromise.promise;
+    }
+
+}
+
+export var service = new ConnectionService();

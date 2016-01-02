@@ -19,3 +19,5 @@
 /// <reference path="gulp-size/gulp-size.d.ts" />
 /// <reference path="q/Q.d.ts" />
 /// <reference path="lodash/lodash.d.ts" />
+/// <reference path="form-data/form-data.d.ts" />
+/// <reference path="request/request.d.ts" />
