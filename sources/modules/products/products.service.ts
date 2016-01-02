@@ -25,7 +25,7 @@ export class ProductsService implements IProductsService {
 
     getProductsList(): Q.IPromise<{}> {
         return this.db.query(
-            'SELECT * from wp2_posts' + this.postCriterias.order.byDate + ' LIMIT ' + this.postCriterias.defaultSize
+            'SELECT * from wp2_posts  JOIN wp2_users ON wp2_users.ID = wp2_posts.post_author WHERE post_content AND post_status="publish"' + this.postCriterias.order.byDate + ' LIMIT 5'
         )
     }
 
