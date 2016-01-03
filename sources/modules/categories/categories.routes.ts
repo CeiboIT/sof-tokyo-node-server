@@ -3,10 +3,10 @@
 /// <reference path="../../../typings/tsd.d.ts" />
 /// <reference path="./products.service.ts" />
 
+/*
+import service = require('./categories.service');
 
-import service = require('./products.service');
-
-var ProductsService = new service.ProductsService();
+var CategoriesService = new service.ProductsService();
 var _prefix = '/products';
 var products = [
     {
@@ -30,18 +30,10 @@ var products = [
                 reply(data);
             })
         }
-    },
-    {
-        method: 'GET',
-        path: _prefix + '/byauthor/{authorId}',
-        handler: function(request, reply) {
-            ProductsService.getProductsByAuthor(request.params.authorId).then((data) => {
-                reply(data);
-            })
-        }
     }
 ]
 
 
 module.exports = products;
 
+*/

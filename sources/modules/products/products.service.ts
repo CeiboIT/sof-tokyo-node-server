@@ -3,12 +3,11 @@
 
 import Q = require("q");
 import connection = require('../connection/connection.service')
-import _ = require("lodash");
-import http = require("http");
 
 export interface IProductsService {
-    getProductsList(): Q.IPromise<{}>
-    getProductById(productId): Q.IPromise<{}>
+    getProductsList(): Q.IPromise<{}>;
+    getProductById(productId): Q.IPromise<{}>;
+    getProductsByAuthor(authorId) : Q.IPromise<{}>;
 }
 
 
@@ -20,10 +19,9 @@ export class ProductsService implements IProductsService {
 
     getProductsList(): Q.IPromise<{}> {
         var _listPromise = Q.defer();
-
         this.db.query('?json=get_recent_posts')
             .then((results) => {
-                _listPromise.resolve(results['posts']);
+                _listPromise.resolve({data: results});
             })
 
         return _listPromise.promise;
@@ -31,5 +29,9 @@ export class ProductsService implements IProductsService {
 
     getProductById(productId): Q.IPromise<{}> {
         return this.db.query('?json=1&p=' + productId)
+    }
+    
+    getProductsByAuthor(authorId) : Q.IPromise<{}>{
+        return this.db.query('?get_author_posts=' + authorId)
     }
 };

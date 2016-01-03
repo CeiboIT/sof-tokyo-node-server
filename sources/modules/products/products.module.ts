@@ -1,3 +1,0 @@
-
-import Hapi = require("hapi");
-
