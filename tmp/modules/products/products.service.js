@@ -10,7 +10,7 @@ var ProductsService = (function () {
     ProductsService.prototype.getProductsList = function () {
         var _listPromise = Q.defer();
         this.db.query('?json=get_recent_posts').then(function (results) {
-            _listPromise.resolve({ data: results['posts'] });
+            _listPromise.resolve(results);
         });
         return _listPromise.promise;
     };
