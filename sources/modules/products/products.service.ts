@@ -16,10 +16,9 @@ export class ProductsService implements IProductsService {
 
     // TODO Necesitamos implementar paginacion Urgente!!!! 
 
-
     getProductsList(): Q.IPromise<{}> {
         var _listPromise = Q.defer();
-        this.db.query('?json=get_recent_posts')
+        this.db.query('?json=get_recent_posts&count=4')
             .then((results) => {
                 _listPromise.resolve({data: results});
             })
