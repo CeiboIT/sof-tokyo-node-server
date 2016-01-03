@@ -30,6 +30,6 @@ export class ProductsService implements IProductsService {
     }
 
     getProductById(productId): Q.IPromise<{}> {
-        return this.db.query('SELECT * FROM wp2_posts JOIN wp2_postmeta ON wp2_postmeta.post_id = wp2_posts.ID JOIN wp2_users ON wp2_users.ID = wp2_posts.post_author WHERE wp2_posts.ID=' + productId)
+        return this.db.query('?json=1&p=' + productId)
     }
 };
