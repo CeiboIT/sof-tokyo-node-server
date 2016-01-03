@@ -20,7 +20,7 @@ export class ProductsService implements IProductsService {
         var _listPromise = Q.defer();
         this.db.query('?json=get_recent_posts&count=4')
             .then((results) => {
-                _listPromise.resolve({data: results});
+                _listPromise.resolve(results);
             })
 
         return _listPromise.promise;
