@@ -14,7 +14,7 @@ var products = [
         path: _prefix + '/list/{page}',
         handler: function(request, reply) {
 
-            ProductsService.getProductsList(request.params.productId || 1).then((data: Array<any>) => {
+            ProductsService.getProductsList(request.params.page || 1).then((data: Array<any>) => {
                 reply(data);
             })
         },
@@ -35,7 +35,7 @@ var products = [
         method: 'GET',
         path: _prefix + '/byauthor/{authorId}/{page}',
         handler: function(request, reply) {
-            ProductsService.getProductsByAuthor(request.params.authorId).then((data) => {
+            ProductsService.getProductsByAuthor(request.params.authorId, request.params.page || 1).then((data) => {
                 reply(data);
             })
         }
@@ -44,7 +44,7 @@ var products = [
         method: 'GET',
         path: _prefix + '/bycategory/{categoryId}/{page}',
         handler: function(request, reply) {
-            ProductsService.getProductsByCategory(request.params.categoryId).then((data) => {
+            ProductsService.getProductsByCategory(request.params.categoryId, request.params.page || 1).then((data) => {
                 reply(data);
             })
         }
