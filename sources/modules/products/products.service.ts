@@ -14,11 +14,11 @@ export interface IProductsService {
 export class ProductsService implements IProductsService {
     private db = connection.service;
 
-    // TODO Necesitamos implementar paginacion Urgente!!!! 
+    // TODO Necesitamos implementar paginacion Urgente!!!!
 
     getProductsList(page): Q.IPromise<{}> {
         var _listPromise = Q.defer();
-        this.db.query('?json=get_recent_posts&count=4&page=' + page) 
+        this.db.query('?json=get_recent_posts&count=4&page=' + page)
             .then((results) => {
                 _listPromise.resolve(results);
             })
@@ -29,8 +29,12 @@ export class ProductsService implements IProductsService {
     getProductById(productId): Q.IPromise<{}> {
         return this.db.query('?json=1&p=' + productId)
     }
-    
-    getProductsByAuthor(authorId) : Q.IPromise<{}>{
+
+    getProductsByAuthor(authorId): Q.IPromise<{}> {
         return this.db.query('?json=get_author_posts&id=' + authorId)
+    }
+
+    getProductsByCategory(categoryId): Q.IPromise<{}> {
+        return this.db.query('?json=get_category_posts&id=' + categoryId)
     }
 };

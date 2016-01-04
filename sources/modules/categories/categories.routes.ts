@@ -1,20 +1,20 @@
 'use strict';
 
-/// <reference path="../../../typings/tsd.d.ts" />
-/// <reference path="./products.service.ts" />
+///<reference path="../../../typings/tsd.d.ts" />
+///<reference path="./categories.service.ts" />
 
-/*
+
 import service = require('./categories.service');
 
-var CategoriesService = new service.ProductsService();
-var _prefix = '/products';
-var products = [
+var CategoriesService = new service.CategoriesService();
+var _prefix = '/categories';
+var categories = [
     {
         method: 'GET',
         path: _prefix + '/list',
         handler: function(request, reply) {
 
-            ProductsService.getProductsList().then((data: Array<any>) => {
+            CategoriesService.getCategoriesList().then((data: Array<any>) => {
                 reply(data);
             })
         },
@@ -24,9 +24,9 @@ var products = [
     },
     {
         method: 'GET',
-        path: _prefix + '/product/{productId}',
+        path: _prefix + '/category/{categoryId}',
         handler: function(request, reply) {
-            ProductsService.getProductById(request.params.productId).then((data) => {
+            CategoriesService.getCategoryById(request.params.categoryId).then((data) => {
                 reply(data);
             })
         }
@@ -34,6 +34,4 @@ var products = [
 ]
 
 
-module.exports = products;
-
-*/
+module.exports = categories;

@@ -39,6 +39,15 @@ var products = [
                 reply(data);
             })
         }
+    },
+    {
+        method: 'GET',
+        path: _prefix + '/bycategory/{categoryId}',
+        handler: function(request, reply) {
+            ProductsService.getProductsByCategory(request.params.categoryId).then((data) => {
+                reply(data);
+            })
+        }
     }
 ]
 

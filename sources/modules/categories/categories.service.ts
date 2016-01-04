@@ -1,6 +1,6 @@
 /// <reference path="../../../typings/tsd.d.ts" />
 /// <reference path="../connection/connection.service.ts" />
-/*
+
 import Q = require("q");
 import connection = require('../connection/connection.service')
 
@@ -13,7 +13,7 @@ export interface ICategoriesService {
 export class CategoriesService implements ICategoriesService {
     private db = connection.service;
 
-    // TODO Necesitamos implementar paginacion Urgente!!!! 
+    // TODO Necesitamos implementar paginacion Urgente!!!!
 
 
     getCategoriesList(): Q.IPromise<{}> {
@@ -30,4 +30,4 @@ export class CategoriesService implements ICategoriesService {
     getCategoryById(categoryId): Q.IPromise<{}> {
         return this.db.query('?json=1&p=' + categoryId)
     }
-};*/
+};
