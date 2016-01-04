@@ -3,6 +3,7 @@
 
 import hapi = require("hapi");
 import ProductsRoutes = require("./modules/products/products.routes");
+import CategoriesRoutes = require("./modules/categories/categories.routes");
 
 this.server = new hapi.Server();
 
@@ -29,13 +30,19 @@ for (var route in ProductsRoutes) {
     this.server.route(ProductsRoutes[route])
 }
 
+// add categories api routes
+for (var route in CategoriesRoutes) {
+    CategoriesRoutes[route].path = '/api' + CategoriesRoutes[route].path;
+    this.server.route(CategoriesRoutes[route])
+}
+
 //help for see all the routes
 this.server.route({
     method: 'GET',
     path: '/api',
     handler: (request, reply) => {
         var _table = this.server.table();
-      
+
         var _answer = {};
         _table.table.map((element) => {
             console.log(element);
