@@ -5,7 +5,7 @@ import Q = require("q");
 import connection = require('../connection/connection.service')
 
 export interface IProductsService {
-    getProductsList(): Q.IPromise<{}>;
+    getProductsList(page): Q.IPromise<{}>;
     getProductById(productId): Q.IPromise<{}>;
     getProductsByAuthor(authorId) : Q.IPromise<{}>;
 }
@@ -16,9 +16,9 @@ export class ProductsService implements IProductsService {
 
     // TODO Necesitamos implementar paginacion Urgente!!!! 
 
-    getProductsList(): Q.IPromise<{}> {
+    getProductsList(page): Q.IPromise<{}> {
         var _listPromise = Q.defer();
-        this.db.query('?json=get_recent_posts&count=4')
+        this.db.query('?json=get_recent_posts&count=4&page=' + page) 
             .then((results) => {
                 _listPromise.resolve(results);
             })
@@ -31,6 +31,6 @@ export class ProductsService implements IProductsService {
     }
     
     getProductsByAuthor(authorId) : Q.IPromise<{}>{
-        return this.db.query('?get_author_posts=' + authorId)
+        return this.db.query('?json=get_author_posts&id=' + authorId)
     }
 };

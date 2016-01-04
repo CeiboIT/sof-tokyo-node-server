@@ -11,10 +11,10 @@ var _prefix = '/products';
 var products = [
     {
         method: 'GET',
-        path: _prefix + '/list',
+        path: _prefix + '/list/{page}',
         handler: function(request, reply) {
 
-            ProductsService.getProductsList().then((data: Array<any>) => {
+            ProductsService.getProductsList(request.params.productId || 1).then((data: Array<any>) => {
                 reply(data);
             })
         },
