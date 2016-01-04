@@ -6,8 +6,8 @@ import connection = require('../connection/connection.service')
 
 export interface IProductsService {
     getProductsList(page): Q.IPromise<{}>;
-    getProductById(productId): Q.IPromise<{}>;
-    getProductsByAuthor(authorId) : Q.IPromise<{}>;
+    getProductById(productId, page): Q.IPromise<{}>;
+    getProductsByAuthor(authorId, page) : Q.IPromise<{}>;
 }
 
 
@@ -30,11 +30,11 @@ export class ProductsService implements IProductsService {
         return this.db.query('?json=1&p=' + productId)
     }
 
-    getProductsByAuthor(authorId): Q.IPromise<{}> {
-        return this.db.query('?json=get_author_posts&id=' + authorId)
+    getProductsByAuthor(authorId, page): Q.IPromise<{}> {
+        return this.db.query('?json=get_author_posts&count=4&id=' + authorId + '&page=' + page)
     }
 
-    getProductsByCategory(categoryId): Q.IPromise<{}> {
-        return this.db.query('?json=get_category_posts&id=' + categoryId)
+    getProductsByCategory(categoryId, page): Q.IPromise<{}> {
+        return this.db.query('?json=get_category_posts&count=4&id=' + categoryId + '&page=' + page)
     }
 };

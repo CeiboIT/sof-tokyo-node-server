@@ -33,7 +33,7 @@ var products = [
     },
     {
         method: 'GET',
-        path: _prefix + '/byauthor/{authorId}',
+        path: _prefix + '/byauthor/{authorId}/{page}',
         handler: function(request, reply) {
             ProductsService.getProductsByAuthor(request.params.authorId).then((data) => {
                 reply(data);
@@ -42,7 +42,7 @@ var products = [
     },
     {
         method: 'GET',
-        path: _prefix + '/bycategory/{categoryId}',
+        path: _prefix + '/bycategory/{categoryId}/{page}',
         handler: function(request, reply) {
             ProductsService.getProductsByCategory(request.params.categoryId).then((data) => {
                 reply(data);

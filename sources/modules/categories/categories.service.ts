@@ -6,7 +6,7 @@ import connection = require('../connection/connection.service')
 
 export interface ICategoriesService {
     getCategoriesList(): Q.IPromise<{}>
-    getCategoryById(productId): Q.IPromise<{}>
+    getCategoryById(categoryId): Q.IPromise<{}>
 }
 
 
