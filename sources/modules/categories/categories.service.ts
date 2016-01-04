@@ -13,15 +13,12 @@ export interface ICategoriesService {
 export class CategoriesService implements ICategoriesService {
     private db = connection.service;
 
-    // TODO Necesitamos implementar paginacion Urgente!!!!
-
-
     getCategoriesList(): Q.IPromise<{}> {
         var _listPromise = Q.defer();
 
-        this.db.query('?json=get_recent_posts')
+        this.db.query('?json=get_category_index')
             .then((results) => {
-                _listPromise.resolve(results['posts']);
+                _listPromise.resolve(results['categories']);
             })
 
         return _listPromise.promise;

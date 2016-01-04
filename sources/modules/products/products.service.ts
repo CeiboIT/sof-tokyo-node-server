@@ -8,13 +8,13 @@ export interface IProductsService {
     getProductsList(page): Q.IPromise<{}>;
     getProductById(productId, page): Q.IPromise<{}>;
     getProductsByAuthor(authorId, page) : Q.IPromise<{}>;
+    getProductsByCategory(categoryId, page) : Q.IPromise<{}>;
+    getProductsByTag(tagId, page) : Q.IPromise<{}>;
 }
 
 
 export class ProductsService implements IProductsService {
     private db = connection.service;
-
-    // TODO Necesitamos implementar paginacion Urgente!!!!
 
     getProductsList(page): Q.IPromise<{}> {
         var _listPromise = Q.defer();
@@ -36,5 +36,9 @@ export class ProductsService implements IProductsService {
 
     getProductsByCategory(categoryId, page): Q.IPromise<{}> {
         return this.db.query('?json=get_category_posts&count=4&id=' + categoryId + '&page=' + page)
+    }
+
+    getProductsByTag(tagId, page): Q.IPromise<{}> {
+        return this.db.query('?json=get_tag_posts&count=4&id=' + tagId + '&page=' + page)
     }
 };

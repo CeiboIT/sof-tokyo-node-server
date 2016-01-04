@@ -35,7 +35,7 @@ var products = [
         method: 'GET',
         path: _prefix + '/byauthor/{authorId}/{page}',
         handler: function(request, reply) {
-            ProductsService.getProductsByAuthor(request.params.authorId, request.params.page || 1).then((data) => {
+            ProductsService.getProductsByAuthor(request.params.authorId, request.params.page || 1).then((data: Array<any>) => {
                 reply(data);
             })
         }
@@ -44,7 +44,16 @@ var products = [
         method: 'GET',
         path: _prefix + '/bycategory/{categoryId}/{page}',
         handler: function(request, reply) {
-            ProductsService.getProductsByCategory(request.params.categoryId, request.params.page || 1).then((data) => {
+            ProductsService.getProductsByCategory(request.params.categoryId, request.params.page || 1).then((data: Array<any>) => {
+                reply(data);
+            })
+        }
+    },
+    {
+        method: 'GET',
+        path: _prefix + '/bytag/{tagId}/{page}',
+        handler: function(request, reply) {
+            ProductsService.getProductsByTag(request.params.tagId, request.params.page || 1).then((data: Array<any>) => {
                 reply(data);
             })
         }
