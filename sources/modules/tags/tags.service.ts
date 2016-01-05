@@ -6,7 +6,6 @@ import connection = require('../connection/connection.service')
 
 export interface ITagsService {
     getTagsList(): Q.IPromise<{}>
-    getTagById(tagId): Q.IPromise<{}>
 }
 
 
@@ -22,9 +21,5 @@ export class TagsService implements ITagsService {
             })
 
         return _listPromise.promise;
-    }
-
-    getTagById(tagId): Q.IPromise<{}> {
-        return this.db.query('?json=1&p=' + tagId)
     }
 };

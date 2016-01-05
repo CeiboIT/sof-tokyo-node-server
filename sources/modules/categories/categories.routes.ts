@@ -21,15 +21,6 @@ var categories = [
         config: {
             description: 'Say hello'
         }
-    },
-    {
-        method: 'GET',
-        path: _prefix + '/category/{categoryId}',
-        handler: function(request, reply) {
-            CategoriesService.getCategoryById(request.params.categoryId).then((data) => {
-                reply(data);
-            })
-        }
     }
 ]
 

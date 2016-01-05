@@ -21,15 +21,6 @@ var tags = [
         config: {
             description: 'Say hello'
         }
-    },
-    {
-        method: 'GET',
-        path: _prefix + '/tag/{tagId}',
-        handler: function(request, reply) {
-            TagsService.getTagById(request.params.tagId).then((data) => {
-                reply(data);
-            })
-        }
     }
 ]
 

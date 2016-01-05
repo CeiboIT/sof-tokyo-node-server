@@ -32,11 +32,11 @@ this.server.register([require('vision'), require('inert'), {
         endpoint: '/api'
     }
 }], function() {
-    console.log('Lout generator OK');
+    console.log('✓ lout generator: API Documentation');
 });
 
 // Start server
 this.server.start(() => {
-    console.log('Started: ' + this.server.info.uri);
+    console.log('✓ Hapi: Server started at ' + this.server.info.uri);
 })
 

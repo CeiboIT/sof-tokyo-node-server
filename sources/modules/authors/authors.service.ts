@@ -6,7 +6,6 @@ import connection = require('../connection/connection.service')
 
 export interface IAuthorsService {
     getAuthorsList(): Q.IPromise<{}>
-    getAuthorById(authorId): Q.IPromise<{}>
 }
 
 
@@ -22,9 +21,5 @@ export class AuthorsService implements IAuthorsService {
             })
 
         return _listPromise.promise;
-    }
-
-    getAuthorById(authorId): Q.IPromise<{}> {
-        return this.db.query('?json=1&p=' + authorId)
     }
 };

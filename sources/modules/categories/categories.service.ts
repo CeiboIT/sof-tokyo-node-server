@@ -6,7 +6,6 @@ import connection = require('../connection/connection.service')
 
 export interface ICategoriesService {
     getCategoriesList(): Q.IPromise<{}>
-    getCategoryById(categoryId): Q.IPromise<{}>
 }
 
 
@@ -22,9 +21,5 @@ export class CategoriesService implements ICategoriesService {
             })
 
         return _listPromise.promise;
-    }
-
-    getCategoryById(categoryId): Q.IPromise<{}> {
-        return this.db.query('?json=1&p=' + categoryId)
     }
 };

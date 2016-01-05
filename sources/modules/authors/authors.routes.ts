@@ -21,15 +21,6 @@ var authors = [
         config: {
             description: 'Say hello'
         }
-    },
-    {
-        method: 'GET',
-        path: _prefix + '/author/{authorId}',
-        handler: function(request, reply) {
-            AuthorsService.getAuthorById(request.params.authorId).then((data) => {
-                reply(data);
-            })
-        }
     }
 ]
 
