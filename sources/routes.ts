@@ -1,11 +1,13 @@
-import ProductsRoutes = require("./modules/products/products.routes");
-import CategoriesRoutes = require("./modules/categories/categories.routes");
-import TagsRoutes = require("./modules/tags/tags.routes");
+import AuthRoutes = require("./modules/auth/auth.routes");
 import AuthorsRoutes = require("./modules/authors/authors.routes");
+import CategoriesRoutes = require("./modules/categories/categories.routes");
+import ProductsRoutes = require("./modules/products/products.routes");
+import TagsRoutes = require("./modules/tags/tags.routes");
 
 module.exports = [].concat(
-    ProductsRoutes,
+    AuthRoutes,
+    AuthorsRoutes,
     CategoriesRoutes,
-    TagsRoutes,
-    AuthorsRoutes
+    ProductsRoutes,
+    TagsRoutes
 );
