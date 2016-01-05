@@ -2,10 +2,7 @@
 'use strict';
 
 import hapi = require("hapi");
-import ProductsRoutes = require("./modules/products/products.routes");
-import CategoriesRoutes = require("./modules/categories/categories.routes");
-import TagsRoutes = require("./modules/tags/tags.routes");
-import AuthorsRoutes = require("./modules/authors/authors.routes");
+import routes = require("./routes");
 
 this.server = new hapi.Server();
 
@@ -17,60 +14,28 @@ if (process.env.NODE_ENV != 'development') {
     _host = 'localhost';
 }
 
-
-
 this.server.connection({
     port: process.env.PORT || 9000,
     host: _host
 })
 
-
-// add products api routes
-for (var route in ProductsRoutes) {
-    ProductsRoutes[route].path = '/api' + ProductsRoutes[route].path;
-    this.server.route(ProductsRoutes[route])
+// Add all API routes
+for (var route in routes) {
+    routes[route].path = '/api' + routes[route].path;
+    this.server.route(routes[route])
 }
 
-// add categories api routes
-for (var route in CategoriesRoutes) {
-    CategoriesRoutes[route].path = '/api' + CategoriesRoutes[route].path;
-    this.server.route(CategoriesRoutes[route])
-}
-
-// add tags api routes
-for (var route in TagsRoutes) {
-    TagsRoutes[route].path = '/api' + TagsRoutes[route].path;
-    this.server.route(TagsRoutes[route])
-}
-
-// add authors api routes
-for (var route in AuthorsRoutes) {
-    AuthorsRoutes[route].path = '/api' + AuthorsRoutes[route].path;
-    this.server.route(AuthorsRoutes[route])
-}
-
-
-
-//help for see all the routes
-this.server.route({
-    method: 'GET',
-    path: '/api',
-    handler: (request, reply) => {
-        var _table = this.server.table();
-
-        var _answer = {};
-        _table.table.map((element) => {
-            console.log(element);
-            _answer[element.fingerprint] = {
-                path: element.path,
-                method: element.method
-            }
-        })
-        reply(_answer);
+// Lout documentation to see all the API routes
+this.server.register([require('vision'), require('inert'), {
+    register: require('lout'),
+    options: {
+        endpoint: '/api'
     }
-})
+}], function() {
+    console.log('Lout generator OK');
+});
 
-//this.server.connection({ port: process.env.PORT ||3000 });
+// Start server
 this.server.start(() => {
     console.log('Started: ' + this.server.info.uri);
 })
