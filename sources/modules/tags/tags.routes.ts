@@ -19,7 +19,7 @@ var tags = [
             })
         },
         config: {
-            description: 'Say hello'
+            description: 'Retrieve Tag list'
         }
     }
 ]

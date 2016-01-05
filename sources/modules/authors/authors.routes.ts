@@ -19,7 +19,7 @@ var authors = [
             })
         },
         config: {
-            description: 'Say hello'
+            description: 'Retrieve Authors list'
         }
     }
 ]

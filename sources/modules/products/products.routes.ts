@@ -19,7 +19,7 @@ var products = [
             })
         },
         config: {
-            description: 'Say hello'
+            description: 'Retrieves Products list'
         }
     },
     {
@@ -29,6 +29,9 @@ var products = [
             ProductsService.getProductById(request.params.productId).then((data) => {
                 reply(data);
             })
+        },
+        config: {
+            description: 'Retrieve Product with matched ProductID'
         }
     },
     {
@@ -38,6 +41,9 @@ var products = [
             ProductsService.getProductsByAuthor(request.params.authorId, request.params.page || 1).then((data: Array<any>) => {
                 reply(data);
             })
+        },
+        config: {
+            description: 'Retrieve Products from matched AuthorID'
         }
     },
     {
@@ -47,6 +53,9 @@ var products = [
             ProductsService.getProductsByCategory(request.params.categoryId, request.params.page || 1).then((data: Array<any>) => {
                 reply(data);
             })
+        },
+        config: {
+            description: 'Retrieve Products from matched CategoryID'
         }
     },
     {
@@ -56,6 +65,9 @@ var products = [
             ProductsService.getProductsByTag(request.params.tagId, request.params.page || 1).then((data: Array<any>) => {
                 reply(data);
             })
+        },
+        config: {
+            description: 'Retrieve Products from matched TagID'
         }
     }
 ]

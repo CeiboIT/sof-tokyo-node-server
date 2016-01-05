@@ -19,7 +19,7 @@ var categories = [
             })
         },
         config: {
-            description: 'Say hello'
+            description: 'Retrieves categories list'
         }
     }
 ]
