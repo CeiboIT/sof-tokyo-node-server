@@ -5,6 +5,7 @@
 
 
 import service = require('./products.service');
+import Joi = require('joi');
 
 var ProductsService = new service.ProductsService();
 var _prefix = '/products';
@@ -13,12 +14,16 @@ var products = [
         method: 'GET',
         path: _prefix + '/list/{page}',
         handler: function(request, reply) {
-
             ProductsService.getProductsList(request.params.page || 1).then((data: Array<any>) => {
                 reply(data);
             })
         },
         config: {
+            validate: {
+                query: {
+                    page: Joi.number().integer()
+                }
+            },
             description: 'Retrieves Products list'
         }
     },
@@ -31,6 +36,11 @@ var products = [
             })
         },
         config: {
+            validate: {
+                query: {
+                    productId: Joi.number().integer()
+                }
+            },
             description: 'Retrieve Product with matched ProductID'
         }
     },
@@ -43,6 +53,12 @@ var products = [
             })
         },
         config: {
+            validate: {
+                query: {
+                    authorId: Joi.number().integer(),
+                    page: Joi.number().integer()
+                }
+            },
             description: 'Retrieve Products from matched AuthorID'
         }
     },
@@ -55,6 +71,12 @@ var products = [
             })
         },
         config: {
+            validate: {
+                query: {
+                    categoryId: Joi.number().integer(),
+                    page: Joi.number().integer()
+                }
+            },
             description: 'Retrieve Products from matched CategoryID'
         }
     },
@@ -67,6 +89,12 @@ var products = [
             })
         },
         config: {
+            validate: {
+                query: {
+                    tagId: Joi.number().integer(),
+                    page: Joi.number().integer()
+                }
+            },
             description: 'Retrieve Products from matched TagID'
         }
     }

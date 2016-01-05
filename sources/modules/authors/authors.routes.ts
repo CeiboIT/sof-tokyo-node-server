@@ -13,7 +13,6 @@ var authors = [
         method: 'GET',
         path: _prefix + '/list',
         handler: function(request, reply) {
-
             AuthorsService.getAuthorsList().then((data: Array<any>) => {
                 reply(data);
             })
