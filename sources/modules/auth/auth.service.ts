@@ -5,7 +5,7 @@ import Q = require("q");
 import connection = require('../connection/connection.service')
 
 export interface IAuthService {
-    getNonce(): Q.IPromise<{}>;
+    getNonce(controller, method): Q.IPromise<{}>;
     register(username, email, nonce, display_name): Q.IPromise<{}>;
     login(username, password): Q.IPromise<{}>;
 //    fbLogin(access_token): Q.IPromise<{}>;
@@ -19,8 +19,8 @@ export interface IAuthService {
 export class AuthService implements IAuthService {
     private db = connection.service;
 
-    getNonce(): Q.IPromise<{}> {
-        return this.db.query('api/get_nonce/?controller=user&method=register')
+    getNonce(controller, method): Q.IPromise<{}> {
+        return this.db.query('api/get_nonce/?controller=' + controller + '&method=' + method)
     }
 
     register(username, email, nonce, display_name): Q.IPromise<{}> {

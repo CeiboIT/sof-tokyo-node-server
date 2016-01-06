@@ -5,11 +5,14 @@ import Q = require("q");
 import connection = require('../connection/connection.service')
 
 export interface IProductsService {
+    // GET
     getProductsList(page): Q.IPromise<{}>;
     getProductById(productId, page): Q.IPromise<{}>;
-    getProductsByAuthor(authorId, page) : Q.IPromise<{}>;
-    getProductsByCategory(categoryId, page) : Q.IPromise<{}>;
-    getProductsByTag(tagId, page) : Q.IPromise<{}>;
+    getProductsByAuthor(authorId, page): Q.IPromise<{}>;
+    getProductsByCategory(categoryId, page): Q.IPromise<{}>;
+    getProductsByTag(tagId, page): Q.IPromise<{}>;
+    // POST
+    postProduct(): Q.IPromise<{}>;
 }
 
 
@@ -41,4 +44,9 @@ export class ProductsService implements IProductsService {
     getProductsByTag(tagId, page): Q.IPromise<{}> {
         return this.db.query('?json=get_tag_posts&count=4&id=' + tagId + '&page=' + page)
     }
+
+    postProduct(): Q.IPromise<{}> {
+        return undefined
+    }
+
 };

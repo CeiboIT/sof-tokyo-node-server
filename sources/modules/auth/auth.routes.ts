@@ -12,19 +12,24 @@ var _prefix = '/auth';
 var auth = [
     {
         method: 'GET',
-        path: _prefix + '/nonce',
+        path: _prefix + '/nonce/{controller}/{method}',
         handler: function(request, reply) {
-            AuthService.getNonce().then((data) => {
+            AuthService.getNonce(request.params.controller, request.params.method).then((data) => {
                 reply(data);
             })
         },
         config: {
             validate: {
                 query: {
+                    controller: Joi.string(),
                     method: Joi.string()
                 }
             },
-            description: 'Retrieve a Nonce'
+            description: "Retrieve a Nonce",
+            notes: [
+                "Controller values: 'user'/'posts'",
+                "Method values: 'register'/'create_post'"
+            ]
         }
     },
     {
@@ -114,7 +119,10 @@ var auth = [
                     type: Joi.string()
                 }
             },
-            description: "Retrieve User's Avatar. Type: 'full'/'thumb'"
+            description: "Retrieve User's Avatar",
+            notes: [
+                "Type values: 'full'/'thumb'"
+            ]
         }
     }, ,
     {
