@@ -146,7 +146,7 @@ var products = [
         method: 'PUT',
         path: _prefix + '/update',
         handler: function(request, reply) {
-            ProductsService.createProduct(
+            ProductsService.updateProduct(
                 request.payload.nonce,
                 request.payload.productId,
                 request.payload.author,
