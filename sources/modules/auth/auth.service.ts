@@ -20,15 +20,20 @@ export class AuthService implements IAuthService {
     private db = connection.service;
 
     getNonce(controller, method): Q.IPromise<{}> {
-        return this.db.query('api/get_nonce/?controller=' + controller + '&method=' + method)
+        return this.db.query('api/get_nonce/?controller=' + controller +
+                             '&method=' + method)
     }
 
     register(username, email, nonce, display_name): Q.IPromise<{}> {
-        return this.db.query('api/user/register/?username=' + username + '&email=' + email + '&nonce=' + nonce + '&display_name=' + display_name)
+        return this.db.query('api/user/register/?username=' + username +
+                             '&email=' + email +
+                             '&nonce=' + nonce +
+                             '&display_name=' + display_name)
     }
 
     login(username, password): Q.IPromise<{}> {
-        return this.db.query('api/user/generate_auth_cookie/?username=' + username + '&password=' + password)
+        return this.db.query('api/user/generate_auth_cookie/?username=' + username +
+                             '&password=' + password)
     }
 
 /*
@@ -46,7 +51,8 @@ export class AuthService implements IAuthService {
     }
 
     getUserAvatar(userId, type): Q.IPromise<{}> {
-        return this.db.query('api/user/get_avatar/?user_id=' + userId + '&type=' + type)
+        return this.db.query('api/user/get_avatar/?user_id=' + userId +
+                             '&type=' + type)
     }
 
     resetPassword(username): Q.IPromise<{}> {

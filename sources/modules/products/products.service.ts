@@ -12,7 +12,7 @@ export interface IProductsService {
     getProductsByCategory(categoryId, page): Q.IPromise<{}>;
     getProductsByTag(tagId, page): Q.IPromise<{}>;
     // POST
-    postProduct(): Q.IPromise<{}>;
+    createProduct(nonce, author, title, content, status, categories, tags): Q.IPromise<{}>;
 }
 
 
@@ -34,19 +34,39 @@ export class ProductsService implements IProductsService {
     }
 
     getProductsByAuthor(authorId, page): Q.IPromise<{}> {
-        return this.db.query('?json=get_author_posts&count=4&id=' + authorId + '&page=' + page)
+        return this.db.query('?json=get_author_posts&count=4&id=' + authorId +
+                             '&page=' + page)
     }
 
     getProductsByCategory(categoryId, page): Q.IPromise<{}> {
-        return this.db.query('?json=get_category_posts&count=4&id=' + categoryId + '&page=' + page)
+        return this.db.query('?json=get_category_posts&count=4&id=' + categoryId +
+                             '&page=' + page)
     }
 
     getProductsByTag(tagId, page): Q.IPromise<{}> {
-        return this.db.query('?json=get_tag_posts&count=4&id=' + tagId + '&page=' + page)
+        return this.db.query('?json=get_tag_posts&count=4&id=' + tagId +
+                             '&page=' + page)
     }
 
-    postProduct(): Q.IPromise<{}> {
-        return undefined
+    createProduct(nonce, author, title, content, status, categories, tags): Q.IPromise<{}> {
+        return this.db.query('?json=create_post&nonce=' + nonce +
+                             '&author=' + author +
+                             '&title=' + title +
+                             '&content=' + content +
+                             '&status=' + status +
+                             '&categories=' + categories +
+                             '&tags=' + tags)
+    }
+
+    updateProduct(nonce, productId, author, title, content, status, categories, tags): Q.IPromise<{}> {
+        return this.db.query('?json=update_post&nonce=' + nonce +
+                             '&id=' + productId +
+                             '&author=' + author +
+                             '&title=' + title +
+                             '&content=' + content +
+                             '&status=' + status +
+                             '&categories=' + categories +
+                             '&tags=' + tags)
     }
 
 };

@@ -13,7 +13,8 @@ var categories = [
         method: 'GET',
         path: _prefix + '/list',
         handler: function(request, reply) {
-            CategoriesService.getCategoriesList().then((data: Array<any>) => {
+            CategoriesService.getCategoriesList()
+            .then((data: Array<any>) => {
                 reply(data);
             })
         },

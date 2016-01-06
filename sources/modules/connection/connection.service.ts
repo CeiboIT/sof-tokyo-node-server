@@ -18,7 +18,7 @@ export class ConnectionService implements IConnectionService {
         var _queryPromise = q.defer();
         request('http://www.sof.tokyo/' + params, function(error, response, body) {
             if (!error && response.statusCode == 200) {
-                _queryPromise.resolve(JSON.parse(body)) // Show the HTML for the Google homepage. 
+                _queryPromise.resolve(JSON.parse(body)) // Show the HTML for the Google homepage.
             }
         })
 

@@ -14,7 +14,10 @@ var auth = [
         method: 'GET',
         path: _prefix + '/nonce/{controller}/{method}',
         handler: function(request, reply) {
-            AuthService.getNonce(request.params.controller, request.params.method).then((data) => {
+            AuthService.getNonce(
+                request.params.controller,
+                request.params.method)
+            .then((data) => {
                 reply(data);
             })
         },
@@ -28,15 +31,20 @@ var auth = [
             description: "Retrieve a Nonce",
             notes: [
                 "Controller values: 'user'/'posts'",
-                "Method values: 'register'/'create_post'"
+                "Method values: 'register'/'create_post'/'update:post"
             ]
         }
     },
     {
-        method: 'GET',
-        path: _prefix + '/register/{username}/{email}/{nonce}/{display_name}',
+        method: 'POST',
+        path: _prefix + '/register',
         handler: function(request, reply) {
-            AuthService.register(request.params.username, request.params.email, request.params.nonce, request.params.display_name).then((data) => {
+            AuthService.register(
+                request.payload.username,
+                request.payload.email,
+                request.payload.nonce,
+                request.payload.display_name)
+            .then((data) => {
                 reply(data);
             })
         },
@@ -53,10 +61,13 @@ var auth = [
         }
     },
     {
-        method: 'GET',
-        path: _prefix + '/login/{username}/{password}',
+        method: 'POST',
+        path: _prefix + '/login',
         handler: function(request, reply) {
-            AuthService.login(request.params.username, request.params.password).then((data) => {
+            AuthService.login(
+                request.payload.username,
+                request.paylad.password)
+            .then((data) => {
                 reply(data);
             })
         },
@@ -71,10 +82,12 @@ var auth = [
         }
     },
     {
-        method: 'GET',
-        path: _prefix + '/is_authorized/{cookie}',
+        method: 'POST',
+        path: _prefix + '/is_authorized',
         handler: function(request, reply) {
-            AuthService.isAuthorized(request.params.cookie).then((data) => {
+            AuthService.isAuthorized(
+                request.payload.cookie)
+            .then((data) => {
                 reply(data);
             })
         },
@@ -91,7 +104,9 @@ var auth = [
         method: 'GET',
         path: _prefix + '/get_user/{userId}',
         handler: function(request, reply) {
-            AuthService.getUserInfo(request.params.userId).then((data) => {
+            AuthService.getUserInfo(
+                request.params.userId)
+            .then((data) => {
                 reply(data);
             })
         },
@@ -108,7 +123,10 @@ var auth = [
         method: 'GET',
         path: _prefix + '/get_avatar/{userId}/{type}',
         handler: function(request, reply) {
-            AuthService.getUserAvatar(request.params.userId, request.params.type).then((data) => {
+            AuthService.getUserAvatar(
+                request.params.userId,
+                request.params.type)
+            .then((data) => {
                 reply(data);
             })
         },
@@ -126,10 +144,12 @@ var auth = [
         }
     }, ,
     {
-        method: 'GET',
-        path: _prefix + '/reset_password/{username}',
+        method: 'POST',
+        path: _prefix + '/reset_password',
         handler: function(request, reply) {
-            AuthService.resetPassword(request.params.username).then((data) => {
+            AuthService.resetPassword(
+                request.params.username)
+            .then((data) => {
                 reply(data);
             })
         },

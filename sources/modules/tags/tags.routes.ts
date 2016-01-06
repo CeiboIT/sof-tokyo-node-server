@@ -13,7 +13,8 @@ var tags = [
         method: 'GET',
         path: _prefix + '/list',
         handler: function(request, reply) {
-            TagsService.getTagsList().then((data: Array<any>) => {
+            TagsService.getTagsList()
+            .then((data: Array<any>) => {
                 reply(data);
             })
         },
