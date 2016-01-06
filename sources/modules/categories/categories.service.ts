@@ -16,7 +16,7 @@ export class CategoriesService implements ICategoriesService {
     getCategoriesList(): Q.IPromise<{}> {
         var _listPromise = Q.defer();
 
-        this.db.query('?json=get_category_index')
+        this.db.query('core/get_category_index')
             .then((results) => {
                 _listPromise.resolve(results['categories']);
             })

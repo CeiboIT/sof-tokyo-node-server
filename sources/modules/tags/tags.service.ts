@@ -16,7 +16,7 @@ export class TagsService implements ITagsService {
     getTagsList(): Q.IPromise<{}> {
         var _listPromise = Q.defer();
 
-        this.db.query('?json=get_tag_index')
+        this.db.query('core/get_tag_index')
             .then((results) => {
                 _listPromise.resolve(results['tags']);
             })

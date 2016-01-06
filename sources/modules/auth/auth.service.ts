@@ -22,19 +22,19 @@ export class AuthService implements IAuthService {
     private db = connection.service;
 
     getNonce(controller, method): Q.IPromise<{}> {
-        return this.db.query('api/get_nonce/?controller=' + controller +
+        return this.db.query('core/get_nonce/?controller=' + controller +
                              '&method=' + method)
     }
 
     register(username, email, nonce, display_name): Q.IPromise<{}> {
-        return this.db.query('api/user/register/?username=' + username +
+        return this.db.query('user/register/?username=' + username +
                              '&email=' + email +
                              '&nonce=' + nonce +
                              '&display_name=' + display_name)
     }
 
     login(username, password): Q.IPromise<{}> {
-        return this.db.query('api/user/generate_auth_cookie/?username=' + username +
+        return this.db.query('user/generate_auth_cookie/?username=' + username +
                              '&password=' + password)
     }
 
@@ -45,19 +45,19 @@ export class AuthService implements IAuthService {
 */
 
     isAuthorized(cookie): Q.IPromise<{}> {
-        return this.db.query('api/user/validate_auth_cookie/?cookie=' + cookie)
+        return this.db.query('user/validate_auth_cookie/?cookie=' + cookie)
     }
 
     getUserInfo(userId): Q.IPromise<{}> {
-        return this.db.query('api/user/get_userinfo/?user_id=' + userId)
+        return this.db.query('user/get_userinfo/?user_id=' + userId)
     }
 
     getUserAvatar(userId, type): Q.IPromise<{}> {
-        return this.db.query('api/user/get_avatar/?user_id=' + userId +
+        return this.db.query('user/get_avatar/?user_id=' + userId +
                              '&type=' + type)
     }
 
     resetPassword(username): Q.IPromise<{}> {
-        return this.db.query('api/user/retrieve_password/?user_login=' + username)
+        return this.db.query('user/retrieve_password/?user_login=' + username)
     }
 };

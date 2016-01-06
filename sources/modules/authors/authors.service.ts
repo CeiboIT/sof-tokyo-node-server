@@ -16,7 +16,7 @@ export class AuthorsService implements IAuthorsService {
     getAuthorsList(): Q.IPromise<{}> {
         var _listPromise = Q.defer();
 
-        this.db.query('?json=get_author_index')
+        this.db.query('core/get_author_index')
             .then((results) => {
                 _listPromise.resolve(results['authors']);
             })

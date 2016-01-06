@@ -26,7 +26,7 @@ export class ProductsService implements IProductsService {
 
     getProductsList(page): Q.IPromise<{}> {
         var _listPromise = Q.defer();
-        this.db.query('?json=get_recent_posts&count=4&page=' + page)
+        this.db.query('core/get_recent_posts&count=4&page=' + page)
             .then((results) => {
                 _listPromise.resolve(results);
             })
@@ -35,26 +35,26 @@ export class ProductsService implements IProductsService {
     }
 
     getProductById(productId): Q.IPromise<{}> {
-        return this.db.query('?json=1&p=' + productId)
+        return this.db.query('core/get_post/?id=' + productId)
     }
 
     getProductsByAuthor(authorId, page): Q.IPromise<{}> {
-        return this.db.query('?json=get_author_posts&count=4&id=' + authorId +
+        return this.db.query('core/get_author_posts/?count=4&id=' + authorId +
                              '&page=' + page)
     }
 
     getProductsByCategory(categoryId, page): Q.IPromise<{}> {
-        return this.db.query('?json=get_category_posts&count=4&id=' + categoryId +
+        return this.db.query('core/get_category_posts/?count=4&id=' + categoryId +
                              '&page=' + page)
     }
 
     getProductsByTag(tagId, page): Q.IPromise<{}> {
-        return this.db.query('?json=get_tag_posts&count=4&id=' + tagId +
+        return this.db.query('core/get_tag_posts/?count=4&id=' + tagId +
                              '&page=' + page)
     }
 
     createProduct(nonce, author, title, content, status, categories, tags): Q.IPromise<{}> {
-        return this.db.query('?json=create_post&nonce=' + nonce +
+        return this.db.query('posts/create_post/?nonce=' + nonce +
                              '&author=' + author +
                              '&title=' + title +
                              '&content=' + content +
@@ -64,8 +64,8 @@ export class ProductsService implements IProductsService {
     }
 
     updateProduct(nonce, productId, author, title, content, status, categories, tags): Q.IPromise<{}> {
-        return this.db.query('?json=update_post&nonce=' + nonce +
-                             '&post_id=' + productId +
+        return this.db.query('posts/update_post&nonce=' + nonce +
+                             '&id=' + productId +
                              '&author=' + author +
                              '&title=' + title +
                              '&content=' + content +
@@ -75,12 +75,12 @@ export class ProductsService implements IProductsService {
     }
 
     deleteProduct(nonce, productId): Q.IPromise<{}> {
-        return this.db.query('?json=update_post&nonce=' + nonce +
-                             '&post_id=' + productId)
+        return this.db.query('posts/delete_post&nonce=' + nonce +
+                             '&id=' + productId)
     }
 
     createComment(productId, author, mail, content): Q.IPromise<{}> {
-        return this.db.query('?json=create_post&post_id=' + productId +
+        return this.db.query('respond/submit_comment&post_id=' + productId +
                              '&name=' + author +
                              '&email=' + mail +
                              '&content=' + content)
