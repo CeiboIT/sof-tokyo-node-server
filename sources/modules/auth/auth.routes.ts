@@ -31,7 +31,7 @@ var auth = [
             description: "Retrieve a Nonce",
             notes: [
                 "Controller values: 'user'/'posts'",
-                "Method values: 'register'/'create_post'/'update:post"
+                "Method values: 'register'/'create_post'/'update_post'/'delete_post'"
             ]
         }
     },

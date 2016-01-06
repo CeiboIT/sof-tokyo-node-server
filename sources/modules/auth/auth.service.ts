@@ -5,13 +5,15 @@ import Q = require("q");
 import connection = require('../connection/connection.service')
 
 export interface IAuthService {
+    // GET
     getNonce(controller, method): Q.IPromise<{}>;
+    getUserInfo(userId): Q.IPromise<{}>;
+    getUserAvatar(userId, type): Q.IPromise<{}>;
+    // POST
     register(username, email, nonce, display_name): Q.IPromise<{}>;
     login(username, password): Q.IPromise<{}>;
 //    fbLogin(access_token): Q.IPromise<{}>;
     isAuthorized(cookie): Q.IPromise<{}>;
-    getUserInfo(userId): Q.IPromise<{}>;
-    getUserAvatar(userId, type): Q.IPromise<{}>;
     resetPassword(username): Q.IPromise<{}>;
 }
 

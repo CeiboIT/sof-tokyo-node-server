@@ -172,7 +172,28 @@ var products = [
                     tags: Joi.array()
                 }
             },
-            description: 'Create a new Product'
+            description: 'Update a Product'
+        }
+    },
+    {
+        method: 'DELETE',
+        path: _prefix + '/delete',
+        handler: function(request, reply) {
+            ProductsService.deleteProduct(
+                request.payload.nonce,
+                request.payload.productId)
+                .then((data) => {
+                    reply(data);
+                })
+        },
+        config: {
+            validate: {
+                query: {
+                    nonce: Joi.string(),
+                    productId: Joi.number().integer()
+                }
+            },
+            description: 'Delete a Product'
         }
     }
 ]

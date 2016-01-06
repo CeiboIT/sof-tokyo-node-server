@@ -5,6 +5,7 @@ import Q = require("q");
 import connection = require('../connection/connection.service')
 
 export interface ITagsService {
+    // GET
     getTagsList(): Q.IPromise<{}>
 }
 
