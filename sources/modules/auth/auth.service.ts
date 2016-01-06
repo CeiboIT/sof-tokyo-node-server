@@ -40,7 +40,7 @@ export class AuthService implements IAuthService {
 
 /*
     fbLogin(access_token): Q.IPromise<{}> {
-        return this.db.query('api/user/fb_connect/?access_token=' + access_token)
+        return this.db.query('user/fb_connect/?access_token=' + access_token)
     }
 */
 

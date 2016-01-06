@@ -7,6 +7,7 @@ import routes = require("./routes");
 this.server = new hapi.Server();
 
 var _host;
+var lout_status = false;
 
 if (process.env.NODE_ENV != 'development') {
     _host = '0.0.0.0';
@@ -32,11 +33,12 @@ this.server.register([require('vision'), require('inert'), {
         endpoint: '/api'
     }
 }], function() {
-    console.log('✓ lout generator: API Documentation');
+    lout_status = true;
 });
 
 // Start server
 this.server.start(() => {
+    if (lout_status == true) console.log('✓ lout: API Documentation generated at ' + this.server.info.uri + '/api');
     console.log('✓ Hapi: Server started at ' + this.server.info.uri);
 })
 

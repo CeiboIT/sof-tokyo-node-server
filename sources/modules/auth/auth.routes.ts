@@ -66,7 +66,7 @@ var auth = [
         handler: function(request, reply) {
             AuthService.login(
                 request.payload.username,
-                request.paylad.password)
+                request.payload.password)
             .then((data) => {
                 reply(data);
             })

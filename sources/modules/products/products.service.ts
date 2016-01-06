@@ -13,7 +13,7 @@ export interface IProductsService {
     getProductsByTag(tagId, page): Q.IPromise<{}>;
     // POST
     createProduct(nonce, author, title, content, status, categories, tags): Q.IPromise<{}>;
-    createComment(productId, author, mail, content): Q.IPromise<{}>;
+    createComment(productId, cookie, content): Q.IPromise<{}>;
     // PUT
     updateProduct(nonce, productId, author, title, content, status, categories, tags): Q.IPromise<{}>;
     // DELETE
@@ -64,7 +64,7 @@ export class ProductsService implements IProductsService {
     }
 
     updateProduct(nonce, productId, author, title, content, status, categories, tags): Q.IPromise<{}> {
-        return this.db.query('posts/update_post&nonce=' + nonce +
+        return this.db.query('posts/update_post/?nonce=' + nonce +
                              '&id=' + productId +
                              '&author=' + author +
                              '&title=' + title +
@@ -75,14 +75,14 @@ export class ProductsService implements IProductsService {
     }
 
     deleteProduct(nonce, productId): Q.IPromise<{}> {
-        return this.db.query('posts/delete_post&nonce=' + nonce +
+        return this.db.query('posts/delete_post/?nonce=' + nonce +
                              '&id=' + productId)
     }
 
-    createComment(productId, author, mail, content): Q.IPromise<{}> {
-        return this.db.query('respond/submit_comment&post_id=' + productId +
-                             '&name=' + author +
-                             '&email=' + mail +
+    createComment(productId, cookie, content): Q.IPromise<{}> {
+        return this.db.query('user/post_comment/?post_id=' + productId +
+                             '&cookie=' + cookie +
+                             '&comment_status=1' +
                              '&content=' + content)
     }
 

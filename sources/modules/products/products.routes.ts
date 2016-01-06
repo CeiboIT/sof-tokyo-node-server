@@ -202,8 +202,7 @@ var products = [
         handler: function(request, reply) {
             ProductsService.createComment(
                 request.payload.productId,
-                request.payload.author,
-                request.payload.email,
+                request.payload.cookie,
                 request.payload.content)
                 .then((data) => {
                     reply(data);
@@ -213,8 +212,7 @@ var products = [
             validate: {
                 query: {
                     productId: Joi.number().integer(),
-                    author: Joi.string(),
-                    email: Joi.string(),
+                    cookie: Joi.string(),
                     content: Joi.string()
                 }
             },
