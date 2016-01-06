@@ -65,7 +65,7 @@ export class ProductsService implements IProductsService {
 
     updateProduct(nonce, productId, author, title, content, status, categories, tags): Q.IPromise<{}> {
         return this.db.query('?json=update_post&nonce=' + nonce +
-                             '&id=' + productId +
+                             '&post_id=' + productId +
                              '&author=' + author +
                              '&title=' + title +
                              '&content=' + content +
@@ -76,7 +76,7 @@ export class ProductsService implements IProductsService {
 
     deleteProduct(nonce, productId): Q.IPromise<{}> {
         return this.db.query('?json=update_post&nonce=' + nonce +
-                             '&id=' + productId)
+                             '&post_id=' + productId)
     }
 
     createComment(productId, author, mail, content): Q.IPromise<{}> {
