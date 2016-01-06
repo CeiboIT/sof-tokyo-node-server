@@ -195,7 +195,32 @@ var products = [
             },
             description: 'Delete a Product'
         }
-    }
+    },
+    {
+        method: 'POST',
+        path: _prefix + '/comments/create',
+        handler: function(request, reply) {
+            ProductsService.createComment(
+                request.payload.productId,
+                request.payload.author,
+                request.payload.email,
+                request.payload.content)
+                .then((data) => {
+                    reply(data);
+                })
+        },
+        config: {
+            validate: {
+                query: {
+                    productId: Joi.number().integer(),
+                    author: Joi.string(),
+                    email: Joi.string(),
+                    content: Joi.string()
+                }
+            },
+            description: 'Create a new Comment'
+        }
+    },
 ]
 
 

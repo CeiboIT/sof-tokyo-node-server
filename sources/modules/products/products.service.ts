@@ -13,6 +13,7 @@ export interface IProductsService {
     getProductsByTag(tagId, page): Q.IPromise<{}>;
     // POST
     createProduct(nonce, author, title, content, status, categories, tags): Q.IPromise<{}>;
+    createComment(productId, author, mail, content): Q.IPromise<{}>;
     // PUT
     updateProduct(nonce, productId, author, title, content, status, categories, tags): Q.IPromise<{}>;
     // DELETE
@@ -76,6 +77,13 @@ export class ProductsService implements IProductsService {
     deleteProduct(nonce, productId): Q.IPromise<{}> {
         return this.db.query('?json=update_post&nonce=' + nonce +
                              '&id=' + productId)
+    }
+
+    createComment(productId, author, mail, content): Q.IPromise<{}> {
+        return this.db.query('?json=create_post&post_id=' + productId +
+                             '&name=' + author +
+                             '&email=' + mail +
+                             '&content=' + content)
     }
 
 };
