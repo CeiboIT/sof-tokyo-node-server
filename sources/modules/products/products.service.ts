@@ -6,6 +6,7 @@ import connection = require('../connection/connection.service')
 
 export interface IProductsService {
     // GET
+    getProductsNew(page): Q.IPromise<{}>;
     getProductsList(page): Q.IPromise<{}>;
     getProductById(productId): Q.IPromise<{}>;
     getProductsByAuthor(authorId, page): Q.IPromise<{}>;
@@ -24,9 +25,19 @@ export interface IProductsService {
 export class ProductsService implements IProductsService {
     private db = connection.service;
 
-    getProductsList(page): Q.IPromise<{}> {
+    getProductsNew(page): Q.IPromise<{}> {
         var _listPromise = Q.defer();
         this.db.query('core/?json=get_recent_posts&count=4&page=' + page)
+            .then((results) => {
+                _listPromise.resolve(results);
+            })
+
+        return _listPromise.promise;
+    }
+
+    getProductsList(page): Q.IPromise<{}> {
+        var _listPromise = Q.defer();
+        this.db.query('core/?json=get_posts&count=4&page=' + page)
             .then((results) => {
                 _listPromise.resolve(results);
             })

@@ -12,13 +12,33 @@ var _prefix = '/products';
 var products = [
     {
         method: 'GET',
+        path: _prefix + '/new/{page}',
+        handler: function(request, reply) {
+            ProductsService.getProductsNew(
+                request.params.page || 1)
+                .then((data: Array<any>) => {
+                    reply(data);
+                })
+        },
+        config: {
+            validate: {
+                query: {
+                    page: Joi.number().integer()
+                }
+            },
+            description: 'Retrieves new Products',
+            tags: ['products']
+        }
+    },
+    {
+        method: 'GET',
         path: _prefix + '/list/{page}',
         handler: function(request, reply) {
             ProductsService.getProductsList(
                 request.params.page || 1)
-            .then((data: Array<any>) => {
-                reply(data);
-            })
+                .then((data: Array<any>) => {
+                    reply(data);
+                })
         },
         config: {
             validate: {
