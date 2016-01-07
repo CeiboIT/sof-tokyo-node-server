@@ -14,12 +14,25 @@ var categories = [
         path: _prefix + '/list',
         handler: function(request, reply) {
             CategoriesService.getCategoriesList()
-            .then((data: Array<any>) => {
-                reply(data);
-            })
+                .then((data: Array<any>) => {
+                    reply(data);
+                })
         },
         config: {
             description: 'Retrieve Categories list'
+        }
+    },
+    {
+        method: 'GET',
+        path: _prefix + '/test',
+        handler: function(request, reply) {
+            CategoriesService.getSubcategoriesList()
+                .then((data) => {
+                    reply(data);
+                })
+        },
+        config: {
+            description: 'TEST'
         }
     }
 ]
