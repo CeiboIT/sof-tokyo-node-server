@@ -35,9 +35,9 @@ var products = [
         handler: function(request, reply) {
             ProductsService.getProductById(
                 request.params.productId)
-            .then((data) => {
-                reply(data);
-            })
+                .then((data) => {
+                    reply(data);
+                })
         },
         config: {
             validate: {

@@ -7,7 +7,7 @@ import connection = require('../connection/connection.service')
 export interface IProductsService {
     // GET
     getProductsList(page): Q.IPromise<{}>;
-    getProductById(productId, page): Q.IPromise<{}>;
+    getProductById(productId): Q.IPromise<{}>;
     getProductsByAuthor(authorId, page): Q.IPromise<{}>;
     getProductsByCategory(categoryId, page): Q.IPromise<{}>;
     getProductsByTag(tagId, page): Q.IPromise<{}>;
