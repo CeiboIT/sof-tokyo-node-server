@@ -26,7 +26,7 @@ export class ProductsService implements IProductsService {
 
     getProductsList(page): Q.IPromise<{}> {
         var _listPromise = Q.defer();
-        this.db.query('core/get_recent_posts&count=4&page=' + page)
+        this.db.query('core/?json=get_recent_posts&count=4&page=' + page)
             .then((results) => {
                 _listPromise.resolve(results);
             })

@@ -7,7 +7,6 @@ import connection = require('../connection/connection.service')
 export interface ICategoriesService {
     // GET
     getCategoriesList(): Q.IPromise<{}>;
-    getSubcategoriesList(): Q.IPromise<{}>;
 }
 
 
@@ -22,18 +21,6 @@ export class CategoriesService implements ICategoriesService {
                 _listPromise.resolve(results['categories']);
             })
 
-        return _listPromise.promise;
-    }
-
-    getSubcategoriesList(): Q.IPromise<{}> {
-        var _listPromise = Q.defer();
-        //this.db.connect((err, result) => {
-            this.db.query_db('SELECT * from wp2_posts')
-                .then((data) => {
-                    console.log(data);
-                    _listPromise.resolve(data);
-                })
-        //})
         return _listPromise.promise;
     }
 };

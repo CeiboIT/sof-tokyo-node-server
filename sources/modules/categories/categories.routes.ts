@@ -21,19 +21,6 @@ var categories = [
         config: {
             description: 'Retrieve Categories list'
         }
-    },
-    {
-        method: 'GET',
-        path: _prefix + '/test',
-        handler: function(request, reply) {
-            CategoriesService.getSubcategoriesList()
-                .then((data) => {
-                    reply(data);
-                })
-        },
-        config: {
-            description: 'TEST'
-        }
     }
 ]
 
