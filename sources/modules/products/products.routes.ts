@@ -26,7 +26,8 @@ var products = [
                     page: Joi.number().integer()
                 }
             },
-            description: 'Retrieves Products list'
+            description: 'Retrieves Products list',
+            tags: ['products']
         }
     },
     {
@@ -45,7 +46,8 @@ var products = [
                     productId: Joi.number().integer()
                 }
             },
-            description: 'Retrieve Product with matched ProductID'
+            description: 'Retrieve Product with matched ProductID',
+            tags: ['products']
         }
     },
     {
@@ -66,7 +68,8 @@ var products = [
                     page: Joi.number().integer()
                 }
             },
-            description: 'Retrieve Products from matched AuthorID'
+            description: 'Retrieve Products from matched AuthorID',
+            tags: ['products']
         }
     },
     {
@@ -87,7 +90,8 @@ var products = [
                     page: Joi.number().integer()
                 }
             },
-            description: 'Retrieve Products from matched CategoryID'
+            description: 'Retrieve Products from matched CategoryID',
+            tags: ['products']
         }
     },
     {
@@ -108,7 +112,8 @@ var products = [
                     page: Joi.number().integer()
                 }
             },
-            description: 'Retrieve Products from matched TagID'
+            description: 'Retrieve Products from matched TagID',
+            tags: ['products']
         }
     },
     {
@@ -139,7 +144,8 @@ var products = [
                     tags: Joi.array()
                 }
             },
-            description: 'Create a new Product'
+            description: 'Create a new Product',
+            tags: ['products']
         }
     },
     {
@@ -172,7 +178,8 @@ var products = [
                     tags: Joi.array()
                 }
             },
-            description: 'Update a Product'
+            description: 'Update a Product',
+            tags: ['products']
         }
     },
     {
@@ -193,7 +200,8 @@ var products = [
                     productId: Joi.number().integer()
                 }
             },
-            description: 'Delete a Product'
+            description: 'Delete a Product',
+            tags: ['products']
         }
     },
     {
@@ -216,7 +224,8 @@ var products = [
                     content: Joi.string()
                 }
             },
-            description: 'Create a new Comment'
+            description: 'Create a new Comment',
+            tags: ['products']
         }
     },
 ]

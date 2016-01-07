@@ -19,7 +19,8 @@ var categories = [
                 })
         },
         config: {
-            description: 'Retrieve Categories list'
+            description: 'Retrieve Categories list',
+            tags: ['categories']
         }
     }
 ]

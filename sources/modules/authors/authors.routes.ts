@@ -19,7 +19,8 @@ var authors = [
             })
         },
         config: {
-            description: 'Retrieve Authors list'
+            description: 'Retrieve Authors list',
+            tags: ['authors']
         }
     }
 ]

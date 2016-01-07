@@ -20,6 +20,7 @@ var tags = [
         },
         config: {
             description: 'Retrieve Tag list',
+            tags: ['tags']
         }
     }
 ]

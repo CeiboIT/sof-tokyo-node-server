@@ -32,7 +32,8 @@ var auth = [
             notes: [
                 "Controller values: 'user'/'posts'",
                 "Method values: 'register'/'create_post'/'update_post'/'delete_post'"
-            ]
+            ],
+            tags: ['auth']
         }
     },
     {
@@ -57,7 +58,8 @@ var auth = [
                     display_name: Joi.string()
                 }
             },
-            description: 'Create a new User (need to create a new Nonce first and pass it as param)'
+            description: 'Create a new User (need to create a new Nonce first and pass it as param)',
+            tags: ['auth']
         }
     },
     {
@@ -78,7 +80,8 @@ var auth = [
                     password: Joi.string()
                 }
             },
-            description: 'Login a User > Retrieve a Session Cookie'
+            description: 'Login a User > Retrieve a Session Cookie',
+            tags: ['auth']
         }
     },
     {
@@ -97,7 +100,8 @@ var auth = [
                     cookie: Joi.string()
                 }
             },
-            description: 'Check if a Session Cookie is still valid'
+            description: 'Check if a Session Cookie is still valid',
+            tags: ['auth']
         }
     },
     {
@@ -116,7 +120,8 @@ var auth = [
                     userId: Joi.string()
                 }
             },
-            description: 'Retrieve User info'
+            description: 'Retrieve User info',
+            tags: ['auth']
         }
     }, ,
     {
@@ -140,7 +145,8 @@ var auth = [
             description: "Retrieve User's Avatar",
             notes: [
                 "Type values: 'full'/'thumb'"
-            ]
+            ],
+            tags: ['auth']
         }
     }, ,
     {
@@ -159,7 +165,8 @@ var auth = [
                     username: Joi.string()
                 }
             },
-            description: "Reset User's Password and send an email with instructions"
+            description: "Reset User's Password and send an email with instructions",
+            tags: ['auth']
         }
     },
 ]
