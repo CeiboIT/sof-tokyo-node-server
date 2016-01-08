@@ -12,9 +12,26 @@ var _prefix = '/metadata';
 var metadata = [
     {
         method: 'GET',
-        path: _prefix + '/subcategories/list',
+        path: _prefix + '/subcategories0/list',
         handler: function(request, reply) {
-            MetadataService.getSubcategoriesList()
+            MetadataService.getSubcategories0List()
+                .then((data) => {
+                    reply(data);
+                })
+        },
+        config: {
+            description: 'Retrieve Subcategories list',
+            tags: ['metadata'],
+            notes: [
+                "Can be selected 1+ per Product"
+            ]
+        }
+    },
+    {
+        method: 'GET',
+        path: _prefix + '/subcategories1/list',
+        handler: function(request, reply) {
+            MetadataService.getSubcategories1List()
                 .then((data) => {
                     reply(data);
                 })
@@ -59,26 +76,6 @@ var metadata = [
             notes: [
                 "Can be selected 1+ per Product"
             ]
-        }
-    },
-    {
-        method: 'GET',
-        path: _prefix + '/product/{productId}',
-        handler: function(request, reply) {
-            MetadataService.getMetadataByProductId(
-                request.params.productId)
-                .then((data) => {
-                    reply(data);
-                })
-        },
-        config: {
-            validate: {
-                query: {
-                    productId: Joi.number().integer()
-                }
-            },
-            description: 'Retrieve Likes of matched ProductID',
-            tags: ['metadata']
         }
     }
 ]

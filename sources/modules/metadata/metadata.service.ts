@@ -6,18 +6,30 @@ import connection = require('../connection/connection.service')
 
 export interface IMetadataService {
     // GET
-    getSubcategoriesList(): Q.IPromise<{}>;
+    getSubcategories0List(): Q.IPromise<{}>;
+    getSubcategories1List(): Q.IPromise<{}>;
     getSchoolsList(): Q.IPromise<{}>;
     getStylesList(): Q.IPromise<{}>;
-
-    getMetadataByProductId(productId): Q.IPromise<{}>;
 }
 
 
 export class MetadataService implements IMetadataService {
     private db = connection.service;
 
-    getSubcategoriesList(): Q.IPromise<{}> {
+    getSubcategories0List(): Q.IPromise<{}> {
+        var _listPromise = Q.defer();
+        this.db.query_db("SELECT option_value FROM wp2_options WHERE option_name = 'sofbackend__sof_options'")
+            .then((data) => {
+                var toString = data[0].option_value;
+
+                console.log(toString.sli)
+
+                _listPromise.resolve(data);
+            })
+        return _listPromise.promise;
+    }
+
+    getSubcategories1List(): Q.IPromise<{}> {
         var _listPromise = Q.defer();
         this.db.query_db("SELECT DISTINCT meta_key, meta_value FROM wp2_postmeta WHERE meta_key = 'sofbackend__sof_work_meta__category_1'")
             .then((data) => {
@@ -42,14 +54,5 @@ export class MetadataService implements IMetadataService {
                 _listPromise.resolve(data);
             })
         return _listPromise.promise;
-    }
-
-    getMetadataByProductId(productId): Q.IPromise<{}> {
-        var _promise = Q.defer();
-        this.db.query_db("SELECT meta_key, meta_value FROM wp2_postmeta WHERE post_id=" + productId)
-            .then((data) => {
-                _promise.resolve(data);
-            })
-        return _promise.promise;
     }
 };
