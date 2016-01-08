@@ -270,6 +270,29 @@ var products = [
             tags: ['products']
         }
     },
+    ,
+    {
+        method: 'GET',
+        path: _prefix + '/search/{search}/{page}',
+        handler: function(request, reply) {
+            ProductsService.getProductsBySearch(
+                request.params.search,
+                request.params.page || 1)
+                .then((data: Array<any>) => {
+                    reply(data);
+                })
+        },
+        config: {
+            validate: {
+                query: {
+                    search: Joi.number().integer(),
+                    page: Joi.number().integer()
+                }
+            },
+            description: 'Retrieve Products from matched Search string',
+            tags: ['products']
+        }
+    },
 ]
 
 
