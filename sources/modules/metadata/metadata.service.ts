@@ -40,7 +40,7 @@ export class MetadataService implements IMetadataService {
 
     getSchoolsList(): Q.IPromise<{}> {
         var _listPromise = Q.defer();
-        this.db.query_db("SELECT DISTINCT meta_key, meta_value FROM wp2_postmeta WHERE meta_key = 'sofbackend__sof_work_meta__category_1'")
+        this.db.query_db("SELECT DISTINCT value FROM wp2_bp_xprofile_data WHERE field_id=4")
             .then((data) => {
                 _listPromise.resolve(data);
             })
