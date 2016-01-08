@@ -12,6 +12,7 @@ export interface IProductsService {
     getProductsByAuthor(authorId, page): Q.IPromise<{}>;
     getProductsByCategory(categoryId, page): Q.IPromise<{}>;
     getProductsByTag(tagId, page): Q.IPromise<{}>;
+    getProductsBySchool(schoolId, page): Q.IPromise<{}>;
     // POST
     createProduct(nonce, author, title, content, status, categories, tags): Q.IPromise<{}>;
     createComment(productId, cookie, content): Q.IPromise<{}>;
@@ -62,6 +63,48 @@ export class ProductsService implements IProductsService {
     getProductsByTag(tagId, page): Q.IPromise<{}> {
         return this.db.query('core/get_tag_posts/?count=4&id=' + tagId +
                              '&page=' + page)
+    }
+
+    getProductsBySchool(schoolId, page): Q.IPromise<{}> {
+        var _listPromise = Q.defer();
+        this.db.query('core/?json=get_posts&count=200')
+            .then((results) => {
+                var posts = results['posts'];
+
+                this.db.query_db("SELECT user_id FROM wp2_bp_xprofile_data WHERE value='" + schoolId + "' AND field_id=4")
+                    .then((data) => {
+                        var userIds = []
+                        for (var i in data) {
+                            userIds.push(data[i].user_id);
+                        }
+
+                        function inArray(myArray, myValue) {
+                            var inArray = false;
+                            myArray.map(function(key) {
+                                if (key === myValue) {
+                                    inArray = true;
+                                }
+                            });
+                            return inArray;
+                        };
+
+                        var schoolPosts = [];
+                        for (var j in posts) {
+                            //if (userIds.includes(posts[j].author.id)) {
+                            if (inArray(userIds, posts[j].author.id)) {
+                                schoolPosts.push(posts[j]);
+                            };
+                        };
+                        results['posts'] = schoolPosts;
+                        results['school'] = schoolId;
+                        results['count'] = schoolPosts.length;
+                        results['count_total'] = schoolPosts.length;
+
+                        _listPromise.resolve(results);
+                    })
+            })
+
+        return _listPromise.promise;
     }
 
     createProduct(nonce, author, title, content, status, categories, tags): Q.IPromise<{}> {

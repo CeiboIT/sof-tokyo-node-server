@@ -121,9 +121,31 @@ var products = [
             ProductsService.getProductsByTag(
                 request.params.tagId,
                 request.params.page || 1)
-            .then((data: Array<any>) => {
-                reply(data);
-            })
+                .then((data: Array<any>) => {
+                    reply(data);
+                })
+        },
+        config: {
+            validate: {
+                query: {
+                    tagId: Joi.number().integer(),
+                    page: Joi.number().integer()
+                }
+            },
+            description: 'Retrieve Products from matched TagID',
+            tags: ['products']
+        }
+    },
+    {
+        method: 'GET',
+        path: _prefix + '/byschool/{schoolId}/{page}',
+        handler: function(request, reply) {
+            ProductsService.getProductsBySchool(
+                request.params.schoolId,
+                request.params.page || 1)
+                .then((data: Array<any>) => {
+                    reply(data);
+                })
         },
         config: {
             validate: {
