@@ -18,7 +18,7 @@ export class MetadataService implements IMetadataService {
 
     getSubcategories0List(): Q.IPromise<{}> {
         var _listPromise = Q.defer();
-        this.db.query_db("SELECT DISTINCT meta_key, meta_value FROM wp2_postmeta WHERE meta_key = 'sofbackend__sof_work_meta__category_0'")
+        this.db.query_db("SELECT DISTINCT meta_value AS value FROM wp2_postmeta WHERE meta_key = 'sofbackend__sof_work_meta__category_0'")
             .then((data) => {
                 _listPromise.resolve(data);
             })
@@ -27,7 +27,7 @@ export class MetadataService implements IMetadataService {
 
     getSubcategories1List(): Q.IPromise<{}> {
         var _listPromise = Q.defer();
-        this.db.query_db("SELECT DISTINCT meta_key, meta_value FROM wp2_postmeta WHERE meta_key = 'sofbackend__sof_work_meta__category_1'")
+        this.db.query_db("SELECT DISTINCT meta_value AS value FROM wp2_postmeta WHERE meta_key = 'sofbackend__sof_work_meta__category_1'")
             .then((data) => {
                 _listPromise.resolve(data);
             })
@@ -45,7 +45,7 @@ export class MetadataService implements IMetadataService {
 
     getStylesList(): Q.IPromise<{}> {
         var _listPromise = Q.defer();
-        this.db.query_db("SELECT DISTINCT meta_key, meta_value FROM wp2_postmeta WHERE meta_key = 'sofbackend__sof_work_meta__style'")
+        this.db.query_db("SELECT DISTINCT meta_value AS value FROM wp2_postmeta WHERE meta_key = 'sofbackend__sof_work_meta__style'")
             .then((data) => {
                 _listPromise.resolve(data);
             })

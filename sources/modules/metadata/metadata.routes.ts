@@ -20,7 +20,7 @@ var metadata = [
                 })
         },
         config: {
-            description: 'Retrieve Subcategories list',
+            description: 'Retrieve Subcategories0 list',
             tags: ['metadata'],
             notes: [
                 "Can be selected 1+ per Product"
@@ -37,7 +37,7 @@ var metadata = [
                 })
         },
         config: {
-            description: 'Retrieve Subcategories list',
+            description: 'Retrieve Subcategories1 list',
             tags: ['metadata'],
             notes: [
                 "Can be selected 1+ per Product"
@@ -57,7 +57,7 @@ var metadata = [
             description: 'Retrieve Schools list',
             tags: ['metadata'],
             notes: [
-                "Can be selected 1 per Product"
+                "This is defined to the Post Member"
             ]
         }
     },
