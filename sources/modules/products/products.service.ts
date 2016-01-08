@@ -13,6 +13,9 @@ export interface IProductsService {
     getProductsByCategory(categoryId, page): Q.IPromise<{}>;
     getProductsByTag(tagId, page): Q.IPromise<{}>;
     getProductsBySchool(schoolId, page): Q.IPromise<{}>;
+    getProductsBySubcategory0(subcategory0Id, page): Q.IPromise<{}>;
+    getProductsBySubcategory1(subcategory1Id, page): Q.IPromise<{}>;
+    getProductsByStyle(styleId, page): Q.IPromise<{}>;
     // POST
     createProduct(nonce, author, title, content, status, categories, tags): Q.IPromise<{}>;
     createComment(productId, cookie, content): Q.IPromise<{}>;
@@ -105,6 +108,18 @@ export class ProductsService implements IProductsService {
             })
 
         return _listPromise.promise;
+    }
+
+    getProductsBySubcategory0(subcategory0Id, page): Q.IPromise<{}>  {
+        return this.db.query('core/get_tag_posts')
+    }
+
+    getProductsBySubcategory1(subcategory1Id, page): Q.IPromise<{}>  {
+        return this.db.query('core/get_tag_posts')
+    }
+
+    getProductsByStyle(styleId, page): Q.IPromise<{}>  {
+        return this.db.query('core/get_tag_posts')
     }
 
     createProduct(nonce, author, title, content, status, categories, tags): Q.IPromise<{}> {
