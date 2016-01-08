@@ -10,6 +10,11 @@ export interface IMetadataService {
     getSubcategories1List(): Q.IPromise<{}>;
     getSchoolsList(): Q.IPromise<{}>;
     getStylesList(): Q.IPromise<{}>;
+    getSchoolByMemberId(memberId): Q.IPromise<{}>;
+    getProductLikes(productId): Q.IPromise<{}>;
+
+    // POST
+    createProductLike(productId): Q.IPromise<{}>;
 }
 
 
@@ -60,4 +65,23 @@ export class MetadataService implements IMetadataService {
             })
         return _promise.promise;
     }
+
+    getProductLikes(productId): Q.IPromise<{}> {
+        var _promise = Q.defer();
+        this.db.query_db("SELECT meta_value AS value FROM wp2_postmeta WHERE meta_key='_item_likes' AND post_id=" + productId)
+            .then((data) => {
+                _promise.resolve(data[0]);
+            })
+        return _promise.promise;
+    }
+
+    createProductLike(productId): Q.IPromise<{}> {
+        var _promise = Q.defer();
+        this.db.query_db("UPDATE wp2_postmeta SET meta_value = meta_value + 1 WHERE meta_key='_item_likes' AND post_id=" + productId)
+            .then((data) => {
+                _promise.resolve(data);
+            })
+        return _promise.promise;
+    }
+
 };

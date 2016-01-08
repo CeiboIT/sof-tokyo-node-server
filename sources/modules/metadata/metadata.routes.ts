@@ -92,7 +92,38 @@ var metadata = [
             description: 'Retrieve School from matched MemberID',
             tags: ['metadata']
         }
+    },
+    {
+        method: 'GET',
+        path: _prefix + '/likes/product/{productId}',
+        handler: function(request, reply) {
+            MetadataService.getProductLikes(
+                request.params.productId)
+                .then((data) => {
+                    reply(data);
+                })
+        },
+        config: {
+            description: 'Retrieve Likes from matched ProductID',
+            tags: ['metadata']
+        }
+    },
+    {
+        method: 'POST',
+        path: _prefix + '/likes/product/{productId}',
+        handler: function(request, reply) {
+            MetadataService.createProductLike(
+                request.params.productId)
+                .then((data) => {
+                    reply(data);
+                })
+        },
+        config: {
+            description: 'Create a Like to matched ProductID',
+            tags: ['metadata']
+        }
     }
+
 ]
 
 
