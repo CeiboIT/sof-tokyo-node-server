@@ -29,26 +29,6 @@ var metadata = [
     },
     {
         method: 'GET',
-        path: _prefix + '/subcategories/product/{productId}',
-        handler: function(request, reply) {
-            MetadataService.getSubcategoriesByProductId(
-                request.params.productId)
-                .then((data) => {
-                    reply(data);
-                })
-        },
-        config: {
-            validate: {
-                query: {
-                    productId: Joi.number().integer()
-                }
-            },
-            description: 'Retrieve Subcategories of matched ProductID',
-            tags: ['metadata']
-        }
-    },
-    {
-        method: 'GET',
         path: _prefix + '/schools/list',
         handler: function(request, reply) {
             MetadataService.getSchoolsList()
@@ -62,26 +42,6 @@ var metadata = [
             notes: [
                 "Can be selected 1 per Product"
             ]
-        }
-    },
-    {
-        method: 'GET',
-        path: _prefix + '/schools/product/{productId}',
-        handler: function(request, reply) {
-            MetadataService.getSchoolsByProductId(
-                request.params.productId)
-                .then((data) => {
-                    reply(data);
-                })
-        },
-        config: {
-            validate: {
-                query: {
-                    productId: Joi.number().integer()
-                }
-            },
-            description: 'Retrieve Schools of matched ProductID',
-            tags: ['metadata']
         }
     },
     {
@@ -103,29 +63,9 @@ var metadata = [
     },
     {
         method: 'GET',
-        path: _prefix + '/styles/product/{productId}',
+        path: _prefix + '/product/{productId}',
         handler: function(request, reply) {
-            MetadataService.getStylesByProductId(
-                request.params.productId)
-                .then((data) => {
-                    reply(data);
-                })
-        },
-        config: {
-            validate: {
-                query: {
-                    productId: Joi.number().integer()
-                }
-            },
-            description: 'Retrieve Styles of matched ProductID',
-            tags: ['metadata']
-        }
-    },
-    {
-        method: 'GET',
-        path: _prefix + '/likes/product/{productId}',
-        handler: function(request, reply) {
-            MetadataService.getLikesByProductId(
+            MetadataService.getMetadataByProductId(
                 request.params.productId)
                 .then((data) => {
                     reply(data);
