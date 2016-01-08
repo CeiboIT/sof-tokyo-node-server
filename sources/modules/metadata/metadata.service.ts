@@ -55,4 +55,13 @@ export class MetadataService implements IMetadataService {
             })
         return _listPromise.promise;
     }
+
+    getSchoolByMemberId(memberId): Q.IPromise<{}> {
+        var _promise = Q.defer();
+        this.db.query_db("SELECT value FROM wp2_bp_xprofile_data WHERE field_id=4 AND user_id=" + memberId)
+            .then((data) => {
+                _promise.resolve(data[0]);
+            })
+        return _promise.promise;
+    }
 };

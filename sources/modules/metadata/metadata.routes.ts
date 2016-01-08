@@ -77,6 +77,21 @@ var metadata = [
                 "Can be selected 1+ per Product"
             ]
         }
+    },
+    {
+        method: 'GET',
+        path: _prefix + '/schools/member/{memberId}',
+        handler: function(request, reply) {
+            MetadataService.getSchoolByMemberId(
+                request.params.memberId)
+                .then((data) => {
+                    reply(data);
+                })
+        },
+        config: {
+            description: 'Retrieve School from matched MemberID',
+            tags: ['metadata']
+        }
     }
 ]
 
