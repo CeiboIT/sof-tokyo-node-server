@@ -18,12 +18,8 @@ export class MetadataService implements IMetadataService {
 
     getSubcategories0List(): Q.IPromise<{}> {
         var _listPromise = Q.defer();
-        this.db.query_db("SELECT option_value FROM wp2_options WHERE option_name = 'sofbackend__sof_options'")
+        this.db.query_db("SELECT DISTINCT meta_key, meta_value FROM wp2_postmeta WHERE meta_key = 'sofbackend__sof_work_meta__category_0'")
             .then((data) => {
-                var toString = data[0].option_value;
-
-                console.log(toString.sli)
-
                 _listPromise.resolve(data);
             })
         return _listPromise.promise;
