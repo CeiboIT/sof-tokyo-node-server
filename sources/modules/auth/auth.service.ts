@@ -13,7 +13,6 @@ export interface IAuthService {
     register(username, email, nonce, display_name): Q.IPromise<{}>;
     login(username, password): Q.IPromise<{}>;
     fbLogin(token): Q.IPromise<{}>;
-//    fbLogin(access_token): Q.IPromise<{}>;
     isAuthorized(cookie): Q.IPromise<{}>;
     resetPassword(username): Q.IPromise<{}>;
 }
