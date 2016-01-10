@@ -69,9 +69,9 @@ var auth = [
             AuthService.login(
                 request.payload.username,
                 request.payload.password)
-            .then((data) => {
-                reply(data);
-            })
+                .then((data) => {
+                    reply(data);
+                })
         },
         config: {
             validate: {
@@ -81,6 +81,26 @@ var auth = [
                 }
             },
             description: 'Login a User > Retrieve a Session Cookie',
+            tags: ['auth']
+        }
+    },
+    {
+        method: 'POST',
+        path: _prefix + '/facebook/login',
+        handler: function(request, reply) {
+            AuthService.fbLogin(
+                request.payload.token)
+                .then((data) => {
+                    reply(data);
+                })
+        },
+        config: {
+            validate: {
+                query: {
+                    token: Joi.string()
+                }
+            },
+            description: 'Login using Facebook',
             tags: ['auth']
         }
     },

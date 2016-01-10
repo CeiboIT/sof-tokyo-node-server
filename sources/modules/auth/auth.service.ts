@@ -2,7 +2,7 @@
 /// <reference path="../connection/connection.service.ts" />
 
 import Q = require("q");
-import connection = require('../connection/connection.service')
+import connection = require('../connection/connection.service');
 
 export interface IAuthService {
     // GET
@@ -12,11 +12,11 @@ export interface IAuthService {
     // POST
     register(username, email, nonce, display_name): Q.IPromise<{}>;
     login(username, password): Q.IPromise<{}>;
+    fbLogin(token): Q.IPromise<{}>;
 //    fbLogin(access_token): Q.IPromise<{}>;
     isAuthorized(cookie): Q.IPromise<{}>;
     resetPassword(username): Q.IPromise<{}>;
 }
-
 
 export class AuthService implements IAuthService {
     private db = connection.service;
@@ -38,11 +38,9 @@ export class AuthService implements IAuthService {
                              '&password=' + password)
     }
 
-/*
-    fbLogin(access_token): Q.IPromise<{}> {
-        return this.db.query('user/fb_connect/?access_token=' + access_token)
+    fbLogin(token): Q.IPromise<{}> {
+        return this.db.query('user/fb_connect/?access_token=' + token)
     }
-*/
 
     isAuthorized(cookie): Q.IPromise<{}> {
         return this.db.query('user/validate_auth_cookie/?cookie=' + cookie)
