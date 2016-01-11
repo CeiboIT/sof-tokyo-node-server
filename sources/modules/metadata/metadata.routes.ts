@@ -110,10 +110,10 @@ var metadata = [
     },
     {
         method: 'POST',
-        path: _prefix + '/likes/product/{productId}',
+        path: _prefix + '/likes/product',
         handler: function(request, reply) {
             MetadataService.createProductLike(
-                request.params.productId)
+                request.payload.productId)
                 .then((data) => {
                     reply(data);
                 })
