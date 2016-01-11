@@ -8,7 +8,7 @@ export interface IProductsService {
     // GET
     getProductsNew(page): Q.IPromise<{}>;
     getProductsList(page): Q.IPromise<{}>;
-    getProductById(productId): Q.IPromise<{}>;
+    getProductById(productId, userId): Q.IPromise<{}>;
     getProductsByAuthor(authorId, page): Q.IPromise<{}>;
     getProductsByCategory(categoryId, page): Q.IPromise<{}>;
     getProductsByTag(tagId, page): Q.IPromise<{}>;
@@ -18,7 +18,7 @@ export interface IProductsService {
     getProductsByStyle(styleId, page): Q.IPromise<{}>;
     getProductsBySearch(search, page): Q.IPromise<{}>;
     // POST
-    createProduct(nonce, author, title, content, status, categories, tags): Q.IPromise<{}>;
+    createProduct(nonce, author, title, content, status, school, subcategory0, subcategory1, styles): Q.IPromise<{}>;
     createComment(productId, cookie, content): Q.IPromise<{}>;
     // PUT
     updateProduct(nonce, productId, author, title, content, status, categories, tags): Q.IPromise<{}>;
@@ -59,8 +59,17 @@ export class ProductsService implements IProductsService {
         return _listPromise.promise;
     }
 
-    getProductById(productId): Q.IPromise<{}> {
+    getProductById(productId, userId): Q.IPromise<{}> {
         return this.db.query('core/get_post/?id=' + productId)
+            .then((result) => {
+                // save visit if is logued in
+                if (userId !== 'null') {
+                    return this.db.query_db("INSERT INTO wp2_postmeta (meta_id, post_id, meta_key, meta_value) VALUES (NULL," + productId + ",'visit','" + userId + "')")
+                        .then(() => {
+                            return result;
+                        })
+                };
+            })
     }
 
     getProductsByAuthor(authorId, page): Q.IPromise<{}> {
@@ -180,14 +189,19 @@ export class ProductsService implements IProductsService {
         return _listPromise.promise;
     }
 
-    createProduct(nonce, author, title, content, status, categories, tags): Q.IPromise<{}> {
+    createProduct(nonce, author, title, content, status, school, subcategory0, subcategory1, styles): Q.IPromise<{}> {
         return this.db.query('posts/create_post/?nonce=' + nonce +
                              '&author=' + author +
                              '&title=' + title +
                              '&content=' + content +
-                             '&status=' + status +
-                             '&categories=' + categories +
-                             '&tags=' + tags)
+                             '&status=' + status)
+            .then((post) => {
+                console.log(post);
+
+                // FALTA GUARDAR SCHOOL, SUBCATEGORY, STYLES
+
+                return post;
+            })
     }
 
     updateProduct(nonce, productId, author, title, content, status, categories, tags): Q.IPromise<{}> {

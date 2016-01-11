@@ -85,7 +85,7 @@ var metadata = [
             MetadataService.getSchoolByMemberId(
                 request.params.memberId)
                 .then((data) => {
-                    reply(data);
+                    reply({ school: data[0] });
                 })
         },
         config: {
@@ -100,7 +100,7 @@ var metadata = [
             MetadataService.getProductLikes(
                 request.params.productId)
                 .then((data) => {
-                    reply(data);
+                    reply({ likes: data[0] });
                 })
         },
         config: {
@@ -122,7 +122,37 @@ var metadata = [
             description: 'Create a Like to matched ProductID',
             tags: ['metadata']
         }
-    }
+    },
+    {
+        method: 'GET',
+        path: _prefix + '/unique_visits/product/{productId}',
+        handler: function(request, reply) {
+            MetadataService.getProductUniqueVisits(
+                request.params.productId)
+                .then((data) => {
+                    reply({ unique_visits: data[0] });
+                })
+        },
+        config: {
+            description: 'Retrieve Unique Visits from matched ProductID',
+            tags: ['metadata']
+        }
+    }, ,
+    {
+        method: 'GET',
+        path: _prefix + '/total_visits/product/{productId}',
+        handler: function(request, reply) {
+            MetadataService.getProductTotalVisits(
+                request.params.productId)
+                .then((data) => {
+                    reply({ total_visits: data[0] });
+                })
+        },
+        config: {
+            description: 'Retrieve Total Visits from matched ProductID',
+            tags: ['metadata']
+        }
+    },
 
 ]
 
