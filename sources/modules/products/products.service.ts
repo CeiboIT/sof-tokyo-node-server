@@ -218,5 +218,4 @@ export class ProductsService implements IProductsService {
             '&page=' + page)
     }
 
-
 };

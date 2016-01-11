@@ -150,7 +150,7 @@ var products = [
         config: {
             validate: {
                 query: {
-                    tagId: Joi.number().integer(),
+                    schoolId: Joi.number().integer(),
                     page: Joi.number().integer()
                 }
             },
@@ -172,7 +172,7 @@ var products = [
         config: {
             validate: {
                 query: {
-                    tagId: Joi.number().integer(),
+                    subcategory0Id: Joi.number().integer(),
                     page: Joi.number().integer()
                 }
             },
@@ -194,7 +194,7 @@ var products = [
         config: {
             validate: {
                 query: {
-                    tagId: Joi.number().integer(),
+                    subcategory1Id: Joi.number().integer(),
                     page: Joi.number().integer()
                 }
             },
@@ -216,7 +216,7 @@ var products = [
         config: {
             validate: {
                 query: {
-                    tagId: Joi.number().integer(),
+                    styleId: Joi.number().integer(),
                     page: Joi.number().integer()
                 }
             },
