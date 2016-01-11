@@ -132,7 +132,6 @@ export class ProductsService implements IProductsService {
         return _listPromise.promise;
     }
 
-    // PENDING
     getProductsBySubcategory1(subcategory1Id, page): Q.IPromise<{}>  {
         var _listPromise = Q.defer();
         this.db.query('core/?json=get_posts&count=200')
@@ -157,7 +156,6 @@ export class ProductsService implements IProductsService {
         return _listPromise.promise;
     }
 
-    // PENDING
     getProductsByStyle(styleId, page): Q.IPromise<{}>  {
         var _listPromise = Q.defer();
         this.db.query('core/?json=get_posts&count=200')
