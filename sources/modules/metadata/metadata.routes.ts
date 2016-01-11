@@ -119,6 +119,11 @@ var metadata = [
                 })
         },
         config: {
+            validate: {
+                query: {
+                    productId: Joi.number().integer()
+                }
+            },
             description: 'Create a Like to matched ProductID',
             tags: ['metadata']
         }
@@ -137,7 +142,7 @@ var metadata = [
             description: 'Retrieve Unique Visits from matched ProductID',
             tags: ['metadata']
         }
-    }, ,
+    },
     {
         method: 'GET',
         path: _prefix + '/total_visits/product/{productId}',
@@ -150,6 +155,40 @@ var metadata = [
         },
         config: {
             description: 'Retrieve Total Visits from matched ProductID',
+            tags: ['metadata']
+        }
+    },
+    {
+        method: 'GET',
+        path: _prefix + '/banners',
+        handler: function(request, reply) {
+            MetadataService.getBanners()
+                .then((data) => {
+                    reply({ banners: data });
+                })
+        },
+        config: {
+            description: 'Retrieve Banners',
+            tags: ['metadata']
+        }
+    },
+    {
+        method: 'POST',
+        path: _prefix + '/banners',
+        handler: function(request, reply) {
+            MetadataService.createBanner(
+                request.payload.banner)
+                .then((data) => {
+                    reply(data);
+                })
+        },
+        config: {
+            validate: {
+                query: {
+                    banner: Joi.array()
+                }
+            },
+            description: 'Create a Banner object',
             tags: ['metadata']
         }
     },
