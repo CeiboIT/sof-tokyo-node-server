@@ -16,7 +16,7 @@ var metadata = [
         handler: function(request, reply) {
             MetadataService.getSubcategories0List()
                 .then((data) => {
-                    reply(data);
+                    reply( { subcategories0: data });
                 })
         },
         config: {
@@ -33,7 +33,7 @@ var metadata = [
         handler: function(request, reply) {
             MetadataService.getSubcategories1List()
                 .then((data) => {
-                    reply(data);
+                    reply({ subcategories1: data });
                 })
         },
         config: {
@@ -50,7 +50,7 @@ var metadata = [
         handler: function(request, reply) {
             MetadataService.getSchoolsList()
                 .then((data) => {
-                    reply(data);
+                    reply( { schools: data });
                 })
         },
         config: {
@@ -67,7 +67,7 @@ var metadata = [
         handler: function(request, reply) {
             MetadataService.getStylesList()
                 .then((data) => {
-                    reply(data);
+                    reply( { styles: data });
                 })
         },
         config: {

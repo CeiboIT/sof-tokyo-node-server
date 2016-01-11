@@ -26,6 +26,15 @@ export interface IProductsService {
     deleteProduct(nonce, productId): Q.IPromise<{}>;
 }
 
+var inArray = function(myArray, myValue) {
+    var inArray = false;
+    myArray.map(function(key) {
+        if (key === myValue) {
+            inArray = true;
+        }
+    });
+    return inArray;
+};
 
 export class ProductsService implements IProductsService {
     private db = connection.service;
@@ -82,19 +91,8 @@ export class ProductsService implements IProductsService {
                             userIds.push(data[i].user_id);
                         }
 
-                        function inArray(myArray, myValue) {
-                            var inArray = false;
-                            myArray.map(function(key) {
-                                if (key === myValue) {
-                                    inArray = true;
-                                }
-                            });
-                            return inArray;
-                        };
-
                         var schoolPosts = [];
                         for (var j in posts) {
-                            //if (userIds.includes(posts[j].author.id)) {
                             if (inArray(userIds, posts[j].author.id)) {
                                 schoolPosts.push(posts[j]);
                             };
@@ -107,23 +105,81 @@ export class ProductsService implements IProductsService {
                         _listPromise.resolve(results);
                     })
             })
+        return _listPromise.promise;
+    }
 
+    getProductsBySubcategory0(subcategory0Id, page): Q.IPromise<{}>  {
+        var _listPromise = Q.defer();
+        this.db.query('core/?json=get_posts&count=200')
+            .then((results) => {
+                var posts = results['posts'];
+
+                var subcategory0Posts = [];
+                for (var i in posts) {
+
+                    if (posts[i]['custom_fields']['sofbackend__sof_work_meta__category_0'] == subcategory0Id) {
+                        subcategory0Posts.push(posts[i]);
+                    };
+                };
+
+                results['posts'] = subcategory0Posts;
+                results['subcategory0'] = subcategory0Id;
+                results['count'] = subcategory0Posts.length;
+                results['count_total'] = subcategory0Posts.length;
+
+                _listPromise.resolve(results);
+            })
         return _listPromise.promise;
     }
 
     // PENDING
-    getProductsBySubcategory0(subcategory0Id, page): Q.IPromise<{}>  {
-        return this.db.query('core/get_tag_posts')
-    }
-
-    // PENDING
     getProductsBySubcategory1(subcategory1Id, page): Q.IPromise<{}>  {
-        return this.db.query('core/get_tag_posts')
+        var _listPromise = Q.defer();
+        this.db.query('core/?json=get_posts&count=200')
+            .then((results) => {
+                var posts = results['posts'];
+
+                var subcategory1Posts = [];
+                for (var i in posts) {
+
+                    if (posts[i]['custom_fields']['sofbackend__sof_work_meta__category_0'] == subcategory1Id) {
+                        subcategory1Posts.push(posts[i]);
+                    };
+                };
+
+                results['posts'] = subcategory1Posts;
+                results['subcategory0'] = subcategory1Id;
+                results['count'] = subcategory1Posts.length;
+                results['count_total'] = subcategory1Posts.length;
+
+                _listPromise.resolve(results);
+            })
+        return _listPromise.promise;
     }
 
     // PENDING
     getProductsByStyle(styleId, page): Q.IPromise<{}>  {
-        return this.db.query('core/get_tag_posts')
+        var _listPromise = Q.defer();
+        this.db.query('core/?json=get_posts&count=200')
+            .then((results) => {
+                var posts = results['posts'];
+
+                var stylePosts = [];
+                for (var i in posts) {
+
+                    if (posts[i]['custom_fields']['sofbackend__sof_work_meta__category_0'] == styleId) {
+                        stylePosts.push(posts[i]);
+                    };
+                };
+
+                results['posts'] = stylePosts;
+                results['subcategory0'] = styleId;
+                results['count'] = stylePosts.length;
+                results['count_total'] = stylePosts.length;
+
+                _listPromise.resolve(results);
+            })
+        return _listPromise.promise;
     }
 
     createProduct(nonce, author, title, content, status, categories, tags): Q.IPromise<{}> {

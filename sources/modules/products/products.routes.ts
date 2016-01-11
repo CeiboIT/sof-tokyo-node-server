@@ -154,7 +154,73 @@ var products = [
                     page: Joi.number().integer()
                 }
             },
-            description: 'Retrieve Products from matched TagID',
+            description: 'Retrieve Products from matched SchoolID',
+            tags: ['products']
+        }
+    },
+    {
+        method: 'GET',
+        path: _prefix + '/bysubcategory0/{subcategory0Id}/{page}',
+        handler: function(request, reply) {
+            ProductsService.getProductsBySubcategory0(
+                request.params.subcategory0Id,
+                request.params.page || 1)
+                .then((data: Array<any>) => {
+                    reply(data);
+                })
+        },
+        config: {
+            validate: {
+                query: {
+                    tagId: Joi.number().integer(),
+                    page: Joi.number().integer()
+                }
+            },
+            description: 'Retrieve Products from matched Subcategory0ID',
+            tags: ['products']
+        }
+    },
+    {
+        method: 'GET',
+        path: _prefix + '/bysubcategory1/{subcategory1Id}/{page}',
+        handler: function(request, reply) {
+            ProductsService.getProductsBySubcategory1(
+                request.params.subcategory1Id,
+                request.params.page || 1)
+                .then((data: Array<any>) => {
+                    reply(data);
+                })
+        },
+        config: {
+            validate: {
+                query: {
+                    tagId: Joi.number().integer(),
+                    page: Joi.number().integer()
+                }
+            },
+            description: 'Retrieve Products from matched Subcategory1ID',
+            tags: ['products']
+        }
+    },
+    {
+        method: 'GET',
+        path: _prefix + '/bystyle/{styleId}/{page}',
+        handler: function(request, reply) {
+            ProductsService.getProductsByStyle(
+                request.params.styleId,
+                request.params.page || 1)
+                .then((data: Array<any>) => {
+                    reply(data);
+                })
+        },
+        config: {
+            validate: {
+                query: {
+                    tagId: Joi.number().integer(),
+                    page: Joi.number().integer()
+                }
+            },
+            description: 'Retrieve Products from matched StyleID',
             tags: ['products']
         }
     },
