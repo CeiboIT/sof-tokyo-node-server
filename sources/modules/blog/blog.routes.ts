@@ -9,26 +9,40 @@ import Joi = require('joi');
 
 var BlogService = new service.BlogService();
 var _prefix = '/blog';
-var metadata = [
+var blog = [
     {
         method: 'GET',
-            path: _prefix + '/banners',
-                handler: function(request, reply) {
-                    MetadataService.getBanners()
-                        .then((data) => {
-                            reply({ banners: data });
-                        })
-                },
+        path: _prefix + '/banners',
+        handler: function(request, reply) {
+            BlogService.getBanners()
+                .then((data) => {
+                    reply({ banners: data });
+                })
+        },
         config: {
-            description: 'Retrieve Banners',
-                tags: ['metadata']
+            description: 'Retrieve all Banners',
+            tags: ['blog']
+        }
+    },
+    {
+        method: 'GET',
+        path: _prefix + '/banners/banner/{idBanner}',
+        handler: function(request, reply) {
+            BlogService.getBanner()
+                .then((data) => {
+                    reply({ banner: data });
+                })
+        },
+        config: {
+            description: 'Retrieve Banner with matched BannerID',
+            tags: ['blog']
         }
     },
     {
         method: 'POST',
             path: _prefix + '/banners',
                 handler: function(request, reply) {
-                    MetadataService.createBanner(
+                    BlogService.createBanner(
                         request.payload.banner)
                         .then((data) => {
                             reply(data);
@@ -41,10 +55,10 @@ var metadata = [
                 }
             },
             description: 'Create a Banner object',
-                tags: ['metadata']
+                tags: ['blog']
         }
     }
 ]
 
 
-module.exports = metadata;
+module.exports = blog;
