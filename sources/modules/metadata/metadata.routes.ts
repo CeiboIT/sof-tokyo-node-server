@@ -157,42 +157,7 @@ var metadata = [
             description: 'Retrieve Total Visits from matched ProductID',
             tags: ['metadata']
         }
-    },
-    {
-        method: 'GET',
-        path: _prefix + '/banners',
-        handler: function(request, reply) {
-            MetadataService.getBanners()
-                .then((data) => {
-                    reply({ banners: data });
-                })
-        },
-        config: {
-            description: 'Retrieve Banners',
-            tags: ['metadata']
-        }
-    },
-    {
-        method: 'POST',
-        path: _prefix + '/banners',
-        handler: function(request, reply) {
-            MetadataService.createBanner(
-                request.payload.banner)
-                .then((data) => {
-                    reply(data);
-                })
-        },
-        config: {
-            validate: {
-                query: {
-                    banner: Joi.array()
-                }
-            },
-            description: 'Create a Banner object',
-            tags: ['metadata']
-        }
-    },
-
+    }
 ]
 
 
