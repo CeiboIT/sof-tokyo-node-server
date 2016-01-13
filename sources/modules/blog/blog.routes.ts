@@ -26,14 +26,20 @@ var blog = [
     },
     {
         method: 'GET',
-        path: _prefix + '/banners/banner/{idBanner}',
+        path: _prefix + '/banners/banner/{bannerId}',
         handler: function(request, reply) {
-            BlogService.getBanner()
+            BlogService.getBanner(
+                request.params.bannerId)
                 .then((data) => {
                     reply({ banner: data });
                 })
         },
         config: {
+            validate: {
+                query: {
+                    bannerId: Joi.number().integer()
+                }
+            },
             description: 'Retrieve Banner with matched BannerID',
             tags: ['blog']
         }

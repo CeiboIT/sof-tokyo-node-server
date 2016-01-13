@@ -19,16 +19,21 @@ export class BlogService implements IBlogService {
 
     getBanners(): Q.IPromise<{}> {
         var _promise = Q.defer();
-        this.db.query_db("SELECT meta_value AS value FROM wp2_postmeta WHERE meta_key = 'banner'")
+
+        this.db.query_db("SELECT * FROM `wp2_posts` " +
+                         "INNER JOIN `wp2_users` ON `wp2_posts`.`post_author` = `wp2_users`.`ID` " +
+                         "WHERE `wp2_posts`.`post_type` = 'info' AND `wp2_posts`.`post_status` = 'publish'")
             .then((data) => {
                 _promise.resolve(data);
             })
         return _promise.promise;
     }
 
-    getBanner(): Q.IPromise<{}> {
+    getBanner(bannerId): Q.IPromise<{}> {
         var _promise = Q.defer();
-        this.db.query_db("SELECT meta_value AS value FROM wp2_postmeta WHERE meta_key = 'banner'")
+        this.db.query_db("SELECT * FROM `wp2_posts` " +
+                         "INNER JOIN `wp2_users` ON `wp2_posts`.`post_author` = `wp2_users`.`ID` " +
+                         "WHERE `wp2_posts`.`post_type` = 'info' AND `wp2_posts`.`post_status` = 'publish' AND `wp2_posts`.`ID`=" + bannerId)
             .then((data) => {
                 _promise.resolve(data);
             })
