@@ -20,7 +20,7 @@ var blog = [
                 })
         },
         config: {
-            description: 'Retrieve all Banners',
+            description: 'Retrieve all Blog Banners',
             tags: ['blog']
         }
     },
@@ -40,7 +40,7 @@ var blog = [
                     bannerId: Joi.number().integer()
                 }
             },
-            description: 'Retrieve Banner with matched BannerID',
+            description: 'Retrieve Blog Banner with matched BannerID',
             tags: ['blog']
         }
     },
@@ -60,10 +60,13 @@ var blog = [
         config: {
             validate: {
                 query: {
-                    banner: Joi.array()
+                    post_author: Joi.string(),
+                    post_content: Joi.string(),
+                    post_title: Joi.string(),
+                    post_name: Joi.string()
                 }
             },
-            description: 'Create a Banner object',
+            description: 'Create a new Blog Banner',
                 tags: ['blog']
         }
     }
