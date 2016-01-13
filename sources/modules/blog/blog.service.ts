@@ -10,7 +10,7 @@ export interface IBlogService {
     getBanner(bannerId): Q.IPromise<{}>;
 
     // POST
-    createBanner(banner): Q.IPromise<{}>;
+    createBanner(post_author, post_content, post_title, post_name): Q.IPromise<{}>;
 }
 
 
@@ -40,9 +40,12 @@ export class BlogService implements IBlogService {
         return _promise.promise;
     }
 
-    createBanner(banner): Q.IPromise<{}> {
+    createBanner(post_author, post_content, post_title, post_name): Q.IPromise<{}> {
         var _promise = Q.defer();
-        this.db.query_db("INSERT INTO wp2_postmeta (meta_id, post_id, meta_key, meta_value) VALUES (NULL, 0, 'banner', '" + JSON.stringify(banner) + "')")
+        var query = "INSERT INTO wp2_posts (ID, post_author, post_content, post_title, post_status, comment_status, ping_status, post_name, post_type)" +
+                    " VALUES (NULL, '" + post_author + "', '" + post_content + "', '" + post_title + "', 'publish', 'open', 'open', '" + post_name + "', 'info')";
+
+        this.db.query_db(query)
             .then((data) => {
                 _promise.resolve(data);
             })

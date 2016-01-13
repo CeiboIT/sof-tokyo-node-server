@@ -49,7 +49,10 @@ var blog = [
             path: _prefix + '/banners',
                 handler: function(request, reply) {
                     BlogService.createBanner(
-                        request.payload.banner)
+                        request.payload.post_author,
+                        request.payload.post_content,
+                        request.payload.post_title,
+                        request.payload.post_name)
                         .then((data) => {
                             reply(data);
                         })
