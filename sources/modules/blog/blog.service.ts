@@ -42,12 +42,19 @@ export class BlogService implements IBlogService {
 
     createBanner(post_author, post_content, post_title, post_name): Q.IPromise<{}> {
         var _promise = Q.defer();
-        var query = "INSERT INTO wp2_posts (ID, post_author, post_content, post_title, post_status, comment_status, ping_status, post_name, post_type)" +
-                    " VALUES (NULL, '" + post_author + "', '" + post_content + "', '" + post_title + "', 'publish', 'open', 'open', '" + post_name + "', 'info')";
+        var now = new Date();
+        var query = "INSERT INTO wp2_posts (ID, post_author, post_content, post_title, post_status, comment_status, ping_status, post_name, post_type, post_date)" +
+                    " VALUES (NULL, '" + post_author + "', '" + post_content + "', '" + post_title + "', 'publish', 'open', 'open', '" + post_name + "', 'info', '" + now.toISOString() + "')";
 
         this.db.query_db(query)
             .then((data) => {
-                _promise.resolve(data);
+                var guid = "http://sof.tokyo/?p=" + data['insertId'];
+                var query2 = "UPDATE wp2_posts SET guid = '" + guid + "' WHERE ID = " + data['insertId'];
+
+                this.db.query_db(query2)
+                    .then((data2) => {
+                        _promise.resolve(data);
+                    })
             })
         return _promise.promise;
     }
