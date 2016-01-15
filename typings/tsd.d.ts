@@ -22,3 +22,4 @@
 /// <reference path="form-data/form-data.d.ts" />
 /// <reference path="request/request.d.ts" />
 /// <reference path="joi/joi.d.ts" />
+/// <reference path="mandrill-api/mandrill-api.d.ts" />

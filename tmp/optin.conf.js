@@ -1,0 +1,11 @@
+module.exports = {
+    mandrill: {
+        key: 'bnbWeBxHtOxrHmGRnj2mQQ',
+        template: 'lasColoradas',
+        checkoutTempleteForUser: 'checkoutTempleteForUser',
+        checkoutTempleteForAdmin: 'checkoutTempleteForAdmin',
+        contactTemplete: 'contactTemplete'
+    }
+};
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIm9wdGluLmNvbmYudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsTUFBTSxDQUFDLE9BQU8sR0FBRztJQUNiLFFBQVEsRUFBRTtRQUNOLEdBQUcsRUFBRSx3QkFBd0I7UUFDN0IsUUFBUSxFQUFFLGNBQWM7UUFDeEIsdUJBQXVCLEVBQUUseUJBQXlCO1FBQ2xELHdCQUF3QixFQUFFLDBCQUEwQjtRQUNwRCxlQUFlLEVBQUUsaUJBQWlCO0tBQ3JDO0NBQ0osQ0FBQyIsImZpbGUiOiJvcHRpbi5jb25mLmpzIiwic291cmNlc0NvbnRlbnQiOlsibW9kdWxlLmV4cG9ydHMgPSB7XG4gICAgbWFuZHJpbGw6IHtcbiAgICAgICAga2V5OiAnYm5iV2VCeEh0T3hySG1HUm5qMm1RUScsXG4gICAgICAgIHRlbXBsYXRlOiAnbGFzQ29sb3JhZGFzJyxcbiAgICAgICAgY2hlY2tvdXRUZW1wbGV0ZUZvclVzZXI6ICdjaGVja291dFRlbXBsZXRlRm9yVXNlcicsXG4gICAgICAgIGNoZWNrb3V0VGVtcGxldGVGb3JBZG1pbjogJ2NoZWNrb3V0VGVtcGxldGVGb3JBZG1pbicsXG4gICAgICAgIGNvbnRhY3RUZW1wbGV0ZTogJ2NvbnRhY3RUZW1wbGV0ZSdcbiAgICB9XG59O1xuIl0sInNvdXJjZVJvb3QiOiIvc291cmNlLyJ9
