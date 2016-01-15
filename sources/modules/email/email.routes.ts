@@ -5,6 +5,7 @@
 
 
 import service = require('./email.service');
+import Joi = require('joi');
 
 var EmailService = new service.EmailService();
 var _prefix = '/email';
@@ -14,7 +15,7 @@ var email = [
         path: _prefix + '/test',
         handler: function(request, reply) {
             EmailService.sendTestEmail()
-                .then((data: Array<any>) => {
+                .then((data) => {
                     reply(data);
                 })
         },
@@ -22,7 +23,35 @@ var email = [
             description: 'Send a test Email',
             tags: ['email']
         }
-    }
+    },
+    {
+        method: 'POST',
+        path: _prefix + '/new',
+        handler: function(request, reply) {
+            EmailService.sendNewEmail(
+                request.payload.fromEmail,
+                request.payload.fromName,
+                request.payload.to,
+                request.payload.subject,
+                request.payload.content)
+                .then((data) => {
+                    reply(data);
+                })
+        },
+        config: {
+            validate: {
+                query: {
+                    fromEmail: Joi.string(),
+                    fromName: Joi.string(),
+                    to: Joi.string(),
+                    subject: Joi.string(),
+                    content: Joi.string()
+                }
+            },
+            description: 'Send a new Email',
+            tags: ['email']
+        }
+    },
 ]
 
 

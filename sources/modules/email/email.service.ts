@@ -10,16 +10,17 @@ if (emailClient.apikey) console.log('✓ Mandrill: running');
 
 export interface IEmailService {
     // GET
-    sendTestEmail(): void;
+    sendTestEmail(): Q.IPromise<{}>;
+    sendNewEmail(fromEmail, fromName, to, subject, content): Q.IPromise<{}>;
 }
 
 
 export class EmailService implements IEmailService {
-    sendTestEmail(): void {
+    sendTestEmail(): Q.IPromise<{}> {
+        var _promise = Q.defer();
 
         var message = {
             "html": "<p>Testing sof-tokyo-node-server</p>",
-            "text": "Sof-tokyo-node-server",
             "subject": "test email",
             "from_email": conf.mandrill.adminEmail,
             "from_name": conf.mandrill.adminName,
@@ -35,8 +36,36 @@ export class EmailService implements IEmailService {
             async: false
         }, function(result) {
             if (result[0].status === 'sent' || result[0].status === 'queued') {
-                return "Message sent";
+                _promise.resolve('Message sent');
             }
         });
+
+        return _promise.promise;
+    }
+
+    sendNewEmail(fromEmail, fromName, to, subject, content): Q.IPromise<{}> {
+        var _promise = Q.defer();
+
+        var message = {
+            "html": content,
+            "subject": subject,
+            "from_email": fromEmail,
+            "from_name": fromName,
+            "to": [{
+                "email": to,
+                "type": "to"
+            }]
+        };
+
+        emailClient.messages.send({
+            message: message,
+            async: false
+        }, function(result) {
+            if (result[0].status === 'sent' || result[0].status === 'queued') {
+                _promise.resolve('Message sent');
+            }
+        });
+
+        return _promise.promise;
     }
 };

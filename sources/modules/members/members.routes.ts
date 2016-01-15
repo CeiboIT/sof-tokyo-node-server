@@ -5,6 +5,7 @@
 
 
 import service = require('./members.service');
+import Joi = require('joi');
 
 var MembersService = new service.MembersService();
 var _prefix = '/members';
@@ -34,6 +35,11 @@ var members = [
                 })
         },
         config: {
+            validate: {
+                query: {
+                    memberId: Joi.number().integer(),
+                }
+            },
             description: 'Retrieve Member with matched ProductID',
             tags: ['members']
         }
