@@ -53,7 +53,7 @@ export class ProductsService implements IProductsService {
 
     getProductsList(page): Q.IPromise<{}> {
         var _listPromise = Q.defer();
-        var count = 200;
+        var count = 15;
         this.db.query('core/?json=get_posts&count=' + count + '&page=' + page)
             .then((results) => {
 
