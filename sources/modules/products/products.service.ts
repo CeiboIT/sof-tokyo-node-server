@@ -4,6 +4,10 @@
 import Q = require("q");
 import connection = require('../connection/connection.service')
 
+import authors = require("../auth/auth.service")
+var authorsServ = new authors.AuthService();
+
+
 export interface IProductsService {
     // GET
     getProductsNew(page): Q.IPromise<{}>;
@@ -62,8 +66,26 @@ export class ProductsService implements IProductsService {
                 var shuffled = shuffle(results['posts']);
                 results['posts'] = shuffled;
 
-                _listPromise.resolve(results);
-            })
+
+
+                var _postPopulatePromisesArray = [];
+                var _postAuthorPopulate = [];
+
+                results['posts'].forEach((result) => {
+                    var authorPromise = Q.defer();
+                    _postAuthorPopulate.push(authorPromise.promise);
+                    authorsServ.getUserInfo(result.id)
+                        .then((data) => {
+                            result['author']= data;
+                            authorPromise.resolve(data);
+                        })
+                });
+
+                Q.all(_postAuthorPopulate)
+                    .then((values) => {
+                        _listPromise.resolve(results);
+                    });
+            });
 
         return _listPromise.promise;
     }
@@ -119,6 +141,11 @@ export class ProductsService implements IProductsService {
                         results['school'] = schoolId;
                         results['count'] = schoolPosts.length;
                         results['count_total'] = schoolPosts.length;
+
+
+
+
+
 
                         _listPromise.resolve(results);
                     })
