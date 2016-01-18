@@ -3,6 +3,11 @@
 
 import Q = require("q");
 import connection = require('../connection/connection.service')
+import Products = require('../products/products.service')
+import Auth =require('../auth/auth.service')
+
+var authorsServ = new Auth.AuthService();
+var productsServ = new Products.ProductsService();
 
 export interface IMembersService {
     // GET
@@ -25,12 +30,12 @@ export class MembersService implements IMembersService {
 
     getMemberById(memberId): Q.IPromise<{}> {
         var _promise = Q.defer();
-        this.db.query_db("SELECT id, user_login, user_nicename, user_email, user_url, user_registered, display_name FROM wp2_users WHERE id=" + memberId)
-            .then((data) => {
-                _promise.resolve(data[0]);
+        productsServ.getProductsByAuthor(memberId).then(result => {
+            authorsServ.getUserAvatar(memberId, "thumb").then(avatarInfo => {
+                 result['author']['avatar'] = avatarInfo['avatar'];
+                _promise.resolve(result);
             })
+        });
         return _promise.promise;
     }
-
-
 };

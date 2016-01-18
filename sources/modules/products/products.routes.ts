@@ -81,8 +81,7 @@ var products = [
         path: _prefix + '/byauthor/{authorId}/{page}',
         handler: function(request, reply) {
             ProductsService.getProductsByAuthor(
-                request.params.authorId,
-                request.params.page || 1)
+                request.params.authorId)
             .then((data: Array<any>) => {
                 reply(data);
             })

@@ -100,9 +100,8 @@ export class ProductsService implements IProductsService {
             })
     }
 
-    getProductsByAuthor(authorId, page): Q.IPromise<{}> {
-        return this.db.query('core/get_author_posts/?count=4&id=' + authorId +
-                             '&page=' + page)
+    getProductsByAuthor(authorId): Q.IPromise<{}> {
+        return this.db.query('core/get_author_posts/?count=4&id=' + authorId)
     }
 
     getProductsByCategory(categoryId, page): Q.IPromise<{}> {
@@ -138,11 +137,6 @@ export class ProductsService implements IProductsService {
                         results['school'] = schoolId;
                         results['count'] = schoolPosts.length;
                         results['count_total'] = schoolPosts.length;
-
-
-
-
-
 
                         _listPromise.resolve(results);
                     })
