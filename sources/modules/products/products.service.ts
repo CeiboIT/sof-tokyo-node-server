@@ -53,7 +53,8 @@ export class ProductsService implements IProductsService {
 
     getProductsList(page): Q.IPromise<{}> {
         var _listPromise = Q.defer();
-        this.db.query('core/?json=get_posts&count=4&page=' + page)
+        var count = 200;
+        this.db.query('core/?json=get_posts&count=' + count + '&page=' + page)
             .then((results) => {
 
                 function shuffle(o) {
