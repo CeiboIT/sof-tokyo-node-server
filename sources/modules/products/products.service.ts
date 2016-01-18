@@ -66,9 +66,6 @@ export class ProductsService implements IProductsService {
                 var shuffled = shuffle(results['posts']);
                 results['posts'] = shuffled;
 
-
-
-                var _postPopulatePromisesArray = [];
                 var _postAuthorPopulate = [];
 
                 results['posts'].forEach((result) => {
@@ -264,8 +261,30 @@ export class ProductsService implements IProductsService {
     }
 
     getProductsBySearch(search, page): Q.IPromise<{}> {
-        return this.db.query('core/get_search_results/?count=4&search=' + search +
-            '&page=' + page)
+
+        var _searchPromise = Q.defer();
+        this.db.query('core/get_search_results/?count=4&search=' + search +
+            '&page=' + page).then((results) => {
+
+            var _postAuthorPopulate = [];
+
+            results['posts'].forEach((result) => {
+                var authorPromise = Q.defer();
+                _postAuthorPopulate.push(authorPromise.promise);
+                authorsServ.getUserInfo(result.id)
+                    .then((data) => {
+                        result['author']= data;
+                        authorPromise.resolve(data);
+                    })
+            });
+
+            Q.all(_postAuthorPopulate)
+                .then((values) => {
+                    _searchPromise.resolve(results);
+                });
+        });
+
+        return _searchPromise.promise;
     }
 
 };
