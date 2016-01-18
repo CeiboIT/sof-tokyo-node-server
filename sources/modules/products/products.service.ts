@@ -273,7 +273,7 @@ export class ProductsService implements IProductsService {
                 _postAuthorPopulate.push(authorPromise.promise);
                 authorsServ.getUserAvatar(result.author.id, "thumb")
                     .then((data) => {
-                        result['author']['avatar']= data['avatar']['avatar'];
+                        result['author']['avatar']= data['avatar'];
                         authorPromise.resolve(data);
                     })
             });
