@@ -3,10 +3,8 @@
 
 import Q = require("q");
 import connection = require('../connection/connection.service')
-
 import authors = require("../auth/auth.service")
 var authorsServ = new authors.AuthService();
-
 
 export interface IProductsService {
     // GET

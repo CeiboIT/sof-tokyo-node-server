@@ -140,10 +140,37 @@ export class MetadataService implements IMetadataService {
 
     getStylesList(): Q.IPromise<{}> {
         var _listPromise = Q.defer();
+
+        var styles = [
+            {id: 1, name: "simple", trad: "シンプル"},
+            {id: 2, name: "casual", trad: "カジュアル"},
+            {id: 3, name: "feminine", trad: "フェミニン"},
+            {id: 4, name: "mode", trad: "モード"},
+            {id: 5, name: "street", trad: "ストリート"},
+            {id: 6, name: "art", trad: "アート"},
+            {id: 7, name: "elegance", trad: "エレガンス"},
+            {id: 8, name: "classic", trad: "クラシック"},
+            {id: 9, name: "sporty", trad: "スポーティ"},
+            {id: 10, name: "oriental", trad: "オリエンタル"},
+            {id: 11, name: "decora", trad: "デコラ"},
+            {id: 12, name: "hippy_country", trad: "ヒッピー/カントリー"},
+            {id: 13, name: "x_gender", trad: "クロスジェンダー"},
+            {id: 14, name: "manish", trad: "マニッシュ"},
+            {id: 15, name: "preppy", trad: "フレッピー"},
+            {id: 16, name: "military", trad: "ミリタリー"},
+            {id: 17, name: "rock", trad: "ロック"},
+            {id: 18, name: "lolita", trad: "ロリータ"},
+            {id: 19, name: "sexy_dandy", trad: "セクシィ/ダンディ"},
+            {id: 20, name: "ethnic", trad: "エスニック"},
+            {id: 21, name: "future", trad: "フューチャー"},
+            {id: 22, name: "other", trad: "該当なし"}
+        ]
+/*
         this.db.query_db("SELECT DISTINCT meta_value AS value FROM wp2_postmeta WHERE meta_key = 'sofbackend__sof_work_meta__style'")
             .then((data) => {
                 _listPromise.resolve(data);
             })
+*/
         return _listPromise.promise;
     }
 
