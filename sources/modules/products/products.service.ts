@@ -71,9 +71,9 @@ export class ProductsService implements IProductsService {
                 results['posts'].forEach((result) => {
                     var authorPromise = Q.defer();
                     _postAuthorPopulate.push(authorPromise.promise);
-                    authorsServ.getUserInfo(result.author.id)
+                    authorsServ.getUserAvatar(result.author.id, "thumb")
                         .then((data) => {
-                            result['author']= data;
+                            result['author']['avatar']= data['avatar'];
                             authorPromise.resolve(data);
                         })
                 });
@@ -271,15 +271,15 @@ export class ProductsService implements IProductsService {
             results['posts'].forEach((result) => {
                 var authorPromise = Q.defer();
                 _postAuthorPopulate.push(authorPromise.promise);
-                authorsServ.getUserInfo(result.author.id)
+                authorsServ.getUserAvatar(result.author.id, "thumb")
                     .then((data) => {
-                        result['author']= data;
-                        authorPromise.resolve(data);
+                        result['author']['avatar']= data['avatar'];
+                        authorPromise.resolve();
                     })
             });
 
             Q.all(_postAuthorPopulate)
-                .then((values) => {
+                .then(() => {
                     _searchPromise.resolve(results);
                 });
         });
