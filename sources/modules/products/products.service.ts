@@ -3,8 +3,11 @@
 
 import Q = require("q");
 import connection = require('../connection/connection.service')
-import authors = require("../auth/auth.service")
-var authorsServ = new authors.AuthService();
+import auth = require("../auth/auth.service")
+import metadata = require("../metadata/metadata.service");
+
+var authServ = new auth.AuthService();
+var metadataServ = new metadata.MetadataService();
 
 export interface IProductsService {
     // GET
@@ -70,10 +73,15 @@ export class ProductsService implements IProductsService {
                 results['posts'].forEach((result) => {
                     var authorPromise = Q.defer();
                     _postAuthorPopulate.push(authorPromise.promise);
-                    authorsServ.getUserAvatar(result.author.id, "thumb")
+                    authServ.getUserAvatar(result.author.id, "thumb")
                         .then((data) => {
                             result['author']['avatar']= data['avatar'];
                             authorPromise.resolve(data);
+
+                            metadataServ.getProductMetadata(result.id)
+                                .then((data2) => {
+                                    result['metadata'] = data2;
+                                })
                         })
                 });
 
@@ -264,10 +272,15 @@ export class ProductsService implements IProductsService {
             results['posts'].forEach((result) => {
                 var authorPromise = Q.defer();
                 _postAuthorPopulate.push(authorPromise.promise);
-                authorsServ.getUserAvatar(result.author.id, "thumb")
+                authServ.getUserAvatar(result.author.id, "thumb")
                     .then((data) => {
                         result['author']['avatar']= data['avatar'];
                         authorPromise.resolve(data);
+
+                        metadataServ.getProductMetadata(result.id)
+                            .then((data2) => {
+                                result['metadata'] = data2;
+                            })
                     })
             });
 

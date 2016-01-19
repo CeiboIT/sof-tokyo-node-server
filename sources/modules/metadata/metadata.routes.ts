@@ -95,16 +95,16 @@ var metadata = [
     },
     {
         method: 'GET',
-        path: _prefix + '/likes/product/{productId}',
+        path: _prefix + '/all/product/{productId}',
         handler: function(request, reply) {
-            MetadataService.getProductLikes(
+            MetadataService.getProductMetadata(
                 request.params.productId)
                 .then((data) => {
-                    reply({ likes: data[0] });
+                    reply({ metadata: data });
                 })
         },
         config: {
-            description: 'Retrieve Likes from matched ProductID',
+            description: 'Retrieve all Metadata from matched ProductID',
             tags: ['metadata']
         }
     },

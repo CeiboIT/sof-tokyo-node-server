@@ -11,7 +11,7 @@ export interface IMetadataService {
     getSchoolsList(): Q.IPromise<{}>;
     getStylesList(): Q.IPromise<{}>;
     getSchoolByMemberId(memberId): Q.IPromise<{}>;
-    getProductLikes(productId): Q.IPromise<{}>;
+    getProductMetadata(productId): Q.IPromise<{}>;
     getProductUniqueVisits(productId): Q.IPromise<{}>;
     getProductTotalVisits(productId): Q.IPromise<{}>;
 
@@ -183,9 +183,9 @@ export class MetadataService implements IMetadataService {
         return _promise.promise;
     }
 
-    getProductLikes(productId): Q.IPromise<{}> {
+    getProductMetadata(productId): Q.IPromise<{}> {
         var _promise = Q.defer();
-        this.db.query_db("SELECT meta_value AS value FROM wp2_postmeta WHERE meta_key='_item_likes' AND post_id=" + productId)
+        this.db.query_db("SELECT meta_key AS field, meta_value AS value FROM wp2_postmeta WHERE post_id=" + productId)
             .then((data) => {
                 _promise.resolve(data);
             })
