@@ -4,7 +4,10 @@
 import Q = require("q");
 import connection = require('../connection/connection.service')
 import authors = require("../auth/auth.service")
+import metadata = require("../metadata/metadata.service")
+
 var authorsServ = new authors.AuthService();
+var metadataServ = new metadata.MetadataService();
 
 export interface IProductsService {
     // GET
@@ -61,23 +64,33 @@ export class ProductsService implements IProductsService {
                     for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
                     return o;
                 }
-
                 var shuffled = shuffle(results['posts']);
-                results['posts'] = shuffled;
 
+                results['posts'] = shuffled;
                 var _postAuthorPopulate = [];
+                var _postLikePopulate = [];
 
                 results['posts'].forEach((result) => {
                     var authorPromise = Q.defer();
+                    var likesPromise = Q.defer();
                     _postAuthorPopulate.push(authorPromise.promise);
+                    _postLikePopulate.push(likesPromise.promise);
+
                     authorsServ.getUserAvatar(result.author.id, "thumb")
                         .then((data) => {
                             result['author']['avatar']= data['avatar'];
                             authorPromise.resolve(data);
                         })
+
+                    metadataServ.getProductLikes(result.id)
+                        .then((data) => {
+                            result['likes'] = data;
+                            likesPromise.resolve(data);
+                        })
+
                 });
 
-                Q.all(_postAuthorPopulate)
+                Q.all(_postAuthorPopulate.concat(_postLikePopulate))
                     .then((values) => {
                         _listPromise.resolve(results);
                     });
@@ -254,11 +267,9 @@ export class ProductsService implements IProductsService {
     }
 
     getProductsBySearch(search, page): Q.IPromise<{}> {
-
         var _searchPromise = Q.defer();
         this.db.query('core/get_search_results/?count=4&search=' + search +
             '&page=' + page).then((results) => {
-
             var _postAuthorPopulate = [];
 
             results['posts'].forEach((result) => {
