@@ -24,7 +24,7 @@ export class MembersService implements IMembersService {
         this.db.query_db("SELECT id, display_name FROM wp2_users")
             .then((data) => {
                 _listPromise.resolve(data);
-            })
+            });
         return _listPromise.promise;
     }
 

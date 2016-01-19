@@ -64,14 +64,15 @@ export class ProductsService implements IProductsService {
                     for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
                     return o;
                 }
-
                 var shuffled = shuffle(results['posts']);
-                results['posts'] = shuffled;
 
+                results['posts'] = shuffled;
                 var _postAuthorPopulate = [];
+                var _postLikePopulate = [];
 
                 results['posts'].forEach((result) => {
                     var authorPromise = Q.defer();
+                    var likesPromise = Q.defer();
                     _postAuthorPopulate.push(authorPromise.promise);
                     authServ.getUserAvatar(result.author.id, "thumb")
                         .then((data) => {
@@ -85,7 +86,7 @@ export class ProductsService implements IProductsService {
                         })
                 });
 
-                Q.all(_postAuthorPopulate)
+                Q.all(_postAuthorPopulate.concat(_postLikePopulate))
                     .then((values) => {
                         _listPromise.resolve(results);
                     });
@@ -262,11 +263,9 @@ export class ProductsService implements IProductsService {
     }
 
     getProductsBySearch(search, page): Q.IPromise<{}> {
-
         var _searchPromise = Q.defer();
         this.db.query('core/get_search_results/?count=4&search=' + search +
             '&page=' + page).then((results) => {
-
             var _postAuthorPopulate = [];
 
             results['posts'].forEach((result) => {
