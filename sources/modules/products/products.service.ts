@@ -68,25 +68,30 @@ export class ProductsService implements IProductsService {
 
                 results['posts'] = shuffled;
                 var _postAuthorPopulate = [];
-                var _postLikePopulate = [];
+                var _postMetadataPopulate = [];
 
                 results['posts'].forEach((result) => {
                     var authorPromise = Q.defer();
-                    var likesPromise = Q.defer();
+                    var metadataPromise = Q.defer();
                     _postAuthorPopulate.push(authorPromise.promise);
+                    _postMetadataPopulate.push(metadataPromise.promise);
+
+                    // populate author's avatar
                     authServ.getUserAvatar(result.author.id, "thumb")
                         .then((data) => {
-                            result['author']['avatar']= data['avatar'];
+                            result['author']['avatar'] = data['avatar'];
                             authorPromise.resolve(data);
 
+                            // populate metadata
                             metadataServ.getProductMetadata(result.id)
                                 .then((data2) => {
                                     result['metadata'] = data2;
+                                    metadataPromise.resolve(data2);
                                 })
                         })
                 });
 
-                Q.all(_postAuthorPopulate.concat(_postLikePopulate))
+                Q.all(_postAuthorPopulate.concat(_postMetadataPopulate))
                     .then((values) => {
                         _listPromise.resolve(results);
                     });
@@ -96,30 +101,107 @@ export class ProductsService implements IProductsService {
     }
 
     getProductById(productId, userId): Q.IPromise<{}> {
-        return this.db.query('core/get_post/?id=' + productId)
+        var _productPromise = Q.defer();
+        this.db.query('core/get_post/?id=' + productId)
             .then((result) => {
-                // save visit if is logued in
-                if (userId !== 'null') {
-                    return this.db.query_db("INSERT INTO wp2_postmeta (meta_id, post_id, meta_key, meta_value) VALUES (NULL," + productId + ",'visit','" + userId + "')")
-                        .then(() => {
-                            return result;
-                        })
-                };
-            })
+                var _promises = [];
+                var authorPromise = Q.defer();
+                var metadataPromise = Q.defer();
+                var visitPromise = Q.defer();
+                _promises.push(authorPromise.promise);
+                _promises.push(metadataPromise.promise);
+                _promises.push(visitPromise.promise);
+
+                // populate author's avatar
+                authServ.getUserAvatar(result['post']['author']['id'], "thumb")
+                    .then((data) => {
+                        result['post']['author']['avatar'] = data['avatar'];
+                        authorPromise.resolve(data);
+
+                        // populate metadata
+                        metadataServ.getProductMetadata(result['post']['id'])
+                            .then((data2) => {
+                                result['post']['metadata'] = data2;
+                                metadataPromise.resolve(data2);
+
+                                // save visit if is logued in
+                                if (userId != 'null') {
+                                    this.db.query_db("INSERT INTO wp2_postmeta (meta_id, post_id, meta_key, meta_value) VALUES (NULL," + productId + ",'visit','" + userId + "')")
+                                        .then(() => {
+                                            visitPromise.resolve(undefined);
+                                        })
+                                } else {
+                                    visitPromise.resolve(undefined);
+                                };
+                            })
+                    });
+
+                    Q.all(_promises)
+                        .then((values) => {
+                            _productPromise.resolve(result);
+                        });
+            });
+            
+        return _productPromise.promise;
     }
 
     getProductsByAuthor(authorId): Q.IPromise<{}> {
-        return this.db.query('core/get_author_posts/?count=4&id=' + authorId)
+        var _promise = Q.defer();
+        this.db.query('core/get_author_posts/?count=4&id=' + authorId)
+            .then((results) => {
+                var _postAuthorPopulate = [];
+
+                // populate author's avatar
+                authServ.getUserAvatar(results['author']['id'], "thumb")
+                    .then((data) => {
+                        results['author']['avatar'] = data['avatar'];
+
+                        var authorPromise = Q.defer();
+                        results['posts'].forEach((result) => {
+                            _postAuthorPopulate.push(authorPromise.promise);
+                            result['author']['avatar'] = data['avatar'];
+                            authorPromise.resolve(data);
+
+                        })
+
+                        Q.all(_postAuthorPopulate.concat(authorPromise))
+                            .then((values) => {
+                                _promise.resolve(results);
+                            });
+
+                    });
+            })
+        return _promise.promise;
     }
 
     getProductsByCategory(categoryId, page): Q.IPromise<{}> {
-        return this.db.query('core/get_category_posts/?count=4&id=' + categoryId +
-                             '&page=' + page)
+        var promise = Q.defer();
+        this.db.query('core/get_category_posts/?count=4&id=' + categoryId +
+                        '&page=' + page)
+            .then((result) => {
+                // populate author's avatar
+                authServ.getUserAvatar(result['author']['id'], "thumb")
+                    .then((data) => {
+                        result['author']['avatar'] = data['avatar'];
+                        promise.resolve(result);
+                    });
+            })
+        return promise.promise;
     }
 
     getProductsByTag(tagId, page): Q.IPromise<{}> {
-        return this.db.query('core/get_tag_posts/?count=4&id=' + tagId +
+        var promise = Q.defer();
+        this.db.query('core/get_tag_posts/?count=4&id=' + tagId +
                              '&page=' + page)
+            .then((result) => {
+                // populate author's avatar
+                authServ.getUserAvatar(result['author']['id'], "thumb")
+                    .then((data) => {
+                        result['author']['avatar'] = data['avatar'];
+                        promise.resolve(result);
+                    });
+            })
+        return promise.promise;
     }
 
     getProductsBySchool(schoolId, page): Q.IPromise<{}> {
