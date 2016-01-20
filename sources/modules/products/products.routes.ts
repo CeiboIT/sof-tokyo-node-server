@@ -16,9 +16,9 @@ var products = [
         handler: function(request, reply) {
             ProductsService.getProductsNew(
                 request.params.page || 1)
-                .then((data: Array<any>) => {
-                    reply(data);
-                })
+            .then((data: Array<any>) => {
+                reply(data);
+            })
         },
         config: {
             validate: {
@@ -36,9 +36,9 @@ var products = [
         handler: function(request, reply) {
             ProductsService.getProductsList(
                 request.params.page || 1)
-                .then((data: Array<any>) => {
-                    reply(data);
-                })
+            .then((data: Array<any>) => {
+                reply(data);
+            })
         },
         config: {
             validate: {

@@ -150,28 +150,39 @@ export class ProductsService implements IProductsService {
         this.db.query('core/get_author_posts/?count=4&id=' + authorId)
             .then((results) => {
                 var _postAuthorPopulate = [];
+                var _postMetadataPopulate = [];
                 var headerPromise = Q.defer();
+                _postAuthorPopulate.push(headerPromise.promise);
 
                 // populate header avatar
                 authServ.getUserAvatar(results['author']['id'], "thumb")
                     .then((data) => {
-                        results['author']['avatar'] = data['avatar'];
-                        headerPromise.resolve(data);
-
                         results['posts'].forEach((result) => {
                             var authorPromise = Q.defer();
+                            var metadataPromise = Q.defer();
                             _postAuthorPopulate.push(authorPromise.promise);
+                            _postMetadataPopulate.push(metadataPromise.promise);
+
+                            results['author']['avatar'] = data['avatar'];
+                            headerPromise.resolve(data);
 
                             // populate author's avatar
                             result['author']['avatar'] = data['avatar'];
                             authorPromise.resolve(data);
-                        })
-                    });
 
-                    Q.all(_postAuthorPopulate.concat(headerPromise.promise))
-                        .then((values) => {
-                            _promise.resolve(results);
-                        });
+                            // populate metadata
+                            metadataServ.getProductMetadata(result.id)
+                                .then((data2) => {
+                                    result['metadata'] = data2;
+                                    metadataPromise.resolve(data2);
+                                })
+                        })
+
+                        Q.all(_postAuthorPopulate.concat(_postMetadataPopulate))
+                            .then((values) => {
+                                _promise.resolve(results);
+                            });
+                    });
             });
         return _promise.promise;
     }
