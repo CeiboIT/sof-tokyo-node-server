@@ -46,15 +46,42 @@ export class ProductsService implements IProductsService {
         var _listPromise = Q.defer();
         this.db.query('core/?json=get_recent_posts&count=4&page=' + page)
             .then((results) => {
-                _listPromise.resolve(results);
-            })
+                var _postAuthorPopulate = [];
+                var _postMetadataPopulate = [];
+
+                results['posts'].forEach((result) => {
+                    var authorPromise = Q.defer();
+                    var metadataPromise = Q.defer();
+                    _postAuthorPopulate.push(authorPromise.promise);
+                    _postMetadataPopulate.push(metadataPromise.promise);
+
+                    // populate author's avatar
+                    authServ.getUserAvatar(result.author.id, "thumb")
+                        .then((data) => {
+                            result['author']['avatar'] = data['avatar'];
+                            authorPromise.resolve(data);
+
+                            // populate metadata
+                            metadataServ.getProductMetadata(result.id)
+                                .then((data2) => {
+                                    result['metadata'] = data2;
+                                    metadataPromise.resolve(data2);
+                                })
+                        })
+                });
+
+                Q.all(_postAuthorPopulate.concat(_postMetadataPopulate))
+                    .then((values) => {
+                        _listPromise.resolve(results);
+                    });
+            });
 
         return _listPromise.promise;
     }
 
     getProductsList(page): Q.IPromise<{}> {
         var _listPromise = Q.defer();
-        var count = 15;
+        var count = 6;
         this.db.query('core/?json=get_posts&count=' + count + '&page=' + page)
             .then((results) => {
 
@@ -168,14 +195,14 @@ export class ProductsService implements IProductsService {
                 // populate header avatar
                 authServ.getUserAvatar(results['author']['id'], "thumb")
                     .then((data) => {
+                        results['author']['avatar'] = data['avatar'];
+                        headerPromise.resolve(data);
+
                         results['posts'].forEach((result) => {
                             var authorPromise = Q.defer();
                             var metadataPromise = Q.defer();
                             _postAuthorPopulate.push(authorPromise.promise);
                             _postMetadataPopulate.push(metadataPromise.promise);
-
-                            results['author']['avatar'] = data['avatar'];
-                            headerPromise.resolve(data);
 
                             // populate author's avatar
                             result['author']['avatar'] = data['avatar'];
