@@ -185,7 +185,14 @@ export class MetadataService implements IMetadataService {
 
     getProductMetadata(productId): Q.IPromise<{}> {
         var _promise = Q.defer();
-        this.db.query_db("SELECT meta_key AS field, meta_value AS value FROM wp2_postmeta WHERE post_id=" + productId)
+        var query = "(SELECT A.meta_key AS field, A.meta_value AS value " +
+                    "FROM wp2_postmeta A " +
+                    "WHERE A.post_id=" + productId + " AND A.meta_key <> 'visit') " +
+                    "UNION " +
+                    "(SELECT B.meta_key AS field, COUNT(DISTINCT B.meta_value) AS value " +
+                    "FROM wp2_postmeta B " +
+                    "WHERE B.meta_key = 'visit' AND B.post_id=" + productId + ")";
+        this.db.query_db(query)
             .then((data) => {
                 _promise.resolve(data);
             })
