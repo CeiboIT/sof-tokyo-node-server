@@ -72,7 +72,7 @@ var products = [
             tags: ['products'],
             notes: [
                 "If user is logued in -> send UserID as param",
-                "If user is NOT logued in -> send UserID = 'null'"
+                "If user is NOT logued in -> send UserID = 0"
             ]
         }
     },
@@ -370,4 +370,3 @@ var products = [
 
 
 module.exports = products;
-
