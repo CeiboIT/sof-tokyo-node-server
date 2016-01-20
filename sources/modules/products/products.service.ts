@@ -15,8 +15,6 @@ export interface IProductsService {
     getProductsList(page): Q.IPromise<{}>;
     getProductById(productId, userId): Q.IPromise<{}>;
     getProductsByAuthor(authorId, page): Q.IPromise<{}>;
-    getProductsByCategory(categoryId, page): Q.IPromise<{}>;
-    getProductsByTag(tagId, page): Q.IPromise<{}>;
     getProductsBySchool(schoolId, page): Q.IPromise<{}>;
     getProductsBySubcategory0(subcategory0Id, page): Q.IPromise<{}>;
     getProductsBySubcategory1(subcategory1Id, page): Q.IPromise<{}>;
@@ -124,15 +122,28 @@ export class ProductsService implements IProductsService {
                                 result['post']['metadata'] = data2;
                                 metadataPromise.resolve(data2);
 
-                                // save visit if is logued in
-                                if (userId != 'null') {
-                                    this.db.query_db("INSERT INTO wp2_postmeta (meta_id, post_id, meta_key, meta_value) VALUES (NULL," + productId + ",'visit','" + userId + "')")
-                                        .then(() => {
-                                            visitPromise.resolve(undefined);
+                                // for each comment
+                                result['post']['comments'].forEach((comment) => {
+                                    var commentPromise = Q.defer();
+                                    _promises.push(commentPromise.promise);
+
+                                    // populate comments avatar
+                                    authServ.getUserAvatar(comment.author.id, "thumb")
+                                        .then((avatar) => {
+                                            comment['author']['avatar'] = avatar['avatar'];
+                                            commentPromise.resolve(avatar);
+
+                                            // save visit if is logued in
+                                            if (userId != 'null') {
+                                                this.db.query_db("INSERT INTO wp2_postmeta (meta_id, post_id, meta_key, meta_value) VALUES (NULL," + productId + ",'visit','" + userId + "')")
+                                                    .then(() => {
+                                                        visitPromise.resolve(undefined);
+                                                    })
+                                            } else {
+                                                visitPromise.resolve(undefined);
+                                            };
                                         })
-                                } else {
-                                    visitPromise.resolve(undefined);
-                                };
+                                });
                             })
                     });
 
@@ -185,36 +196,6 @@ export class ProductsService implements IProductsService {
                     });
             });
         return _promise.promise;
-    }
-
-    getProductsByCategory(categoryId, page): Q.IPromise<{}> {
-        var promise = Q.defer();
-        this.db.query('core/get_category_posts/?count=4&id=' + categoryId +
-                        '&page=' + page)
-            .then((result) => {
-                // populate author's avatar
-                authServ.getUserAvatar(result['author']['id'], "thumb")
-                    .then((data) => {
-                        result['author']['avatar'] = data['avatar'];
-                        promise.resolve(result);
-                    });
-            })
-        return promise.promise;
-    }
-
-    getProductsByTag(tagId, page): Q.IPromise<{}> {
-        var promise = Q.defer();
-        this.db.query('core/get_tag_posts/?count=4&id=' + tagId +
-                             '&page=' + page)
-            .then((result) => {
-                // populate author's avatar
-                authServ.getUserAvatar(result['author']['id'], "thumb")
-                    .then((data) => {
-                        result['author']['avatar'] = data['avatar'];
-                        promise.resolve(result);
-                    });
-            })
-        return promise.promise;
     }
 
     getProductsBySchool(schoolId, page): Q.IPromise<{}> {

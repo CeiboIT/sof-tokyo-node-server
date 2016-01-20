@@ -99,50 +99,6 @@ var products = [
     },
     {
         method: 'GET',
-        path: _prefix + '/bycategory/{categoryId}/{page}',
-        handler: function(request, reply) {
-            ProductsService.getProductsByCategory(
-                request.params.categoryId,
-                request.params.page || 1)
-            .then((data: Array<any>) => {
-                reply(data);
-            })
-        },
-        config: {
-            validate: {
-                query: {
-                    categoryId: Joi.number().integer(),
-                    page: Joi.number().integer()
-                }
-            },
-            description: 'Retrieve Products from matched CategoryID',
-            tags: ['products']
-        }
-    },
-    {
-        method: 'GET',
-        path: _prefix + '/bytag/{tagId}/{page}',
-        handler: function(request, reply) {
-            ProductsService.getProductsByTag(
-                request.params.tagId,
-                request.params.page || 1)
-                .then((data: Array<any>) => {
-                    reply(data);
-                })
-        },
-        config: {
-            validate: {
-                query: {
-                    tagId: Joi.number().integer(),
-                    page: Joi.number().integer()
-                }
-            },
-            description: 'Retrieve Products from matched TagID',
-            tags: ['products']
-        }
-    },
-    {
-        method: 'GET',
         path: _prefix + '/byschool/{schoolId}/{page}',
         handler: function(request, reply) {
             ProductsService.getProductsBySchool(
