@@ -141,7 +141,7 @@ export class ProductsService implements IProductsService {
                             _productPromise.resolve(result);
                         });
             });
-            
+
         return _productPromise.promise;
     }
 
@@ -150,27 +150,29 @@ export class ProductsService implements IProductsService {
         this.db.query('core/get_author_posts/?count=4&id=' + authorId)
             .then((results) => {
                 var _postAuthorPopulate = [];
+                var headerPromise = Q.defer();
 
-                // populate author's avatar
+                // populate header avatar
                 authServ.getUserAvatar(results['author']['id'], "thumb")
                     .then((data) => {
                         results['author']['avatar'] = data['avatar'];
+                        headerPromise.resolve(data);
 
-                        var authorPromise = Q.defer();
                         results['posts'].forEach((result) => {
+                            var authorPromise = Q.defer();
                             _postAuthorPopulate.push(authorPromise.promise);
+
+                            // populate author's avatar
                             result['author']['avatar'] = data['avatar'];
                             authorPromise.resolve(data);
-
                         })
-
-                        Q.all(_postAuthorPopulate.concat(authorPromise))
-                            .then((values) => {
-                                _promise.resolve(results);
-                            });
-
                     });
-            })
+
+                    Q.all(_postAuthorPopulate.concat(headerPromise.promise))
+                        .then((values) => {
+                            _promise.resolve(results);
+                        });
+            });
         return _promise.promise;
     }
 
