@@ -17,6 +17,7 @@ export interface IMetadataService {
 
     // POST
     createProductLike(productId): Q.IPromise<{}>;
+    createProductImage(productId, field, value): Q.IPromise<{}>;
 }
 
 
@@ -220,6 +221,15 @@ export class MetadataService implements IMetadataService {
     getProductTotalVisits(productId): Q.IPromise<{}> {
         var _promise = Q.defer();
         this.db.query_db("SELECT COUNT(meta_value) AS value FROM wp2_postmeta WHERE meta_key = 'visit' AND post_id=" + productId)
+            .then((data) => {
+                _promise.resolve(data);
+            })
+        return _promise.promise;
+    }
+
+    createProductImage(productId, field, value): Q.IPromise<{}> {
+        var _promise = Q.defer();
+        this.db.query_db("INSERT INTO wp2_postmeta (meta_id, post_id, meta_key, meta_value) VALUES (NULL," + productId + ",'" + field + "','" + value + "')")
             .then((data) => {
                 _promise.resolve(data);
             })

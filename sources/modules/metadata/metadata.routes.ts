@@ -157,7 +157,35 @@ var metadata = [
             description: 'Retrieve Total Visits from matched ProductID',
             tags: ['metadata']
         }
-    }
+    },
+    {
+        method: 'POST',
+        path: _prefix + '/images/product',
+        handler: function(request, reply) {
+            MetadataService.createProductImage(
+                request.payload.productId,
+                request.payload.field,
+                request.payload.value)
+                .then((data) => {
+                    reply(data);
+                })
+        },
+        config: {
+            validate: {
+                query: {
+                    productId: Joi.number().integer(),
+                    field: Joi.string(),
+                    value: Joi.string()
+                }
+            },
+            notes: [
+                "Field values: 'sofbackend__sof_work_meta__postImage'/'sofbackend__sof_work_meta__subImageX' (X = 1-9)",
+                "Value: -cloudinary image url-"
+            ],
+            description: 'Add an Image to matched ProductID',
+            tags: ['metadata']
+        }
+    },
 ]
 
 
