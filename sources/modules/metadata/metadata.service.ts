@@ -207,39 +207,41 @@ export class MetadataService implements IMetadataService {
             .then((data) => {
                 var dataJson = JSON.parse(JSON.stringify(data));
                 getMetadata.resolve(data);
-                console.log("DATA");
 
                 // get subcategories0 translations
                 this.getSubcategories0List()
                     .then((subcategories0) => {
                         getSubcategories0.resolve(data);
-                        console.log("su0");
 
                         // get subcategories1 translations
                         this.getSubcategories1List()
                             .then((subcategories1) => {
                                 getSubcategories1.resolve(data);
-                                console.log("su1");
 
                                 // get styles translations
                                 this.getStylesList()
                                     .then((styles) => {
                                         getStyles.resolve(data);
-                                        console.log("st");
 
                                         // populate translations
                                         _.forEach(dataJson, function(value, key) {
-                                            console.log("record");
+                                            //console.log("record");
                                             if (value.field == 'sofbackend__sof_work_meta__category_0') {
-                                                console.log(value.value);
+                                                value.trad = _.result(_.find(subcategories0, function(obj) {
+                                                    return obj.name === value.value;
+                                                }), 'trad');
                                             };
 
                                             if (value.field == 'sofbackend__sof_work_meta__category_1') {
-                                                console.log(value.value);
+                                                value.trad = _.result(_.find(subcategories1, function(obj) {
+                                                    return obj.name === value.value;
+                                                }), 'trad');
                                             };
 
                                             if (value.field == 'sofbackend__sof_work_meta__style') {
-                                                console.log(value.value);
+                                                value.trad = _.result(_.find(styles, function(obj) {
+                                                    return obj.name === value.value;
+                                                }), 'trad');
                                             };
                                         });
                                     });
@@ -248,7 +250,7 @@ export class MetadataService implements IMetadataService {
 
                     Q.all(_otherPromises)
                         .then((values) => {
-                            _promise.resolve(data);
+                            _promise.resolve(dataJson);
                         });
             })
         return _promise.promise;
