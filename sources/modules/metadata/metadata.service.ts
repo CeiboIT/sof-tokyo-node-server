@@ -4,6 +4,8 @@
 import Q = require("q");
 import connection = require('../connection/connection.service')
 
+var _ = require('lodash');
+
 export interface IMetadataService {
     // GET
     getSubcategories0List(): Q.IPromise<{}>;
@@ -165,7 +167,8 @@ export class MetadataService implements IMetadataService {
             {id: 20, name: "ethnic", trad: "エスニック"},
             {id: 21, name: "future", trad: "フューチャー"},
             {id: 22, name: "other", trad: "該当なし"}
-        ]
+        ];
+        _listPromise.resolve(styles);
 /*
         this.db.query_db("SELECT DISTINCT meta_value AS value FROM wp2_postmeta WHERE meta_key = 'sofbackend__sof_work_meta__style'")
             .then((data) => {
@@ -186,6 +189,13 @@ export class MetadataService implements IMetadataService {
 
     getProductMetadata(productId): Q.IPromise<{}> {
         var _promise = Q.defer();
+
+        var getMetadata = Q.defer();
+        var getSubcategories0 = Q.defer();
+        var getSubcategories1 = Q.defer();
+        var getStyles = Q.defer();
+        var _otherPromises = [getMetadata.promise, getSubcategories0.promise, getSubcategories1.promise, getStyles.promise];
+
         var query = "(SELECT A.meta_key AS field, A.meta_value AS value " +
                     "FROM wp2_postmeta A " +
                     "WHERE A.post_id=" + productId + " AND A.meta_key <> 'visit') " +
@@ -195,7 +205,51 @@ export class MetadataService implements IMetadataService {
                     "WHERE B.meta_key = 'visit' AND B.post_id=" + productId + ")";
         this.db.query_db(query)
             .then((data) => {
-                _promise.resolve(data);
+                var dataJson = JSON.parse(JSON.stringify(data));
+                getMetadata.resolve(data);
+                console.log("DATA");
+
+                // get subcategories0 translations
+                this.getSubcategories0List()
+                    .then((subcategories0) => {
+                        getSubcategories0.resolve(data);
+                        console.log("su0");
+
+                        // get subcategories1 translations
+                        this.getSubcategories1List()
+                            .then((subcategories1) => {
+                                getSubcategories1.resolve(data);
+                                console.log("su1");
+
+                                // get styles translations
+                                this.getStylesList()
+                                    .then((styles) => {
+                                        getStyles.resolve(data);
+                                        console.log("st");
+
+                                        // populate translations
+                                        _.forEach(dataJson, function(value, key) {
+                                            console.log("record");
+                                            if (value.field == 'sofbackend__sof_work_meta__category_0') {
+                                                console.log(value.value);
+                                            };
+
+                                            if (value.field == 'sofbackend__sof_work_meta__category_1') {
+                                                console.log(value.value);
+                                            };
+
+                                            if (value.field == 'sofbackend__sof_work_meta__style') {
+                                                console.log(value.value);
+                                            };
+                                        });
+                                    });
+                            });
+                    });
+
+                    Q.all(_otherPromises)
+                        .then((values) => {
+                            _promise.resolve(data);
+                        });
             })
         return _promise.promise;
     }
