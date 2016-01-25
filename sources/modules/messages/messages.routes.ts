@@ -30,12 +30,34 @@ var messages = [
         }
     },
     {
+        method: 'PUT',
+        path: _prefix + '/read',
+        handler: function(request, reply) {
+            MessagesService.readMessages(
+                request.payload.userId,
+                request.payload.threadId)
+                .then((data) => {
+                    reply({ response: data });
+                })
+        },
+        config: {
+            validate: {
+                query: {
+                    userId: Joi.number().integer(),
+                    threadId: Joi.number().integer()
+                }
+            },
+            description: 'Update unread Messages to 0 of ThreadID from UserID',
+            tags: ['messages']
+        }
+    },
+    {
         method: 'POST',
         path: _prefix + '/create',
         handler: function(request, reply) {
             MessagesService.createMessage(
-                request.payload.sender_id,
-                request.payload.receiver_id,
+                request.payload.senderId,
+                request.payload.receiverId,
                 request.payload.subject,
                 request.payload.message)
                 .then((data) => {
@@ -45,8 +67,8 @@ var messages = [
         config: {
             validate: {
                 query: {
-                    sender_id: Joi.number().integer(),
-                    receiver_id: Joi.number().integer(),
+                    senderId: Joi.number().integer(),
+                    receiverId: Joi.number().integer(),
                     subject: Joi.string(),
                     message: Joi.string()
                 }
@@ -60,9 +82,9 @@ var messages = [
         path: _prefix + '/response',
         handler: function(request, reply) {
             MessagesService.responseMessage(
-                request.payload.thread_id,
-                request.payload.sender_id,
-                request.payload.receiver_id,
+                request.payload.threadId,
+                request.payload.senderId,
+                request.payload.receiverId,
                 request.payload.subject,
                 request.payload.message)
                 .then((data) => {
@@ -72,9 +94,9 @@ var messages = [
         config: {
             validate: {
                 query: {
-                    thread_id: Joi.number().integer(),
-                    sender_id: Joi.number().integer(),
-                    receiver_id: Joi.number().integer(),
+                    threadId: Joi.number().integer(),
+                    senderId: Joi.number().integer(),
+                    receiverId: Joi.number().integer(),
                     subject: Joi.string(),
                     message: Joi.string()
                 }
