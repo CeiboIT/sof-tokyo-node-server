@@ -10,6 +10,26 @@ var MessagesService = new service.MessagesService();
 var _prefix = '/messages';
 var messages = [
     {
+        method: 'GET',
+        path: _prefix + '/show/{userId}',
+        handler: function(request, reply) {
+            MessagesService.showMessages(
+                request.params.userId)
+                .then((data) => {
+                    reply({ messages: data });
+                })
+        },
+        config: {
+            validate: {
+                query: {
+                    userId: Joi.number().integer()
+                }
+            },
+            description: 'Retrieve Messages from UserID',
+            tags: ['messages']
+        }
+    },
+    {
         method: 'POST',
         path: _prefix + '/create',
         handler: function(request, reply) {

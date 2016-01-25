@@ -63,6 +63,29 @@ var MessagesService = (function () {
         });
         return _promise.promise;
     };
+    MessagesService.prototype.showMessages = function (userId) {
+        var _this = this;
+        var _promise = Q.defer();
+        this.db.query_db("SELECT thread_id FROM wp2_bp_messages_recipients WHERE user_id = " + userId)
+            .then(function (response) {
+            var _threadsPopulate = [];
+            var threads = JSON.parse(JSON.stringify(response));
+            threads.forEach(function (thread) {
+                var threadPromise = Q.defer();
+                _threadsPopulate.push(threadPromise.promise);
+                _this.db.query_db("SELECT sender_id, subject, message FROM wp2_bp_messages_messages WHERE thread_id = " + thread.thread_id)
+                    .then(function (response2) {
+                    thread.messages = response2;
+                    threadPromise.resolve(response2);
+                });
+            });
+            Q.all(_threadsPopulate)
+                .then(function (values) {
+                _promise.resolve(threads);
+            });
+        });
+        return _promise.promise;
+    };
     return MessagesService;
 }());
 exports.MessagesService = MessagesService;
