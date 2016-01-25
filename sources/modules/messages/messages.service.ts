@@ -8,7 +8,7 @@ export interface IMessagesService {
     // GET
     // POST
     createMessage(sender_id, receiver_id, subject, message): Q.IPromise<{}>;
-    responseMessage(sender_id, receiver_id, subject, message): Q.IPromise<{}>;
+    responseMessage(thread_id, sender_id, receiver_id, subject, message): Q.IPromise<{}>;
     // PUT
     // DELETE
 }
