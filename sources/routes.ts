@@ -7,6 +7,7 @@ import TagsRoutes = require("./modules/tags/tags.routes");
 import MembersRoutes = require("./modules/members/members.routes");
 import BlogRoutes = require("./modules/blog/blog.routes");
 import EmailRoutes = require("./modules/email/email.routes");
+import MessagesRoutes = require("./modules/messages/messages.routes");
 
 module.exports = [].concat(
     AuthRoutes,
@@ -17,5 +18,6 @@ module.exports = [].concat(
     TagsRoutes,
     MembersRoutes,
     BlogRoutes,
-    EmailRoutes
+    EmailRoutes,
+    MessagesRoutes
 );
