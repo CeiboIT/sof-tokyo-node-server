@@ -33,7 +33,7 @@ var email = [
                 request.payload.fromName,
                 request.payload.to,
                 request.payload.subject,
-                request.payload.content)
+                request.payload.schools)
                 .then((data) => {
                     reply(data);
                 })
