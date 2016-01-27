@@ -420,7 +420,7 @@ export class ProductsService implements IProductsService {
                     "WHERE wp2_postmeta.meta_key = 'sofbackend__sof_work_meta__postImage' " +
                     ") table2 " +
                     "ON table1.post_id = table2.post_id " +
-                    "ORDER BY visits DESC " +
+                    "ORDER BY likes DESC " +
                     "LIMIT 10";
         this.db.query_db(query)
             .then((data) => {
@@ -432,7 +432,9 @@ export class ProductsService implements IProductsService {
 
     getProductsRankingByUniqueVisits(): Q.IPromise<{}> {
         var _promise = Q.defer();
-        var query = "SELECT wp2_posts.ID AS post_id, " +
+        var query = "SELECT * FROM " +
+                    "( " +
+                    "SELECT wp2_posts.ID AS post_id, " +
                     "wp2_users.display_name AS author, " +
                     "COUNT(DISTINCT wp2_postmeta.meta_value) AS visits " +
                     "FROM `wp2_posts` " +
@@ -440,7 +442,16 @@ export class ProductsService implements IProductsService {
                     "JOIN wp2_postmeta ON wp2_posts.ID = wp2_postmeta.post_id " +
                     "WHERE wp2_postmeta.meta_key = 'visit' " +
                     "GROUP BY post_id " +
-                    "ORDER BY visits DESC " +
+                    ") table1 " +
+                    "JOIN " +
+                    "( " +
+                    "SELECT wp2_postmeta.post_id, " +
+                    "wp2_postmeta.meta_value AS image " +
+                    "FROM wp2_postmeta " +
+                    "WHERE wp2_postmeta.meta_key = 'sofbackend__sof_work_meta__postImage' " +
+                    ") table2 " +
+                    "ON table1.post_id = table2.post_id " +
+                    "ORDER BY likes DESC " +
                     "LIMIT 10";
         this.db.query_db(query)
             .then((data) => {
@@ -453,7 +464,9 @@ export class ProductsService implements IProductsService {
 
     getProductsRankingByTotalVisits(): Q.IPromise<{}> {
         var _promise = Q.defer();
-        var query = "SELECT wp2_posts.ID AS post_id, " +
+        var query = "SELECT * FROM " +
+                    "( " +
+                    "SELECT wp2_posts.ID AS post_id, " +
                     "wp2_users.display_name AS author, " +
                     "COUNT(wp2_postmeta.meta_value) AS visits " +
                     "FROM `wp2_posts` " +
@@ -461,7 +474,16 @@ export class ProductsService implements IProductsService {
                     "JOIN wp2_postmeta ON wp2_posts.ID = wp2_postmeta.post_id " +
                     "WHERE wp2_postmeta.meta_key = 'visit' " +
                     "GROUP BY post_id " +
-                    "ORDER BY visits DESC " +
+                    ") table1 " +
+                    "JOIN " +
+                    "( " +
+                    "SELECT wp2_postmeta.post_id, " +
+                    "wp2_postmeta.meta_value AS image " +
+                    "FROM wp2_postmeta " +
+                    "WHERE wp2_postmeta.meta_key = 'sofbackend__sof_work_meta__postImage' " +
+                    ") table2 " +
+                    "ON table1.post_id = table2.post_id " +
+                    "ORDER BY likes DESC " +
                     "LIMIT 10";
         this.db.query_db(query)
             .then((data) => {
