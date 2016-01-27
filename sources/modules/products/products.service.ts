@@ -107,7 +107,7 @@ export class ProductsService implements IProductsService {
                             result['author']['avatar'] = data['avatar'];
                             authorPromise.resolve(data);
 
-                            // populate metadata
+                            // populate metadatagi
                             metadataServ.getProductMetadata(result.id)
                                 .then((data2) => {
                                     result['metadata'] = data2;
@@ -130,54 +130,55 @@ export class ProductsService implements IProductsService {
         this.db.query('core/get_post/?id=' + productId)
             .then((result) => {
                 var _promises = [];
-                var authorPromise = Q.defer();
-                var metadataPromise = Q.defer();
-                var visitPromise = Q.defer();
-                _promises.push(authorPromise.promise);
-                _promises.push(metadataPromise.promise);
-                _promises.push(visitPromise.promise);
+
+                // save visit if is logued in
+                // TODO Arreglar bug dudoso, pero primero buscar un plugin que sirva para esto
+                /*if (userId.indexOf('null') == -1) {
+                    var visitPromise = Q.defer();
+                    _promises.push(visitPromise.promise);
+                    this.db.query_db("INSERT INTO wp2_postmeta (meta_id, post_id, meta_key, meta_value) VALUES (NULL," + productId + ",'visit','" + userId + "')")
+                        .then(() => {
+                            visitPromise.resolve(undefined);
+                        })
+                }*/
 
                 // populate author's avatar
                 authServ.getUserAvatar(result['post']['author']['id'], "thumb")
                     .then((data) => {
+                        var authorPromise = Q.defer();
+                        _promises.push(authorPromise.promise);
                         result['post']['author']['avatar'] = data['avatar'];
                         authorPromise.resolve(data);
+                });
 
-                        // populate metadata
-                        metadataServ.getProductMetadata(result['post']['id'])
-                            .then((data2) => {
-                                result['post']['metadata'] = data2;
-                                metadataPromise.resolve(data2);
+                if(result['post']['comments'] && result['post']['comments'].length) {
+                    // for each comment
+                    result['post']['comments'].forEach((comment) => {
+                        var commentPromise = Q.defer();
+                        _promises.push(commentPromise.promise);
 
-                                // for each comment
-                                result['post']['comments'].forEach((comment) => {
-                                    var commentPromise = Q.defer();
-                                    _promises.push(commentPromise.promise);
-
-                                    // populate comments avatar
-                                    authServ.getUserAvatar(comment.author.id, "thumb")
-                                        .then((avatar) => {
-                                            comment['author']['avatar'] = avatar['avatar'];
-                                            commentPromise.resolve(avatar);
-
-                                            // save visit if is logued in
-                                            if (userId != 'null') {
-                                                this.db.query_db("INSERT INTO wp2_postmeta (meta_id, post_id, meta_key, meta_value) VALUES (NULL," + productId + ",'visit','" + userId + "')")
-                                                    .then(() => {
-                                                        visitPromise.resolve(undefined);
-                                                    })
-                                            } else {
-                                                visitPromise.resolve(undefined);
-                                            };
-                                        })
-                                });
+                        // populate comments avatar
+                        authServ.getUserAvatar(comment.author.id, "thumb")
+                            .then((avatar) => {
+                                comment['author']['avatar'] = avatar['avatar'];
+                                commentPromise.resolve(avatar);
                             })
                     });
+                }
 
-                    Q.all(_promises)
-                        .then((values) => {
-                            _productPromise.resolve(result);
-                        });
+                // populate metadata
+                metadataServ.getProductMetadata(result['post']['id'])
+                    .then((metadata) => {
+                        var metadataPromise = Q.defer();
+                        _promises.push(metadataPromise.promise);
+                        result['post']['metadata'] = metadata;
+                        metadataPromise.resolve(metadata);
+                    })
+
+                Q.all(_promises)
+                    .then((values) => {
+                        _productPromise.resolve(result);
+                });
             });
 
         return _productPromise.promise;

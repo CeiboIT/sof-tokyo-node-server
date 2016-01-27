@@ -43,27 +43,31 @@ export class EmailService implements IEmailService {
         return _promise.promise;
     }
 
-    sendNewEmail(fromEmail, fromName, to, subject, content): Q.IPromise<{}> {
+    sendNewEmail(fromEmail, fromName, to, subject, schools): Q.IPromise<{}> {
         var _promise = Q.defer();
 
         var message = {
-            "html": content,
-            "subject": subject,
             "from_email": fromEmail,
             "from_name": fromName,
             "to": [{
                 "email": to,
                 "type": "to"
-            }]
+            }],
+            schools: schools,
+            content: "Content"
         };
 
         emailClient.messages.send({
+            template_name: 'sofTokyoBooksSales',
+            template_content: {},
             message: message,
             async: false
         }, function(result) {
             if (result[0].status === 'sent' || result[0].status === 'queued') {
-                _promise.resolve('Message sent');
+                _promise.resolve({status: 'ok', message:'Message sent'});
             }
+        }, function(error){
+            _promise.resolve({status: 'error', message:error});
         });
 
         return _promise.promise;
