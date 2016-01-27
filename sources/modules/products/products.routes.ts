@@ -334,6 +334,34 @@ var products = [
             description: 'Retrieve Products Ranking by Likes',
             tags: ['products']
         }
+    },
+    {
+        method: 'GET',
+        path: _prefix + '/ranking/visits/unique',
+        handler: function(request, reply) {
+            ProductsService.getProductsRankingByUniqueVisits()
+                .then((data: Array<any>) => {
+                    reply({ products: data });
+                })
+        },
+        config: {
+            description: 'Retrieve Products Ranking by Visits',
+            tags: ['products']
+        }
+    },
+    {
+        method: 'GET',
+        path: _prefix + '/ranking/visits/unique',
+        handler: function(request, reply) {
+            ProductsService.getProductsRankingByTotalVisits()
+                .then((data: Array<any>) => {
+                    reply({ products: data });
+                })
+        },
+        config: {
+            description: 'Retrieve Products Ranking by Visits',
+            tags: ['products']
+        }
     }
 ]
 

@@ -21,6 +21,8 @@ export interface IProductsService {
     getProductsByStyle(styleId, page): Q.IPromise<{}>;
     getProductsBySearch(search, page): Q.IPromise<{}>;
     getProductsRankingByLikes(): Q.IPromise<{}>;
+    getProductsRankingByUniqueVisits(): Q.IPromise<{}>;
+    getProductsRankingByTotalVisits(): Q.IPromise<{}>;
     // POST
     createProduct(nonce, author, title, content, status, school, subcategory0, subcategory1, styles): Q.IPromise<{}>;
     createComment(productId, cookie, content): Q.IPromise<{}>;
@@ -417,5 +419,45 @@ export class ProductsService implements IProductsService {
         return _promise.promise;
     }
 
+    getProductsRankingByUniqueVisits(): Q.IPromise<{}> {
+        var _promise = Q.defer();
+        var query = "SELECT wp2_posts.ID AS post_id, " +
+                    "wp2_users.display_name AS author, " +
+                    "COUNT(DISTINCT wp2_postmeta.meta_value) AS visits " +
+                    "FROM `wp2_posts` " +
+                    "JOIN wp2_users ON wp2_posts.post_author = wp2_users.ID " +
+                    "JOIN wp2_postmeta ON wp2_posts.ID = wp2_postmeta.post_id " +
+                    "WHERE wp2_postmeta.meta_key = 'visit' " +
+                    "GROUP BY post_id " +
+                    "ORDER BY visits DESC " +
+                    "LIMIT 10";
+        this.db.query_db(query)
+            .then((data) => {
+                _promise.resolve(data);
+            });
+
+        return _promise.promise;
+    }
+
+
+    getProductsRankingByTotalVisits(): Q.IPromise<{}> {
+        var _promise = Q.defer();
+        var query = "SELECT wp2_posts.ID AS post_id, " +
+                    "wp2_users.display_name AS author, " +
+                    "COUNT(wp2_postmeta.meta_value) AS visits " +
+                    "FROM `wp2_posts` " +
+                    "JOIN wp2_users ON wp2_posts.post_author = wp2_users.ID " +
+                    "JOIN wp2_postmeta ON wp2_posts.ID = wp2_postmeta.post_id " +
+                    "WHERE wp2_postmeta.meta_key = 'visit' " +
+                    "GROUP BY post_id " +
+                    "ORDER BY visits DESC " +
+                    "LIMIT 10";
+        this.db.query_db(query)
+            .then((data) => {
+                _promise.resolve(data);
+            });
+
+        return _promise.promise;
+    }
 
 };
