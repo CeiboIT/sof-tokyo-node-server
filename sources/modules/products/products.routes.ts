@@ -345,13 +345,13 @@ var products = [
                 })
         },
         config: {
-            description: 'Retrieve Products Ranking by Visits',
+            description: 'Retrieve Products Ranking by Unique Visits',
             tags: ['products']
         }
     },
     {
         method: 'GET',
-        path: _prefix + '/ranking/visits/unique',
+        path: _prefix + '/ranking/visits/total',
         handler: function(request, reply) {
             ProductsService.getProductsRankingByTotalVisits()
                 .then((data: Array<any>) => {
@@ -359,7 +359,7 @@ var products = [
                 })
         },
         config: {
-            description: 'Retrieve Products Ranking by Visits',
+            description: 'Retrieve Products Ranking by Total Visits',
             tags: ['products']
         }
     }
