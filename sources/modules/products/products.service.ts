@@ -134,15 +134,27 @@ export class ProductsService implements IProductsService {
                 var _promises = [];
 
                 // save visit
-                var visitPromise = Q.defer();
-                _promises.push(visitPromise.promise);
+                var saveVisitPromise = Q.defer();
+                _promises.push(saveVisitPromise.promise);
 
                 var visitQuery = "INSERT INTO wp2_post_views (id, type, period, count) " +
                                     "VALUES (" + productId + ",4,'total',1) " +
                                     "ON DUPLICATE KEY UPDATE count=count+1";
                 this.db.query_db(visitQuery)
                     .then(() => {
-                        visitPromise.resolve(undefined);
+                        saveVisitPromise.resolve(undefined);
+                });
+
+                // populate product visits
+                var viewVisitsPromise = Q.defer();
+                _promises.push(viewVisitsPromise.promise);
+
+                var visitQuery = "SELECT count FROM wp2_post_views " +
+                                    "WHERE id=" + productId + " AND type=4 AND period='total'";
+                this.db.query_db(visitQuery)
+                    .then((data) => {
+                        result['post']['visits'] = data[0]['count'];
+                        viewVisitsPromise.resolve(undefined);
                 });
 
                 // populate author's avatar
