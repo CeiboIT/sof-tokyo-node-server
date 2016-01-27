@@ -14,8 +14,7 @@ export interface IMetadataService {
     getStylesList(): Q.IPromise<{}>;
     getSchoolByMemberId(memberId): Q.IPromise<{}>;
     getProductMetadata(productId): Q.IPromise<{}>;
-    getProductUniqueVisits(productId): Q.IPromise<{}>;
-    getProductTotalVisits(productId): Q.IPromise<{}>;
+    getProductVisits(productId): Q.IPromise<{}>;
 
     // POST
     createProductLike(productId): Q.IPromise<{}>;
@@ -265,18 +264,9 @@ export class MetadataService implements IMetadataService {
         return _promise.promise;
     }
 
-    getProductUniqueVisits(productId): Q.IPromise<{}> {
+    getProductVisits(productId): Q.IPromise<{}> {
         var _promise = Q.defer();
-        this.db.query_db("SELECT COUNT(DISTINCT meta_value) AS value FROM wp2_postmeta WHERE meta_key = 'visit' AND post_id=" + productId)
-            .then((data) => {
-                _promise.resolve(data);
-            })
-        return _promise.promise;
-    }
-
-    getProductTotalVisits(productId): Q.IPromise<{}> {
-        var _promise = Q.defer();
-        this.db.query_db("SELECT COUNT(meta_value) AS value FROM wp2_postmeta WHERE meta_key = 'visit' AND post_id=" + productId)
+        this.db.query_db("SELECT id AS post_id, count AS visits FROM wp2_post_views WHERE id=" + productId)
             .then((data) => {
                 _promise.resolve(data);
             })

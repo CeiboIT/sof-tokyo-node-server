@@ -337,29 +337,15 @@ var products = [
     },
     {
         method: 'GET',
-        path: _prefix + '/ranking/visits/unique',
+        path: _prefix + '/ranking/visits',
         handler: function(request, reply) {
-            ProductsService.getProductsRankingByUniqueVisits()
+            ProductsService.getProductsRankingByVisits()
                 .then((data: Array<any>) => {
                     reply({ products: data });
                 })
         },
         config: {
-            description: 'Retrieve Products Ranking by Unique Visits',
-            tags: ['products']
-        }
-    },
-    {
-        method: 'GET',
-        path: _prefix + '/ranking/visits/total',
-        handler: function(request, reply) {
-            ProductsService.getProductsRankingByTotalVisits()
-                .then((data: Array<any>) => {
-                    reply({ products: data });
-                })
-        },
-        config: {
-            description: 'Retrieve Products Ranking by Total Visits',
+            description: 'Retrieve Products Ranking by Visits',
             tags: ['products']
         }
     }
