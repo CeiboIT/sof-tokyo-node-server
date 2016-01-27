@@ -20,6 +20,7 @@ export interface IProductsService {
     getProductsBySubcategory1(subcategory1Id, page): Q.IPromise<{}>;
     getProductsByStyle(styleId, page): Q.IPromise<{}>;
     getProductsBySearch(search, page): Q.IPromise<{}>;
+    getProductsRankingByLikes(): Q.IPromise<{}>;
     // POST
     createProduct(nonce, author, title, content, status, school, subcategory0, subcategory1, styles): Q.IPromise<{}>;
     createComment(productId, cookie, content): Q.IPromise<{}>;
@@ -395,5 +396,26 @@ export class ProductsService implements IProductsService {
 
         return _searchPromise.promise;
     }
+
+    getProductsRankingByLikes(): Q.IPromise<{}> {
+        var _promise = Q.defer();
+        var query = "SELECT wp2_posts.ID AS post_id, " +
+                    "wp2_posts.post_date_gmt AS date, " +
+                    "wp2_postmeta.meta_value AS likes, " +
+                    "wp2_users.display_name AS author " +
+                    "FROM `wp2_posts` " +
+                    "JOIN wp2_users ON wp2_posts.post_author = wp2_users.ID " +
+                    "JOIN wp2_postmeta ON wp2_posts.ID = wp2_postmeta.post_id " +
+                    "WHERE wp2_postmeta.meta_key = '_item_likes' " +
+                    "ORDER BY likes DESC " +
+                    "LIMIT 10";
+        this.db.query_db(query)
+            .then((data) => {
+                _promise.resolve(data);
+            });
+
+        return _promise.promise;
+    }
+
 
 };

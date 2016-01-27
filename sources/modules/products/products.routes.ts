@@ -299,7 +299,6 @@ var products = [
             tags: ['products']
         }
     },
-    ,
     {
         method: 'GET',
         path: _prefix + '/search/{search}/{page}',
@@ -322,6 +321,20 @@ var products = [
             tags: ['products']
         }
     },
+    {
+        method: 'GET',
+        path: _prefix + '/ranking/likes',
+        handler: function(request, reply) {
+            ProductsService.getProductsRankingByLikes()
+                .then((data: Array<any>) => {
+                    reply({ products: data });
+                })
+        },
+        config: {
+            description: 'Retrieve Products Ranking by Likes',
+            tags: ['products']
+        }
+    }
 ]
 
 
