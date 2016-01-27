@@ -13,7 +13,7 @@ export interface IProductsService {
     // GET
     getProductsNew(page): Q.IPromise<{}>;
     getProductsList(page): Q.IPromise<{}>;
-    getProductById(productId, userId): Q.IPromise<{}>;
+    getProductById(productId): Q.IPromise<{}>;
     getProductsByAuthor(authorId, page): Q.IPromise<{}>;
     getProductsBySchool(schoolId, page): Q.IPromise<{}>;
     getProductsBySubcategory0(subcategory0Id, page): Q.IPromise<{}>;
@@ -127,22 +127,23 @@ export class ProductsService implements IProductsService {
         return _listPromise.promise;
     }
 
-    getProductById(productId, userId): Q.IPromise<{}> {
+    getProductById(productId): Q.IPromise<{}> {
         var _productPromise = Q.defer();
         this.db.query('core/get_post/?id=' + productId)
             .then((result) => {
                 var _promises = [];
 
-                // save visit if is logued in
-                // TODO Arreglar bug dudoso, pero primero buscar un plugin que sirva para esto
-                /*if (userId.indexOf('null') == -1) {
-                    var visitPromise = Q.defer();
-                    _promises.push(visitPromise.promise);
-                    this.db.query_db("INSERT INTO wp2_postmeta (meta_id, post_id, meta_key, meta_value) VALUES (NULL," + productId + ",'visit','" + userId + "')")
-                        .then(() => {
-                            visitPromise.resolve(undefined);
-                        })
-                }*/
+                // save visit
+                var visitPromise = Q.defer();
+                _promises.push(visitPromise.promise);
+
+                var visitQuery = "INSERT INTO wp2_post_views (id, type, period, count) " +
+                                    "VALUES (" + productId + ",4,'total',1) " +
+                                    "ON DUPLICATE KEY UPDATE count=count+1";
+                this.db.query_db(visitQuery)
+                    .then(() => {
+                        visitPromise.resolve(undefined);
+                });
 
                 // populate author's avatar
                 authServ.getUserAvatar(result['post']['author']['id'], "thumb")

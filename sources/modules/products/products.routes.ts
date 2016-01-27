@@ -52,11 +52,10 @@ var products = [
     },
     {
         method: 'GET',
-        path: _prefix + '/product/{productId}/{userId}',
+        path: _prefix + '/product/{productId}',
         handler: function(request, reply) {
             ProductsService.getProductById(
-                request.params.productId,
-                request.params.userId)
+                request.params.productId)
                 .then((data) => {
                     reply(data);
                 })
@@ -64,16 +63,11 @@ var products = [
         config: {
             validate: {
                 query: {
-                    productId: Joi.number().integer(),
-                    userId: Joi.string()
+                    productId: Joi.number().integer()
                 }
             },
             description: 'Retrieve Product with matched ProductID',
-            tags: ['products'],
-            notes: [
-                "If user is logued in -> send UserID as param",
-                "If user is NOT logued in -> send UserID = 'null'"
-            ]
+            tags: ['products']
         }
     },
     {
