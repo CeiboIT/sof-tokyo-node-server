@@ -307,13 +307,13 @@ var ProductsService = (function () {
         var query = "SELECT * FROM " +
             "( " +
             "SELECT wp2_posts.ID AS post_id, " +
-            "wp2_users.display_name AS author, " +
-            "COUNT(DISTINCT wp2_postmeta.meta_value) AS visits " +
+            "wp2_posts.post_date_gmt AS date, " +
+            "wp2_postmeta.meta_value AS likes, " +
+            "wp2_users.display_name AS author " +
             "FROM `wp2_posts` " +
             "JOIN wp2_users ON wp2_posts.post_author = wp2_users.ID " +
             "JOIN wp2_postmeta ON wp2_posts.ID = wp2_postmeta.post_id " +
-            "WHERE wp2_postmeta.meta_key = 'visit' " +
-            "GROUP BY post_id " +
+            "WHERE wp2_postmeta.meta_key = '_item_likes' " +
             ") table1 " +
             "JOIN " +
             "( " +
@@ -333,7 +333,10 @@ var ProductsService = (function () {
     };
     ProductsService.prototype.getProductsRankingByUniqueVisits = function () {
         var _promise = Q.defer();
-        var query = "SELECT wp2_posts.ID AS post_id, " +
+        var query = "SELECT * FROM " +
+            "( " +
+            "SELECT wp2_posts.ID AS post_id, " +
+            "wp2_posts.post_date_gmt AS date, " +
             "wp2_users.display_name AS author, " +
             "COUNT(DISTINCT wp2_postmeta.meta_value) AS visits " +
             "FROM `wp2_posts` " +
@@ -341,6 +344,15 @@ var ProductsService = (function () {
             "JOIN wp2_postmeta ON wp2_posts.ID = wp2_postmeta.post_id " +
             "WHERE wp2_postmeta.meta_key = 'visit' " +
             "GROUP BY post_id " +
+            ") table1 " +
+            "JOIN " +
+            "( " +
+            "SELECT wp2_postmeta.post_id, " +
+            "wp2_postmeta.meta_value AS image " +
+            "FROM wp2_postmeta " +
+            "WHERE wp2_postmeta.meta_key = 'sofbackend__sof_work_meta__postImage' " +
+            ") table2 " +
+            "ON table1.post_id = table2.post_id " +
             "ORDER BY visits DESC " +
             "LIMIT 10";
         this.db.query_db(query)
@@ -351,7 +363,10 @@ var ProductsService = (function () {
     };
     ProductsService.prototype.getProductsRankingByTotalVisits = function () {
         var _promise = Q.defer();
-        var query = "SELECT wp2_posts.ID AS post_id, " +
+        var query = "SELECT * FROM " +
+            "( " +
+            "SELECT wp2_posts.ID AS post_id, " +
+            "wp2_posts.post_date_gmt AS date, " +
             "wp2_users.display_name AS author, " +
             "COUNT(wp2_postmeta.meta_value) AS visits " +
             "FROM `wp2_posts` " +
@@ -359,6 +374,15 @@ var ProductsService = (function () {
             "JOIN wp2_postmeta ON wp2_posts.ID = wp2_postmeta.post_id " +
             "WHERE wp2_postmeta.meta_key = 'visit' " +
             "GROUP BY post_id " +
+            ") table1 " +
+            "JOIN " +
+            "( " +
+            "SELECT wp2_postmeta.post_id, " +
+            "wp2_postmeta.meta_value AS image " +
+            "FROM wp2_postmeta " +
+            "WHERE wp2_postmeta.meta_key = 'sofbackend__sof_work_meta__postImage' " +
+            ") table2 " +
+            "ON table1.post_id = table2.post_id " +
             "ORDER BY visits DESC " +
             "LIMIT 10";
         this.db.query_db(query)
