@@ -49,8 +49,6 @@ export class AuthService implements IAuthService {
                                 var xProfilePromise = Q.defer()
                                 _promisesList.push(xProfilePromise.promise);
 
-                                console.log("enter", id);
-
                                 // if years value
                                 if (fieldIds[id] == 645) {
                                     // number value
@@ -70,7 +68,13 @@ export class AuthService implements IAuthService {
 
                             Q.all(_promisesList)
                                 .then((values) => {
-                                    console.log("final");
+                                    results['username'] = username;
+                                    results['email'] = email;
+                                    results['display_name'] = display_name;
+                                    results['years'] = years;
+                                    results['country'] = country;
+                                    results['school'] = school;
+                                    results['ob'] = ob;
                                     registerPromise.resolve(results);
                                 });
                         };
