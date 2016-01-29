@@ -43,8 +43,11 @@ var auth = [
             AuthService.register(
                 request.payload.username,
                 request.payload.email,
-                request.payload.nonce,
-                request.payload.display_name)
+                request.payload.display_name,
+                request.payload.years,
+                request.payload.country,
+                request.payload.school,
+                request.payload.ob)
             .then((data) => {
                 reply(data);
             })
@@ -54,8 +57,11 @@ var auth = [
                 query: {
                     username: Joi.string(),
                     email: Joi.string(),
-                    nonce: Joi.string(),
-                    display_name: Joi.string()
+                    display_name: Joi.string(),
+                    years: Joi.number().integer(),
+                    country: Joi.string(),
+                    school: Joi.string(),
+                    ob: Joi.string()
                 }
             },
             description: 'Create a new User (need to create a new Nonce first and pass it as param)',

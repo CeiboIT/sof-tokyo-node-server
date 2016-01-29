@@ -10,7 +10,7 @@ export interface IAuthService {
     getUserInfo(userId): Q.IPromise<{}>;
     getUserAvatar(userId, type): Q.IPromise<{}>;
     // POST
-    register(username, email, nonce, display_name): Q.IPromise<{}>;
+    register(username, email, display_name, years, country, school, ob): Q.IPromise<{}>;
     login(username, password): Q.IPromise<{}>;
     fbLogin(token): Q.IPromise<{}>;
     isAuthorized(cookie): Q.IPromise<{}>;
@@ -25,11 +25,46 @@ export class AuthService implements IAuthService {
                              '&method=' + method)
     }
 
-    register(username, email, nonce, display_name): Q.IPromise<{}> {
-        return this.db.query('user/register/?username=' + username +
-                             '&email=' + email +
-                             '&nonce=' + nonce +
-                             '&display_name=' + display_name)
+    register(username, email, display_name, years, country, school, ob): Q.IPromise<{}> {
+        var _promisesList = [];
+        var registerPromise = Q.defer();
+        _promisesList.push(registerPromise.promise);
+        this.getNonce('user', 'register')
+            .then((nonce) => {
+                console.log(nonce['nonce']);
+                this.db.query('user/register/?username=' + username +
+                                     '&email=' + email +
+                                     '&nonce=' + nonce['nonce'] +
+                                     '&display_name=' + display_name)
+                    .then((results) => {
+
+                        console.log("USERID:" results['user_id']);
+
+                        var fieldIds = [1, 645, 2, 4, 646];
+                        var fieldValues = [display_name, years, country, school, ob];
+                        for (var i in fieldIds) {
+                            var xProfilePromise = Q.defer()
+                            _promisesList.push(xProfilePromise.promise);
+
+                            var xProfileQuery = "INSERT INTO wp2_bp_xprofile_data (id, field_id, user_id, value, last_updated) " +
+                                                "VALUES (null, " + fieldIds[i] + "," + results['user_id'] + "," + fieldValue[i] + "," + new Date().toISOString() + ")";
+
+                            this.db.query_db(xProfileQuery)
+                                .then(() {
+                                    xProfilePromise.resolve(results);
+                                })
+
+                        }
+                    });
+
+
+                    Q.all(_promisesList)
+                        .then((values) => {
+                            registerPromise.resolve(results);
+                        });
+            });
+
+        return _registerPromise.promise;
     }
 
     login(username, password): Q.IPromise<{}> {
