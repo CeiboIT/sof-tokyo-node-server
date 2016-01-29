@@ -28,43 +28,56 @@ export class AuthService implements IAuthService {
     register(username, email, display_name, years, country, school, ob): Q.IPromise<{}> {
         var _promisesList = [];
         var registerPromise = Q.defer();
-        _promisesList.push(registerPromise.promise);
         this.getNonce('user', 'register')
             .then((nonce) => {
-                console.log(nonce['nonce']);
                 this.db.query('user/register/?username=' + username +
                                      '&email=' + email +
                                      '&nonce=' + nonce['nonce'] +
                                      '&display_name=' + display_name)
                     .then((results) => {
-
-                        console.log("USERID:" results['user_id']);
-
+                        var i = [0, 1, 2, 3, 4];
                         var fieldIds = [1, 645, 2, 4, 646];
                         var fieldValues = [display_name, years, country, school, ob];
-                        for (var i in fieldIds) {
-                            var xProfilePromise = Q.defer()
-                            _promisesList.push(xProfilePromise.promise);
 
-                            var xProfileQuery = "INSERT INTO wp2_bp_xprofile_data (id, field_id, user_id, value, last_updated) " +
-                                                "VALUES (null, " + fieldIds[i] + "," + results['user_id'] + "," + fieldValue[i] + "," + new Date().toISOString() + ")";
-
-                            this.db.query_db(xProfileQuery)
-                                .then(() {
-                                    xProfilePromise.resolve(results);
-                                })
-
-                        }
-                    });
-
-
-                    Q.all(_promisesList)
-                        .then((values) => {
+                        if (results['status'] == 'error') {
                             registerPromise.resolve(results);
-                        });
+                            return registerPromise.promise;
+                        } else {
+                            var userId = results['user_id'];
+
+                            i.forEach((id) => {
+                                var xProfilePromise = Q.defer()
+                                _promisesList.push(xProfilePromise.promise);
+
+                                console.log("enter", id);
+
+                                // if years value
+                                if (fieldIds[id] == 645) {
+                                    // number value
+                                    var xProfileQuery = "INSERT INTO wp2_bp_xprofile_data (id, field_id, user_id, value, last_updated) " +
+                                                                "VALUES (null," + fieldIds[id] + "," + userId + "," + fieldValues[id] + ",'" + new Date().toISOString() + "')";
+                                } else {
+                                    // string value
+                                    var xProfileQuery = "INSERT INTO wp2_bp_xprofile_data (id, field_id, user_id, value, last_updated) " +
+                                                                "VALUES (null," + fieldIds[id] + "," + userId + ",'" + fieldValues[id] + "','" + new Date().toISOString() + "')";
+                                };
+
+                                this.db.query_db(xProfileQuery)
+                                    .then((data) => {
+                                        xProfilePromise.resolve(data);
+                                    })
+                            });
+
+                            Q.all(_promisesList)
+                                .then((values) => {
+                                    console.log("final");
+                                    registerPromise.resolve(results);
+                                });
+                        };
+                    });
             });
 
-        return _registerPromise.promise;
+        return registerPromise.promise;
     }
 
     login(username, password): Q.IPromise<{}> {
