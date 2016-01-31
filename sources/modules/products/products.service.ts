@@ -412,7 +412,12 @@ export class ProductsService implements IProductsService {
     }
 
     getProductsRankingByLikes(): Q.IPromise<{}> {
-        var _promise = Q.defer();
+        var _responsePromise = Q.defer();
+        var _productsPromises = [];
+        var _response = {
+            posts : []
+        };
+
         var query = "SELECT * FROM " +
                     "( " +
                     "SELECT wp2_posts.ID AS post_id, " +
@@ -424,22 +429,26 @@ export class ProductsService implements IProductsService {
                     "JOIN wp2_postmeta ON wp2_posts.ID = wp2_postmeta.post_id " +
                     "WHERE wp2_postmeta.meta_key = '_item_likes' " +
                     ") table1 " +
-                    "JOIN " +
-                    "( " +
-                    "SELECT wp2_postmeta.post_id, " +
-                    "wp2_postmeta.meta_value AS image " +
-                    "FROM wp2_postmeta " +
-                    "WHERE wp2_postmeta.meta_key = 'sofbackend__sof_work_meta__postImage' " +
-                    ") table2 " +
-                    "ON table1.post_id = table2.post_id " +
                     "ORDER BY likes DESC " +
-                    "LIMIT 10";
+                    "LIMIT 5";
         this.db.query_db(query)
-            .then((data) => {
-                _promise.resolve(data);
+            .then((data : any[]) => {
+                data.forEach((product) => {
+                    var _promise = Q.defer();
+                    _productsPromises.push(_promise.promise);
+                    this.getProductById(product['post_id'])
+                        .then((post) => {
+                            _promise.resolve(post);
+                        })
+                })
+
+                Q.all(_productsPromises)
+                    .then((results) => {
+                        _responsePromise.resolve(results);
+                    });
             });
 
-        return _promise.promise;
+        return _responsePromise.promise;
     }
 
     getProductsRankingByVisits(): Q.IPromise<{}> {
