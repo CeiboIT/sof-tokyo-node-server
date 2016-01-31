@@ -321,7 +321,7 @@ var products = [
         handler: function(request, reply) {
             ProductsService.getProductsRankingByLikes()
                 .then((data: Array<any>) => {
-                    reply({ products: data });
+                    reply({posts: data });
                 })
         },
         config: {
