@@ -437,8 +437,8 @@ export class ProductsService implements IProductsService {
                     var _promise = Q.defer();
                     _productsPromises.push(_promise.promise);
                     this.getProductById(product['post_id'])
-                        .then((post) => {
-                            _promise.resolve(post);
+                        .then((result) => {
+                            _promise.resolve(result['post']);
                         })
                 })
 
