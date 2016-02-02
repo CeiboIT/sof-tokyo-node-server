@@ -3,5 +3,9 @@
         "target": "es5",
         "module": "commonjs",
         "declaration": true
-    }
+    },
+    "filesGlob": [
+        "./**/*.ts",
+        "!./node_modules/**/*.ts"
+    ],
 }
