@@ -328,13 +328,13 @@ export class ProductsService implements IProductsService {
                 var stylePosts = [];
                 for (var i in posts) {
 
-                    if (posts[i]['custom_fields']['sofbackend__sof_work_meta__category_0'] == styleId) {
+                    if (posts[i]['custom_fields']['sofbackend__sof_work_meta__style'] == styleId) {
                         stylePosts.push(posts[i]);
                     };
                 };
 
                 results['posts'] = stylePosts;
-                results['subcategory0'] = styleId;
+                results['style'] = styleId;
                 results['count'] = stylePosts.length;
                 results['count_total'] = stylePosts.length;
 
