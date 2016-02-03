@@ -150,7 +150,7 @@ var metadata = [
             MetadataService.createProductImage(
                 request.payload.productId,
                 request.payload.field,
-                request.payload.value)
+                request.payload.url)
                 .then((data) => {
                     reply(data);
                 })
@@ -158,16 +158,16 @@ var metadata = [
         config: {
             validate: {
                 query: {
+                    url: Joi.string(),
                     productId: Joi.number().integer(),
-                    field: Joi.string(),
-                    value: Joi.string()
+                    field: Joi.string()
                 }
             },
             notes: [
                 "Field values: 'sofbackend__sof_work_meta__postImage'/'sofbackend__sof_work_meta__subImageX' (X = 1-9)",
-                "Value: -cloudinary image url-"
+                "Url: -image url-"
             ],
-            description: 'Add an Image to matched ProductID',
+            description: 'Add an Url to matched ProductID',
             tags: ['metadata']
         }
     },
