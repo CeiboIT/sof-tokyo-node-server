@@ -12,6 +12,20 @@ var _prefix = '/metadata';
 var metadata = [
     {
         method: 'GET',
+        path: _prefix + '/subcategories/list',
+        handler: function(request, reply) {
+            MetadataService.getSubcategoriesList()
+                .then((data) => {
+                    reply( { subcategories: data });
+                })
+        },
+        config: {
+            description: 'Retrieve Subcategories (with childs) list',
+            tags: ['metadata']
+        }
+    },
+    {
+        method: 'GET',
         path: _prefix + '/subcategories0/list',
         handler: function(request, reply) {
             MetadataService.getSubcategories0List()
@@ -21,10 +35,7 @@ var metadata = [
         },
         config: {
             description: 'Retrieve Subcategories0 list',
-            tags: ['metadata'],
-            notes: [
-                "Can be selected 1+ per Product"
-            ]
+            tags: ['metadata']
         }
     },
     {
@@ -38,10 +49,7 @@ var metadata = [
         },
         config: {
             description: 'Retrieve Subcategories1 list',
-            tags: ['metadata'],
-            notes: [
-                "Can be selected 1+ per Product"
-            ]
+            tags: ['metadata']
         }
     },
     {

@@ -8,6 +8,7 @@ var _ = require('lodash');
 
 export interface IMetadataService {
     // GET
+    getSubcategoriesList(): Q.IPromise<{}>;
     getSubcategories0List(): Q.IPromise<{}>;
     getSubcategories1List(): Q.IPromise<{}>;
     getSchoolsList(): Q.IPromise<{}>;
@@ -24,6 +25,27 @@ export interface IMetadataService {
 
 export class MetadataService implements IMetadataService {
     private db = connection.service;
+
+    getSubcategoriesList(): Q.IPromise<{}> {
+        var _promise = Q.defer();
+
+        this.getSubcategories0List()
+            .then((subcat0: any[]) => {
+
+                this.getSubcategories1List()
+                    .then((subcat1: any[]) => {
+
+                        var ​_groupedSubcategories = _​.groupBy(subcat1, 'parent');
+                        subcat0.forEach((parentCategory) => {
+                            parentCategory['childs'] = _groupedSubcategories[parentCategory['id']];
+                        });
+
+                        _promise.resolve(subcat0);
+                    })
+            })
+
+        return _promise.promise;
+    }
 
     getSubcategories0List(): Q.IPromise<{}> {
         var _listPromise = Q.defer();
