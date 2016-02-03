@@ -273,9 +273,9 @@ export class MetadataService implements IMetadataService {
         return _promise.promise;
     }
 
-    createProductImage(productId, field, value): Q.IPromise<{}> {
+    createProductImage(productId, field, url): Q.IPromise<{}> {
         var _promise = Q.defer();
-        this.db.query_db("INSERT INTO wp2_postmeta (meta_id, post_id, meta_key, meta_value) VALUES (NULL," + productId + ",'" + field + "','" + value + "')")
+        this.db.query_db("INSERT INTO wp2_postmeta (meta_id, post_id, meta_key, meta_value) VALUES (NULL," + productId + ",'" + field + "','" + url + "')")
             .then((data) => {
                 _promise.resolve(data);
             })
