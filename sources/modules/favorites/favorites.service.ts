@@ -8,8 +8,8 @@ export interface IFavoritesService {
     // GET
     showFavorites(userId): Q.IPromise<{}>;
     // POST
-    addFavorite(productId, userId): Q.IPromise<{}>;
-    removeFavorite(productId, userId): Q.Ipromise<{}>;
+    createFavorite(productId, userId): Q.IPromise<{}>;
+    removeFavorite(productId, userId): Q.IPromise<{}>;
 }
 
 export class FavoritesService implements IFavoritesService {
@@ -46,7 +46,7 @@ export class FavoritesService implements IFavoritesService {
         return _promise.promise;
     }
 
-    addFavorite(userId, productId): Q.IPromise<{}> {
+    createFavorite(userId, productId): Q.IPromise<{}> {
         var _promise = Q.defer();
         var query = "INSERT INTO wp2_user_favorites (post_id, user_id) " +
                     "VALUES (" + productId + "," + userId + ") " +
@@ -62,7 +62,7 @@ export class FavoritesService implements IFavoritesService {
     removeFavorite(userId, productId): Q.IPromise<{}> {
         var _promise = Q.defer();
         var query = "DELETE FROM wp2_user_favorites " +
-                    "WHERE post_id=" + productID + " AND user_id=" + userId " " +
+                    "WHERE post_id=" + productId + " AND user_id=" + userId + " " +
                     "LIMIT 1";
         this.db.query_db(query)
             .then((data) => {
