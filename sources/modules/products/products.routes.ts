@@ -180,6 +180,28 @@ var products = [
         }
     },
     {
+        method: 'GET',
+        path: _prefix + '/bysex/{sexId}/{page}',
+        handler: function(request, reply) {
+            ProductsService.getProductsBySex(
+                request.params.sexId,
+                request.params.page || 1)
+                .then((data: Array<any>) => {
+                    reply(data);
+                })
+        },
+        config: {
+            validate: {
+                query: {
+                    sexId: Joi.number().integer(),
+                    page: Joi.number().integer()
+                }
+            },
+            description: 'Retrieve Products from matched SexID',
+            tags: ['products']
+        }
+    },
+    {
         method: 'POST',
         path: _prefix + '/create',
         handler: function(request, reply) {

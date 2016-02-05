@@ -88,6 +88,20 @@ var metadata = [
     },
     {
         method: 'GET',
+        path: _prefix + '/sexs/list',
+        handler: function(request, reply) {
+            MetadataService.getSexsList()
+                .then((data) => {
+                    reply( { sexs: data });
+                })
+        },
+        config: {
+            description: 'Retrieve Sexs list',
+            tags: ['metadata']
+        }
+    },
+    {
+        method: 'GET',
         path: _prefix + '/schools/member/{memberId}',
         handler: function(request, reply) {
             MetadataService.getSchoolByMemberId(
