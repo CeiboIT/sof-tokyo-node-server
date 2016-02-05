@@ -19,6 +19,7 @@ export interface IProductsService {
     getProductsBySubcategory0(subcategory0Id, page): Q.IPromise<{}>;
     getProductsBySubcategory1(subcategory1Id, page): Q.IPromise<{}>;
     getProductsByStyle(styleId, page): Q.IPromise<{}>;
+    getProductsBySex(sexId, page): Q.IPromise<{}>;
     getProductsBySearch(search, page): Q.IPromise<{}>;
     getProductsRankingByLikes(): Q.IPromise<{}>;
     getProductsRankingByVisits(): Q.IPromise<{}>;
@@ -337,6 +338,30 @@ export class ProductsService implements IProductsService {
                 results['style'] = styleId;
                 results['count'] = stylePosts.length;
                 results['count_total'] = stylePosts.length;
+
+                _listPromise.resolve(results);
+            })
+        return _listPromise.promise;
+    }
+
+    getProductsBySex(sexId, page): Q.IPromise<{}>  {
+        var _listPromise = Q.defer();
+        this.db.query('core/?json=get_posts&count=200')
+            .then((results) => {
+                var posts = results['posts'];
+
+                var sexPosts = [];
+                for (var i in posts) {
+
+                    if (posts[i]['custom_fields']['sofbackend__sof_work_meta__sex'] == sexId) {
+                        sexPosts.push(posts[i]);
+                    };
+                };
+
+                results['posts'] = sexPosts;
+                results['sex'] = sexId;
+                results['count'] = sexPosts.length;
+                results['count_total'] = sexPosts.length;
 
                 _listPromise.resolve(results);
             })

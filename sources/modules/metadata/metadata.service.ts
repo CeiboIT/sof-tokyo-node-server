@@ -13,7 +13,7 @@ export interface IMetadataService {
     getSubcategories1List(): Q.IPromise<{}>;
     getSchoolsList(): Q.IPromise<{}>;
     getStylesList(): Q.IPromise<{}>;
-    getSexList(): Q.IPromise<{}>;
+    getSexsList(): Q.IPromise<{}>;
     getSchoolByMemberId(memberId): Q.IPromise<{}>;
     getProductMetadata(productId): Q.IPromise<{}>;
     getProductVisits(productId): Q.IPromise<{}>;
@@ -200,7 +200,7 @@ export class MetadataService implements IMetadataService {
         return _listPromise.promise;
     }
 
-    getSexList(): Q.IPromise<{}> {
+    getSexsList(): Q.IPromise<{}> {
         var _listPromise = Q.defer();
 
         var sexs = [
