@@ -32,7 +32,7 @@ var favorites = [
         method: 'POST',
         path: _prefix,
         handler: function(request, reply) {
-            FavoritesService.showFavorites(
+            FavoritesService.createFavorite(
                 request.payload.userId,
                 request.payload.productId)
                 .then((data) => {
@@ -52,9 +52,9 @@ var favorites = [
     },
     {
         method: 'DELETE',
-        path: _prefix + '/{userId}',
+        path: _prefix,
         handler: function(request, reply) {
-            FavoritesService.showFavorites(
+            FavoritesService.removeFavorite(
                 request.payload.userId,
                 request.payload.productId)
                 .then((data) => {
