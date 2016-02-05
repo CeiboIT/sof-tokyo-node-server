@@ -8,8 +8,8 @@ export interface IFavoritesService {
     // GET
     showFavorites(userId): Q.IPromise<{}>;
     // POST
-    createFavorite(productId, userId): Q.IPromise<{}>;
-    removeFavorite(productId, userId): Q.IPromise<{}>;
+    createFavorite(userId, productId): Q.IPromise<{}>;
+    removeFavorite(userId, productId): Q.IPromise<{}>;
 }
 
 export class FavoritesService implements IFavoritesService {
