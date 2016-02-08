@@ -8,8 +8,8 @@ import MembersRoutes = require("./modules/members/members.routes");
 import BlogRoutes = require("./modules/blog/blog.routes");
 import EmailRoutes = require("./modules/email/email.routes");
 import MessagesRoutes = require("./modules/messages/messages.routes");
-import FavoriteRoutes = require("./modules/favorite/favorite.routes");
 import ImagesRoutes = require("./modules/images/images.routes");
+import FavoriteRoutes = require("./modules/favorite/favorite.routes");
 
 module.exports = [].concat(
     AuthRoutes,
@@ -22,6 +22,6 @@ module.exports = [].concat(
     BlogRoutes,
     EmailRoutes,
     MessagesRoutes,
-    FavoriteRoutes,
-    ImagesRoutes
+    ImagesRoutes,
+    FavoriteRoutes
 );
