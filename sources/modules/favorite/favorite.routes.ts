@@ -2,20 +2,20 @@
 
 ///<reference path="../../../typings/tsd.d.ts" />
 
-import service = require('./favorites.service');
+import service = require('./favorite.service');
 import Joi = require('joi');
 
-var FavoritesService = new service.FavoritesService();
-var _prefix = '/favorites';
-var favorites = [
+var FavoriteService = new service.FavoriteService();
+var _prefix = '/favorite';
+var favorite = [
     {
         method: 'GET',
         path: _prefix + '/{userId}',
         handler: function(request, reply) {
-            FavoritesService.showFavorites(
+            FavoriteService.showFavorite(
                 request.params.userId)
                 .then((data) => {
-                    reply({favorites: data });
+                    reply({favorite: data });
                 })
         },
         config: {
@@ -25,14 +25,14 @@ var favorites = [
                 }
             },
             description: 'Show favorite Products from matched UserID',
-            tags: ['favorites']
+            tags: ['favorite']
         }
     },
     {
         method: 'POST',
         path: _prefix,
         handler: function(request, reply) {
-            FavoritesService.createFavorite(
+            FavoriteService.createFavorite(
                 request.payload.userId,
                 request.payload.productId)
                 .then((data) => {
@@ -47,14 +47,14 @@ var favorites = [
                 }
             },
             description: 'Create a favorite ProductID to matched UserID',
-            tags: ['favorites']
+            tags: ['favorite']
         }
     },
     {
         method: 'DELETE',
         path: _prefix,
         handler: function(request, reply) {
-            FavoritesService.removeFavorite(
+            FavoriteService.removeFavorite(
                 request.payload.userId,
                 request.payload.productId)
                 .then((data) => {
@@ -69,9 +69,9 @@ var favorites = [
                 }
             },
             description: 'Delete ProductID favorite from matched UserID',
-            tags: ['favorites']
+            tags: ['favorite']
         }
     }
 ]
 
-module.exports = favorites;
+module.exports = favorite;

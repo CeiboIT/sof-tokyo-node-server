@@ -4,23 +4,23 @@
 import Q = require("q");
 import connection = require('../connection/connection.service')
 
-export interface IFavoritesService {
+export interface IFavoriteService {
     // GET
-    showFavorites(userId): Q.IPromise<{}>;
+    showFavorite(userId): Q.IPromise<{}>;
     // POST
     createFavorite(userId, productId): Q.IPromise<{}>;
     removeFavorite(userId, productId): Q.IPromise<{}>;
 }
 
-export class FavoritesService implements IFavoritesService {
+export class FavoriteService implements IFavoriteService {
     private db = connection.service;
 
-    showFavorites(userId): Q.IPromise<{}> {
+    showFavorite(userId): Q.IPromise<{}> {
         var _promise = Q.defer();
         var query = "SELECT * FROM " +
                         "( " +
                         "SELECT post_id " +
-                        "FROM wp2_user_favorites " +
+                        "FROM wp2_user_favorite " +
                         "WHERE user_id=" + userId +
                         ") list " +
                     "JOIN " +
@@ -48,7 +48,7 @@ export class FavoritesService implements IFavoritesService {
 
     createFavorite(userId, productId): Q.IPromise<{}> {
         var _promise = Q.defer();
-        var query = "INSERT INTO wp2_user_favorites (post_id, user_id) " +
+        var query = "INSERT INTO wp2_user_favorite (post_id, user_id) " +
                     "VALUES (" + productId + "," + userId + ") " +
                     "ON DUPLICATE KEY UPDATE user_id=user_id";
         this.db.query_db(query)
@@ -61,7 +61,7 @@ export class FavoritesService implements IFavoritesService {
 
     removeFavorite(userId, productId): Q.IPromise<{}> {
         var _promise = Q.defer();
-        var query = "DELETE FROM wp2_user_favorites " +
+        var query = "DELETE FROM wp2_user_favorite " +
                     "WHERE post_id=" + productId + " AND user_id=" + userId + " " +
                     "LIMIT 1";
         this.db.query_db(query)
