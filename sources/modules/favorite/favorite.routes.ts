@@ -1,6 +1,7 @@
 'use strict';
 
 ///<reference path="../../../typings/tsd.d.ts" />
+/// <reference path="./favorite.service.ts" />
 
 import service = require('./favorite.service');
 import Joi = require('joi');
