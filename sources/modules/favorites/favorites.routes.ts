@@ -24,7 +24,7 @@ var favorites = [
                     userId: Joi.number().integer()
                 }
             },
-            description: 'Show favorites Products from matched UserID',
+            description: 'Show favorite Products from matched UserID',
             tags: ['favorites']
         }
     },
