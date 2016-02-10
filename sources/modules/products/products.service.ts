@@ -286,7 +286,8 @@ export class ProductsService implements IProductsService {
                         "(SELECT wp2_posts.ID AS post_id, " +
                         "wp2_posts.post_title AS title, " +
                         "wp2_posts.post_date_gmt AS date, " +
-                        "wp2_users.display_name AS author " +
+                        "wp2_users.display_name AS author, " +
+                        "wp2_users.ID AS author_id " +
                         "FROM `wp2_posts` " +
                         "JOIN wp2_users " +
                         "ON wp2_posts.post_author = wp2_users.ID " +
@@ -335,7 +336,42 @@ export class ProductsService implements IProductsService {
                     "LIMIT 10";
         this.db.query_db(query)
         .then((data) => {
-            _promise.resolve(data);
+//            _promise.resolve(data);
+
+            var dataJson = JSON.parse(JSON.stringify(data));
+
+            var _postAuthorPopulate = [];
+            var _postMetadataPopulate = [];
+
+            dataJson.forEach((result) => {
+                console.log(result);
+                var authorPromise = Q.defer();
+                var metadataPromise = Q.defer();
+                _postAuthorPopulate.push(authorPromise.promise);
+                _postMetadataPopulate.push(metadataPromise.promise);
+
+                // populate author's avatar
+                authServ.getUserAvatar(result['author_id'], "thumb")
+                    .then((data) => {
+                        result['author_avatar'] = data['avatar'];
+                        authorPromise.resolve(data);
+
+                        // populate metadata
+                        metadataServ.getProductMetadata(result.post_id)
+                            .then((data2) => {
+                                result['metadata'] = data2;
+                                metadataPromise.resolve(data2);
+                            })
+                    })
+            });
+
+            Q.all(_postAuthorPopulate.concat(_postMetadataPopulate))
+                .then((values) => {
+                    _promise.resolve(dataJson);
+                });
+
+
+
         })
         return _promise.promise;
     }
