@@ -20,7 +20,7 @@ export class FavoriteService implements IFavoriteService {
         var query = "SELECT * FROM " +
                         "( " +
                         "SELECT post_id " +
-                        "FROM wp2_user_favorite " +
+                        "FROM wp2_user_favorites " +
                         "WHERE user_id=" + userId +
                         ") list " +
                     "JOIN " +
@@ -48,7 +48,7 @@ export class FavoriteService implements IFavoriteService {
 
     createFavorite(userId, productId): Q.IPromise<{}> {
         var _promise = Q.defer();
-        var query = "INSERT INTO wp2_user_favorite (post_id, user_id) " +
+        var query = "INSERT INTO wp2_user_favorites (post_id, user_id) " +
                     "VALUES (" + productId + "," + userId + ") " +
                     "ON DUPLICATE KEY UPDATE user_id=user_id";
         this.db.query_db(query)
@@ -61,7 +61,7 @@ export class FavoriteService implements IFavoriteService {
 
     removeFavorite(userId, productId): Q.IPromise<{}> {
         var _promise = Q.defer();
-        var query = "DELETE FROM wp2_user_favorite " +
+        var query = "DELETE FROM wp2_user_favorites " +
                     "WHERE post_id=" + productId + " AND user_id=" + userId + " " +
                     "LIMIT 1";
         this.db.query_db(query)
