@@ -336,15 +336,12 @@ export class ProductsService implements IProductsService {
                     "LIMIT 10";
         this.db.query_db(query)
         .then((data) => {
-//            _promise.resolve(data);
-
             var dataJson = JSON.parse(JSON.stringify(data));
 
             var _postAuthorPopulate = [];
             var _postMetadataPopulate = [];
 
             dataJson.forEach((result) => {
-                console.log(result);
                 var authorPromise = Q.defer();
                 var metadataPromise = Q.defer();
                 _postAuthorPopulate.push(authorPromise.promise);
@@ -369,9 +366,6 @@ export class ProductsService implements IProductsService {
                 .then((values) => {
                     _promise.resolve(dataJson);
                 });
-
-
-
         })
         return _promise.promise;
     }
