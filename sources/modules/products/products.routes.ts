@@ -72,10 +72,10 @@ var products = [
     },
     {
         method: 'GET',
-        path: _prefix + '/byauthor/{authorId}/{page}',
+        path: _prefix + '/byauthor/{author}/{page}',
         handler: function(request, reply) {
             ProductsService.getProductsByAuthor(
-                request.params.authorId)
+                request.params.author)
             .then((data: Array<any>) => {
                 reply(data);
             })
@@ -83,20 +83,20 @@ var products = [
         config: {
             validate: {
                 query: {
-                    authorId: Joi.number().integer(),
+                    author: Joi.string(),
                     page: Joi.number().integer()
                 }
             },
-            description: 'Retrieve Products from matched AuthorID',
+            description: 'Retrieve Products from matched Author',
             tags: ['products']
         }
     },
     {
         method: 'GET',
-        path: _prefix + '/byschool/{schoolId}/{page}',
+        path: _prefix + '/byschool/{school}/{page}',
         handler: function(request, reply) {
             ProductsService.getProductsBySchool(
-                request.params.schoolId,
+                request.params.school,
                 request.params.page || 1)
                 .then((data: Array<any>) => {
                     reply(data);
@@ -105,20 +105,20 @@ var products = [
         config: {
             validate: {
                 query: {
-                    schoolId: Joi.number().integer(),
+                    school: Joi.string(),
                     page: Joi.number().integer()
                 }
             },
-            description: 'Retrieve Products from matched SchoolID',
+            description: 'Retrieve Products from matched School',
             tags: ['products']
         }
     },
     {
         method: 'GET',
-        path: _prefix + '/bysubcategory0/{subcategory0Id}/{page}',
+        path: _prefix + '/bysubcategory0/{subcategory0}/{page}',
         handler: function(request, reply) {
             ProductsService.getProductsBySubcategory0(
-                request.params.subcategory0Id,
+                request.params.subcategory0,
                 request.params.page || 1)
                 .then((data: Array<any>) => {
                     reply(data);
@@ -127,20 +127,20 @@ var products = [
         config: {
             validate: {
                 query: {
-                    subcategory0Id: Joi.number().integer(),
+                    subcategory0: Joi.string(),
                     page: Joi.number().integer()
                 }
             },
-            description: 'Retrieve Products from matched Subcategory0ID',
+            description: 'Retrieve Products from matched Subcategory0',
             tags: ['products']
         }
     },
     {
         method: 'GET',
-        path: _prefix + '/bysubcategory1/{subcategory1Id}/{page}',
+        path: _prefix + '/bysubcategory1/{subcategory1}/{page}',
         handler: function(request, reply) {
             ProductsService.getProductsBySubcategory1(
-                request.params.subcategory1Id,
+                request.params.subcategory1,
                 request.params.page || 1)
                 .then((data: Array<any>) => {
                     reply(data);
@@ -149,20 +149,20 @@ var products = [
         config: {
             validate: {
                 query: {
-                    subcategory1Id: Joi.number().integer(),
+                    subcategory1: Joi.string(),
                     page: Joi.number().integer()
                 }
             },
-            description: 'Retrieve Products from matched Subcategory1ID',
+            description: 'Retrieve Products from matched Subcategory1',
             tags: ['products']
         }
     },
     {
         method: 'GET',
-        path: _prefix + '/bystyle/{styleId}/{page}',
+        path: _prefix + '/bystyle/{style}/{page}',
         handler: function(request, reply) {
             ProductsService.getProductsByStyle(
-                request.params.styleId,
+                request.params.style,
                 request.params.page || 1)
                 .then((data: Array<any>) => {
                     reply(data);
@@ -171,20 +171,20 @@ var products = [
         config: {
             validate: {
                 query: {
-                    styleId: Joi.number().integer(),
+                    style: Joi.string(),
                     page: Joi.number().integer()
                 }
             },
-            description: 'Retrieve Products from matched StyleID',
+            description: 'Retrieve Products from matched Style',
             tags: ['products']
         }
     },
     {
         method: 'GET',
-        path: _prefix + '/bysex/{sexId}/{page}',
+        path: _prefix + '/bysex/{sex}/{page}',
         handler: function(request, reply) {
             ProductsService.getProductsBySex(
-                request.params.sexId,
+                request.params.sex,
                 request.params.page || 1)
                 .then((data: Array<any>) => {
                     reply(data);
@@ -193,11 +193,11 @@ var products = [
         config: {
             validate: {
                 query: {
-                    sexId: Joi.number().integer(),
+                    sex: Joi.string(),
                     page: Joi.number().integer()
                 }
             },
-            description: 'Retrieve Products from matched SexID',
+            description: 'Retrieve Products from matched Sex',
             tags: ['products']
         }
     },
@@ -329,12 +329,43 @@ var products = [
         config: {
             validate: {
                 query: {
-                    search: Joi.number().integer(),
+                    search: Joi.string(),
                     page: Joi.number().integer()
                 }
             },
             description: 'Retrieve Products from matched Search string',
             tags: ['products']
+        }
+    },
+    {
+        method: 'GET',
+        path: _prefix + '/searchOptions/{search}/{subcategory0}/{subcategory1}/{style}/{sex}',
+        handler: function(request, reply) {
+            ProductsService.getProductsByOptionsSearch(
+                request.params.search,
+                request.params.subcategory0,
+                request.params.subcategory1,
+                request.params.style,
+                request.params.sex)
+                .then((data: Array<any>) => {
+                    reply( { products: data });
+                })
+        },
+        config: {
+            validate: {
+                query: {
+                    search: Joi.string(),
+                    subcategory0: Joi.string(),
+                    subcategory1: Joi.string(),
+                    style: Joi.string(),
+                    sex: Joi.string()
+                }
+            },
+            description: 'Retrieve Products from matched Search options',
+            tags: ['products'],
+            notes: [
+                "Set parameter value 'null' to skip any parameter search"
+            ]
         }
     },
     {
