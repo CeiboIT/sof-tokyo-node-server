@@ -21,6 +21,7 @@ export interface IProductsService {
     getProductsByStyle(styleId, page): Q.IPromise<{}>;
     getProductsBySex(sexId, page): Q.IPromise<{}>;
     getProductsBySearch(search, page): Q.IPromise<{}>;
+    getProductsByOptionsSearch(search, subcategory0, subcategory1, style, sex, school): Q.IPromise<{}>;
     getProductsRankingByLikes(): Q.IPromise<{}>;
     getProductsRankingByVisits(): Q.IPromise<{}>;
     // POST
@@ -271,6 +272,37 @@ export class ProductsService implements IProductsService {
             })
         return _listPromise.promise;
     }
+
+    getProductsByOptionsSearch(search, subcategory0, subcategory1, style, sex, school): Q.IPromise<{}> {
+        var _listPromise = Q.defer();
+        this.db.query('core/?json=get_posts&count=200')
+            .then((results) => {
+                var posts = results['posts'];
+
+                this.db.query_db("SELECT user_id FROM wp2_bp_xprofile_data WHERE value='" + schoolId + "' AND field_id=4")
+                    .then((data) => {
+                        var userIds = []
+                        for (var i in data) {
+                            userIds.push(data[i].user_id);
+                        }
+
+                        var schoolPosts = [];
+                        for (var j in posts) {
+                            if (inArray(userIds, posts[j].author.id)) {
+                                schoolPosts.push(posts[j]);
+                            };
+                        };
+                        results['posts'] = schoolPosts;
+                        results['school'] = schoolId;
+                        results['count'] = schoolPosts.length;
+                        results['count_total'] = schoolPosts.length;
+
+                        _listPromise.resolve(results);
+                    })
+            })
+        return _listPromise.promise;
+    }
+
 
     getProductsBySubcategory0(subcategory0Id, page): Q.IPromise<{}>  {
         var _listPromise = Q.defer();
