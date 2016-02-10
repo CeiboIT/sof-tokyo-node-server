@@ -275,31 +275,66 @@ export class ProductsService implements IProductsService {
 
     getProductsByOptionsSearch(search, subcategory0, subcategory1, style, sex, school): Q.IPromise<{}> {
         var _promise = Q.defer();
-        this.db.query('core/?json=get_posts&count=200')
-            .then((results) => {
-                var posts = results['posts'];
+        var query = "SELECT post_data.post_id, post_data.title, post_data.date, post_data.author, " +
+                    "image.image, subcategory0.subcategory0, subcategory1.subcategory1, style.style, sex.sex " +
+                    "FROM " +
+                        "(SELECT wp2_posts.ID AS post_id, " +
+                        "wp2_posts.post_title AS title, " +
+                        "wp2_posts.post_date_gmt AS date, " +
+                        "wp2_users.display_name AS author " +
+                        "FROM `wp2_posts` " +
+                        "JOIN wp2_users " +
+                        "ON wp2_posts.post_author = wp2_users.ID " +
+                        "WHERE wp2_posts.post_title LIKE '%' " +
+                        ") post_data " +
+                    "JOIN " +
+                        "(SELECT wp2_postmeta.post_id, " +
+                        "wp2_postmeta.meta_value AS image " +
+                        "FROM wp2_postmeta " +
+                        "WHERE wp2_postmeta.meta_key = 'sofbackend__sof_work_meta__postImage' " +
+                        "AND wp2_postmeta.meta_value LIKE '%' " +
+                        ") image " +
+                    "ON post_data.post_id = image.post_id " +
+                    "JOIN " +
+                        "(SELECT wp2_postmeta.post_id, " +
+                        "wp2_postmeta.meta_value AS subcategory0 " +
+                        "FROM wp2_postmeta " +
+                        "WHERE wp2_postmeta.meta_key = 'sofbackend__sof_work_meta__category_0' " +
+                        "AND wp2_postmeta.meta_value LIKE '%' " +
+                        ") subcategory0 " +
+                    "ON post_data.post_id = subcategory0.post_id " +
+                    "JOIN " +
+                        "(SELECT wp2_postmeta.post_id, " +
+                        "wp2_postmeta.meta_value AS subcategory1 " +
+                        "FROM wp2_postmeta " +
+                        "WHERE wp2_postmeta.meta_key = 'sofbackend__sof_work_meta__category_1' " +
+                        "AND wp2_postmeta.meta_value LIKE '%' " +
+                        ") subcategory1 " +
+                    "ON post_data.post_id = subcategory1.post_id " +
+                    "JOIN " +
+                        "(SELECT wp2_postmeta.post_id, " +
+                        "wp2_postmeta.meta_value AS style " +
+                        "FROM wp2_postmeta " +
+                        "WHERE wp2_postmeta.meta_key = 'sofbackend__sof_work_meta__style' " +
+                        "AND wp2_postmeta.meta_value LIKE '%' " +
+                        ") style " +
+                    "ON post_data.post_id = style.post_id " +
+                    "JOIN " +
+                        "(SELECT wp2_postmeta.post_id, " +
+                        "wp2_postmeta.meta_value AS sex " +
+                        "FROM wp2_postmeta " +
+                        "WHERE wp2_postmeta.meta_key = 'sofbackend__sof_work_meta__sex' " +
+                        "AND wp2_postmeta.meta_value LIKE '%' " +
+                        ") sex " +
+                    "ON post_data.post_id = sex.post_id " +
+                    "ORDER BY post_id " +
+                    "LIMIT 10";
 
-                this.db.query_db("SELECT user_id FROM wp2_bp_xprofile_data WHERE value='" + school + "' AND field_id=4")
-                    .then((data) => {
-                        var userIds = []
-                        for (var i in data) {
-                            userIds.push(data[i].user_id);
-                        }
-
-                        var schoolPosts = [];
-                        for (var j in posts) {
-                            if (inArray(userIds, posts[j].author.id)) {
-                                schoolPosts.push(posts[j]);
-                            };
-                        };
-                        results['posts'] = schoolPosts;
-                        results['school'] = school;
-                        results['count'] = schoolPosts.length;
-                        results['count_total'] = schoolPosts.length;
-
-                        _promise.resolve(results);
-                    })
-            })
+        console.log(query);
+        this.db.query_db(query)
+        .then((data) => {
+            _promise.resolve(data);
+        })
         return _promise.promise;
     }
 
@@ -336,13 +371,13 @@ export class ProductsService implements IProductsService {
                 var subcategory1Posts = [];
                 for (var i in posts) {
 
-                    if (posts[i]['custom_fields']['sofbackend__sof_work_meta__category_0'] == subcategory1Id) {
+                    if (posts[i]['custom_fields']['sofbackend__sof_work_meta__category_1'] == subcategory1Id) {
                         subcategory1Posts.push(posts[i]);
                     };
                 };
 
                 results['posts'] = subcategory1Posts;
-                results['subcategory0'] = subcategory1Id;
+                results['subcategory1'] = subcategory1Id;
                 results['count'] = subcategory1Posts.length;
                 results['count_total'] = subcategory1Posts.length;
 
@@ -477,6 +512,7 @@ export class ProductsService implements IProductsService {
         var query = "SELECT * FROM " +
                     "( " +
                     "SELECT wp2_posts.ID AS post_id, " +
+                    "wp2_posts.post_title AS title, " +
                     "wp2_posts.post_date_gmt AS date, " +
                     "wp2_postmeta.meta_value AS likes, " +
                     "wp2_users.display_name AS author " +
@@ -512,6 +548,7 @@ export class ProductsService implements IProductsService {
         var query = "SELECT * FROM " +
                     "( " +
                     "SELECT wp2_posts.ID AS post_id, " +
+                    "wp2_posts.post_title AS title, " +
                     "wp2_posts.post_date_gmt AS date, " +
                     "wp2_users.display_name AS author, " +
                     "wp2_post_views.count AS visits " +
