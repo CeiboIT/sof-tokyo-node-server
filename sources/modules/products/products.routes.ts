@@ -349,7 +349,7 @@ var products = [
                 request.params.sex,
                 request.params.school)
                 .then((data: Array<any>) => {
-                    reply(data);
+                    reply( { products: data });
                 })
         },
         config: {

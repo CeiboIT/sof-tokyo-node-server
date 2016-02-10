@@ -274,7 +274,7 @@ export class ProductsService implements IProductsService {
     }
 
     getProductsByOptionsSearch(search, subcategory0, subcategory1, style, sex, school): Q.IPromise<{}> {
-        var _listPromise = Q.defer();
+        var _promise = Q.defer();
         this.db.query('core/?json=get_posts&count=200')
             .then((results) => {
                 var posts = results['posts'];
@@ -297,12 +297,11 @@ export class ProductsService implements IProductsService {
                         results['count'] = schoolPosts.length;
                         results['count_total'] = schoolPosts.length;
 
-                        _listPromise.resolve(results);
+                        _promise.resolve(results);
                     })
             })
-        return _listPromise.promise;
+        return _promise.promise;
     }
-
 
     getProductsBySubcategory0(subcategory0Id, page): Q.IPromise<{}>  {
         var _listPromise = Q.defer();
