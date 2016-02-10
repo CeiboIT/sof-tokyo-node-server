@@ -273,8 +273,13 @@ export class ProductsService implements IProductsService {
         return _listPromise.promise;
     }
 
-    getProductsByOptionsSearch(search, subcategory0, subcategory1, style, sex, school): Q.IPromise<{}> {
+    getProductsByOptionsSearch(search, subcategory0, subcategory1, style, sex): Q.IPromise<{}> {
         var _promise = Q.defer();
+        if (search == 'null') search = '';
+        if (subcategory0 == 'null') search = '';
+        if (subcategory1 == 'null') search = '';
+        if (style == 'null') search = '';
+        if (sex == 'null') search = '';
         var query = "SELECT post_data.post_id, post_data.title, post_data.date, post_data.author, " +
                     "image.image, subcategory0.subcategory0, subcategory1.subcategory1, style.style, sex.sex " +
                     "FROM " +
@@ -285,14 +290,13 @@ export class ProductsService implements IProductsService {
                         "FROM `wp2_posts` " +
                         "JOIN wp2_users " +
                         "ON wp2_posts.post_author = wp2_users.ID " +
-                        "WHERE wp2_posts.post_title LIKE '%' " +
+                        "WHERE wp2_posts.post_title LIKE '%" + search + "%' " +
                         ") post_data " +
                     "JOIN " +
                         "(SELECT wp2_postmeta.post_id, " +
                         "wp2_postmeta.meta_value AS image " +
                         "FROM wp2_postmeta " +
                         "WHERE wp2_postmeta.meta_key = 'sofbackend__sof_work_meta__postImage' " +
-                        "AND wp2_postmeta.meta_value LIKE '%' " +
                         ") image " +
                     "ON post_data.post_id = image.post_id " +
                     "JOIN " +
@@ -300,7 +304,7 @@ export class ProductsService implements IProductsService {
                         "wp2_postmeta.meta_value AS subcategory0 " +
                         "FROM wp2_postmeta " +
                         "WHERE wp2_postmeta.meta_key = 'sofbackend__sof_work_meta__category_0' " +
-                        "AND wp2_postmeta.meta_value LIKE '%' " +
+                        "AND wp2_postmeta.meta_value LIKE '%" + subcategory0 + "%' " +
                         ") subcategory0 " +
                     "ON post_data.post_id = subcategory0.post_id " +
                     "JOIN " +
@@ -308,7 +312,7 @@ export class ProductsService implements IProductsService {
                         "wp2_postmeta.meta_value AS subcategory1 " +
                         "FROM wp2_postmeta " +
                         "WHERE wp2_postmeta.meta_key = 'sofbackend__sof_work_meta__category_1' " +
-                        "AND wp2_postmeta.meta_value LIKE '%' " +
+                        "AND wp2_postmeta.meta_value LIKE '%" + subcategory1 + "%' " +
                         ") subcategory1 " +
                     "ON post_data.post_id = subcategory1.post_id " +
                     "JOIN " +
@@ -316,7 +320,7 @@ export class ProductsService implements IProductsService {
                         "wp2_postmeta.meta_value AS style " +
                         "FROM wp2_postmeta " +
                         "WHERE wp2_postmeta.meta_key = 'sofbackend__sof_work_meta__style' " +
-                        "AND wp2_postmeta.meta_value LIKE '%' " +
+                        "AND wp2_postmeta.meta_value LIKE '%" + style + "%' " +
                         ") style " +
                     "ON post_data.post_id = style.post_id " +
                     "JOIN " +
@@ -324,13 +328,11 @@ export class ProductsService implements IProductsService {
                         "wp2_postmeta.meta_value AS sex " +
                         "FROM wp2_postmeta " +
                         "WHERE wp2_postmeta.meta_key = 'sofbackend__sof_work_meta__sex' " +
-                        "AND wp2_postmeta.meta_value LIKE '%' " +
+                        "AND wp2_postmeta.meta_value LIKE '%" + sex + "%' " +
                         ") sex " +
                     "ON post_data.post_id = sex.post_id " +
                     "ORDER BY post_id " +
                     "LIMIT 10";
-
-        console.log(query);
         this.db.query_db(query)
         .then((data) => {
             _promise.resolve(data);

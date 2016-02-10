@@ -329,7 +329,7 @@ var products = [
         config: {
             validate: {
                 query: {
-                    search: Joi.number().integer(),
+                    search: Joi.string(),
                     page: Joi.number().integer()
                 }
             },
@@ -339,15 +339,14 @@ var products = [
     },
     {
         method: 'GET',
-        path: _prefix + '/searchOptions/{search}/{page}',
+        path: _prefix + '/searchOptions/{search}/{subcategory0}/{subcategory1}/{style}/{sex}',
         handler: function(request, reply) {
             ProductsService.getProductsByOptionsSearch(
                 request.params.search,
                 request.params.subcategory0,
                 request.params.subcategory1,
                 request.params.style,
-                request.params.sex,
-                request.params.school)
+                request.params.sex)
                 .then((data: Array<any>) => {
                     reply( { products: data });
                 })
@@ -355,12 +354,18 @@ var products = [
         config: {
             validate: {
                 query: {
-                    search: Joi.number().integer(),
-                    page: Joi.number().integer()
+                    search: Joi.string(),
+                    subcategory0: Joi.string(),
+                    subcategory1: Joi.string(),
+                    style: Joi.string(),
+                    sex: Joi.string()
                 }
             },
-            description: 'Retrieve Products from matched Search string',
-            tags: ['products']
+            description: 'Retrieve Products from matched Search options',
+            tags: ['products'],
+            notes: [
+                "Set parameter value 'null' to skip any parameter search"
+            ]
         }
     },
     {
