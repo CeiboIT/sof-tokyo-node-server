@@ -343,7 +343,11 @@ var products = [
         handler: function(request, reply) {
             ProductsService.getProductsByOptionsSearch(
                 request.params.search,
-                request.params.page || 1)
+                request.params.subcategory0,
+                request.params.subcategory1,
+                request.params.style,
+                request.params.sex,
+                request.params.school)
                 .then((data: Array<any>) => {
                     reply(data);
                 })

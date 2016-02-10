@@ -279,7 +279,7 @@ export class ProductsService implements IProductsService {
             .then((results) => {
                 var posts = results['posts'];
 
-                this.db.query_db("SELECT user_id FROM wp2_bp_xprofile_data WHERE value='" + schoolId + "' AND field_id=4")
+                this.db.query_db("SELECT user_id FROM wp2_bp_xprofile_data WHERE value='" + school + "' AND field_id=4")
                     .then((data) => {
                         var userIds = []
                         for (var i in data) {
@@ -293,7 +293,7 @@ export class ProductsService implements IProductsService {
                             };
                         };
                         results['posts'] = schoolPosts;
-                        results['school'] = schoolId;
+                        results['school'] = school;
                         results['count'] = schoolPosts.length;
                         results['count_total'] = schoolPosts.length;
 
