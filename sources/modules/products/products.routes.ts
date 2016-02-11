@@ -283,12 +283,12 @@ var products = [
                     subImg4: Joi.string(),
                     subImg5: Joi.string(),
                     subImg6: Joi.string(),
-                    productionCost: Joi.string(),
+                    productionCost: Joi.number().integer(),
                     sell: Joi.string(),
-                    sellPrice: Joi.string(),
+                    sellPrice: Joi.number().integer(),
                     sellNote: Joi.string(),
                     rental: Joi.string(),
-                    rentalPrice: Joi.string(),
+                    rentalPrice: Joi.number().integer(),
                     rentalNote: Joi.string()
                 }
             },

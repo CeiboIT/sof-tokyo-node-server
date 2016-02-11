@@ -392,8 +392,8 @@ export class ProductsService implements IProductsService {
 
         var _promise = Q.defer();
         var now = new Date();
-        var query = "INSERT INTO wp2_posts (ID, post_author, post_content, post_title, post_status, comment_status, ping_status, post_name, post_type, post_date) " +
-                    "VALUES (NULL, '" + author + "', '" + content + "', '" + title + "', 'publish', 'open', 'open', '" + title + "', 'post', '" + now.toISOString() + "')";
+        var query = "INSERT INTO wp2_posts (ID, post_author, post_content, post_title, post_status, comment_status, ping_status, post_name, post_type, post_date, post_date_gmt) " +
+                    "VALUES (NULL, '" + author + "', '" + content + "', '" + title + "', 'publish', 'open', 'open', '" + title + "', 'post', '" + now.toISOString() + "','" + now.toISOString() + "')";
 
         this.db.query_db(query)
             .then((data) => {
@@ -402,34 +402,33 @@ export class ProductsService implements IProductsService {
 
                 this.db.query_db(query2)
                     .then((data2) => {
-
                         var query3 = "INSERT INTO wp2_postmeta (meta_id, post_id, meta_key, meta_value)" +
                                     "VALUES ";
 
-                        if (img) query3 = query3.concat("(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__postImage'," + img + ") ");
-                        if (subcategory0) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__category_0'," + subcategory0 + ") ");
-                        if (subcategory1) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__category_1'," + subcategory1 + ") ");
+                        if (img) query3 = query3.concat("(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__postImage','" + img + "') ");
+                        if (subcategory0) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__category_0','" + subcategory0 + "') ");
+                        if (subcategory1) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__category_1','" + subcategory1 + "') ");
                         if (styles) {
                             for (var i in styles) {
-                                query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__styles'," + styles[i] + ") ");
+                                query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__styles','" + styles[i] + "') ");
                             }
                         };
-                        if (sex) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__sex'," + sex + ") ");
-                        if (subImg1) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__subImage1'," + subImg1 + ") ");
-                        if (subImg2) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__subImage2'," + subImg2 + ") ");
-                        if (subImg3) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__subImage3'," + subImg3 + ") ");
-                        if (subImg4) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__subImage4'," + subImg4 + ") ");
-                        if (subImg5) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__subImage5'," + subImg5 + ") ");
-                        if (subImg6) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__subImage6'," + subImg6 + ") ");
+                        if (sex) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__sex','" + sex + "') ");
+                        if (subImg1) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__subImage1','" + subImg1 + "') ");
+                        if (subImg2) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__subImage2','" + subImg2 + "') ");
+                        if (subImg3) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__subImage3','" + subImg3 + "') ");
+                        if (subImg4) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__subImage4','" + subImg4 + "') ");
+                        if (subImg5) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__subImage5','" + subImg5 + "') ");
+                        if (subImg6) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__subImage6','" + subImg6 + "') ");
                         if (productionCost) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__productionCost'," + productionCost + ") ");
-                        if (sell) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__sell'," + sell + ") ");
+                        if (sell) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__sell','" + sell + "') ");
                         if (sellPrice) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__sellPrice'," + sellPrice + ") ");
-                        if (sellNote) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__sellNote'," + sellNote + ") ");
-                        if (rental) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__rental'," + rental + ") ");
+                        if (sellNote) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__sellNote','" + sellNote + "') ");
+                        if (rental) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__rental','" + rental + "') ");
                         if (rentalPrice) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__rentalPrice'," + rentalPrice + ") ");
-                        if (rentalNote) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__rentalNote'," + rentalNote + ") ");
+                        if (rentalNote) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__rentalNote','" + rentalNote + "') ");
 
-                        this.db.query_db(query2)
+                        this.db.query_db(query3)
                             .then((data3) => {
                                 _promise.resolve(data);
                             });
