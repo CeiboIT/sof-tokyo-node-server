@@ -383,6 +383,33 @@ export class ProductsService implements IProductsService {
             })
     }
 
+    createNewProduct(author, title, content,
+                    img, subcategory0, subcategory1, styles, sex, subimg1, subimg2, subimg3, subimg4, subimg5, subimg6,
+                    productionCost, sell, sellPrice, sellNote, rental, rentalPrice, rentalNote): Q.IPromise<{}> {
+
+        var _promise = Q.defer();
+        var now = new Date();
+        var query = "INSERT INTO wp2_posts (ID, post_author, post_content, post_title, post_status, comment_status, ping_status, post_name, post_type, post_date)" +
+                    " VALUES (NULL, '" + author + "', '" + content + "', '" + title + "', 'publish', 'open', 'open', '" + title + "', 'post', '" + now.toISOString() + "')";
+
+        this.db.query_db(query)
+            .then((data) => {
+                var guid = "http://sof.tokyo/?p=" + data['insertId'];
+                var query2 = "UPDATE wp2_posts SET guid = '" + guid + "' WHERE ID = " + data['insertId'];
+
+                this.db.query_db(query2)
+                    .then((data2) => {
+
+                        // crear toda la metadata
+
+
+                        _promise.resolve(data);
+                    })
+            })
+
+            return _promise.promise;
+    }
+
     updateProduct(nonce, productId, author, title, content, status, categories, tags): Q.IPromise<{}> {
         return this.db.query('posts/update_post/?nonce=' + nonce +
                              '&id=' + productId +

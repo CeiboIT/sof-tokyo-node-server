@@ -236,6 +236,67 @@ var products = [
         }
     },
     {
+        method: 'POST',
+        path: _prefix + '/createnew',
+        handler: function(request, reply) {
+            ProductsService.createNewProduct(
+                request.payload.author,
+                request.payload.title,
+                request.payload.content,
+                request.payload.img,
+                request.payload.subcategory0,
+                request.payload.subcategory1,
+                request.payload.styles,
+                request.payload.sex,
+                request.payload.subImg1,
+                request.payload.subImg2,
+                request.payload.subImg3,
+                request.payload.subImg4,
+                request.payload.subImg5,
+                request.payload.subImg6,
+                request.payload.productionCost,
+                request.payload.sell,
+                request.payload.sellPrice,
+                request.payload.SellNote,
+                request.payload.rental,
+                request.payload.rentalPrice,
+                request.payload.rentalNote
+            )
+                .then((data) => {
+                    reply(data);
+                })
+        },
+        config: {
+            validate: {
+                query: {
+                    author: Joi.string(),
+                    title: Joi.string(),
+                    content: Joi.string(),
+                    img: Joi.string(),
+                    subcategory0: Joi.string(),
+                    subcategory1: Joi.string(),
+                    styles: Joi.array(),
+                    sex: Joi.string(),
+                    subImg1: Joi.string(),
+                    subImg2: Joi.string(),
+                    subImg3: Joi.string(),
+                    subImg4: Joi.string(),
+                    subImg5: Joi.string(),
+                    subImg6: Joi.string(),
+                    productionCost: Joi.string(),
+                    sell: Joi.string(),
+                    sellPrice: Joi.string(),
+                    sellNote: Joi.string(),
+                    rental: Joi.string(),
+                    rentalPrice: Joi.string(),
+                    rentalNote: Joi.string()
+                }
+            },
+            description: 'Create a new Product',
+            tags: ['products']
+        }
+    },
+    {
         method: 'PUT',
         path: _prefix + '/update',
         handler: function(request, reply) {
