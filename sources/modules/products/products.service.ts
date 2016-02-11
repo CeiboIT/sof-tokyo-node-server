@@ -25,7 +25,10 @@ export interface IProductsService {
     getProductsRankingByLikes(): Q.IPromise<{}>;
     getProductsRankingByVisits(): Q.IPromise<{}>;
     // POST
-    createProduct(nonce, author, title, content, status, school, subcategory0, subcategory1, styles): Q.IPromise<{}>;
+    createProduct(nonce, authorId, title, content, status, school, subcategory0, subcategory1, styles): Q.IPromise<{}>;
+    createNewProduct(authorId, title, content,
+                    img, subcategory0, subcategory1, styles, sex, subimg1, subimg2, subimg3, subimg4, subimg5, subimg6,
+                    productionCost, sell, sellPrice, sellNote, rental, rentalPrice, rentalNote): Q.IPromise<{}>;
     createComment(productId, cookie, content): Q.IPromise<{}>;
     // PUT
     updateProduct(nonce, productId, author, title, content, status, categories, tags): Q.IPromise<{}>;
@@ -466,9 +469,9 @@ export class ProductsService implements IProductsService {
         return _listPromise.promise;
     }
 
-    createProduct(nonce, author, title, content, status, school, subcategory0, subcategory1, styles): Q.IPromise<{}> {
+    createProduct(nonce, authorId, title, content, status, school, subcategory0, subcategory1, styles): Q.IPromise<{}> {
         return this.db.query('posts/create_post/?nonce=' + nonce +
-                             '&author=' + author +
+                             '&author=' + authorId +
                              '&title=' + title +
                              '&content=' + content +
                              '&status=' + status)
@@ -479,6 +482,58 @@ export class ProductsService implements IProductsService {
 
                 return post;
             })
+    }
+
+    createNewProduct(authorId, title, content,
+                    img, subcategory0, subcategory1, styles, sex, subImg1, subImg2, subImg3, subImg4, subImg5, subImg6,
+                    productionCost, sell, sellPrice, sellNote, rental, rentalPrice, rentalNote): Q.IPromise<{}> {
+
+        var _promise = Q.defer();
+        var now = new Date();
+        var query = "INSERT INTO wp2_posts (ID, post_author, post_content, post_title, post_status, comment_status, ping_status, post_name, post_type, post_date, post_date_gmt) " +
+                    "VALUES (NULL, '" + authorId + "', '" + content + "', '" + title + "', 'publish', 'open', 'open', '" + title + "', 'post', '" + now.toISOString() + "','" + now.toISOString() + "')";
+
+        this.db.query_db(query)
+            .then((data) => {
+                var guid = "http://sof.tokyo/?p=" + data['insertId'];
+                var query2 = "UPDATE wp2_posts SET guid = '" + guid + "' WHERE ID = " + data['insertId'];
+
+                this.db.query_db(query2)
+                    .then((data2) => {
+                        var query3 = "INSERT INTO wp2_postmeta (meta_id, post_id, meta_key, meta_value)" +
+                                    "VALUES ";
+
+                        if (img) query3 = query3.concat("(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__postImage','" + img + "') ");
+                        if (subcategory0) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__category_0','" + subcategory0 + "') ");
+                        if (subcategory1) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__category_1','" + subcategory1 + "') ");
+                        if (styles) {
+                            for (var i in styles) {
+                                query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__styles','" + styles[i] + "') ");
+                            }
+                        };
+                        if (sex) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__sex','" + sex + "') ");
+                        if (subImg1) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__subImage1','" + subImg1 + "') ");
+                        if (subImg2) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__subImage2','" + subImg2 + "') ");
+                        if (subImg3) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__subImage3','" + subImg3 + "') ");
+                        if (subImg4) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__subImage4','" + subImg4 + "') ");
+                        if (subImg5) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__subImage5','" + subImg5 + "') ");
+                        if (subImg6) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__subImage6','" + subImg6 + "') ");
+                        if (productionCost) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__productionCost'," + productionCost + ") ");
+                        if (sell) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__sell','" + sell + "') ");
+                        if (sellPrice) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__sellPrice'," + sellPrice + ") ");
+                        if (sellNote) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__sellNote','" + sellNote + "') ");
+                        if (rental) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__rental','" + rental + "') ");
+                        if (rentalPrice) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__rentalPrice'," + rentalPrice + ") ");
+                        if (rentalNote) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__rentalNote','" + rentalNote + "') ");
+
+                        this.db.query_db(query3)
+                            .then((data3) => {
+                                _promise.resolve(data);
+                            });
+                    });
+            });
+
+            return _promise.promise;
     }
 
     updateProduct(nonce, productId, author, title, content, status, categories, tags): Q.IPromise<{}> {

@@ -10,7 +10,7 @@ export interface IAuthService {
     getUserInfo(userId): Q.IPromise<{}>;
     getUserAvatar(userId, type): Q.IPromise<{}>;
     // POST
-    register(username, email, display_name, years, country, school, ob): Q.IPromise<{}>;
+    register(username, email, password, display_name, years, country, school, ob): Q.IPromise<{}>;
     login(username, password): Q.IPromise<{}>;
     fbLogin(token): Q.IPromise<{}>;
     isAuthorized(cookie): Q.IPromise<{}>;
@@ -25,14 +25,17 @@ export class AuthService implements IAuthService {
                              '&method=' + method)
     }
 
-    register(username, email, display_name, years, country, school, ob): Q.IPromise<{}> {
+    register(username, email, password, display_name, years, country, school, ob): Q.IPromise<{}> {
         var _promisesList = [];
         var registerPromise = Q.defer();
         this.getNonce('user', 'register')
             .then((nonce) => {
                 this.db.query('user/register/?username=' + username +
                                      '&email=' + email +
+                                     '&password=' + password +
                                      '&nonce=' + nonce['nonce'] +
+                                     '&notify=yes' +
+                                     '&user_registered=yes' +
                                      '&display_name=' + display_name)
                     .then((results) => {
                         var i = [0, 1, 2, 3, 4];

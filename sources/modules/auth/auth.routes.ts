@@ -43,6 +43,7 @@ var auth = [
             AuthService.register(
                 request.payload.username,
                 request.payload.email,
+                request.payload.password,
                 request.payload.display_name,
                 request.payload.years,
                 request.payload.country,
@@ -57,6 +58,7 @@ var auth = [
                 query: {
                     username: Joi.string(),
                     email: Joi.string(),
+                    password: Joi.string(),
                     display_name: Joi.string(),
                     years: Joi.number().integer(),
                     country: Joi.string(),

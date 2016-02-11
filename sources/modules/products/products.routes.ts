@@ -207,7 +207,7 @@ var products = [
         handler: function(request, reply) {
             ProductsService.createProduct(
                 request.payload.nonce,
-                request.payload.author,
+                request.payload.authorId,
                 request.payload.title,
                 request.payload.content,
                 request.payload.status,
@@ -223,12 +223,73 @@ var products = [
             validate: {
                 query: {
                     nonce: Joi.string(),
-                    author: Joi.string(),
+                    authorId: Joi.number().integer(),
                     title: Joi.string(),
                     content: Joi.string(),
                     status: Joi.string(),
                     categorias: Joi.array(),
                     tags: Joi.array()
+                }
+            },
+            description: 'Create a new Product',
+            tags: ['products']
+        }
+    },
+    {
+        method: 'POST',
+        path: _prefix + '/createnew',
+        handler: function(request, reply) {
+            ProductsService.createNewProduct(
+                request.payload.authorId,
+                request.payload.title,
+                request.payload.content,
+                request.payload.img,
+                request.payload.subcategory0,
+                request.payload.subcategory1,
+                request.payload.styles,
+                request.payload.sex,
+                request.payload.subImg1,
+                request.payload.subImg2,
+                request.payload.subImg3,
+                request.payload.subImg4,
+                request.payload.subImg5,
+                request.payload.subImg6,
+                request.payload.productionCost,
+                request.payload.sell,
+                request.payload.sellPrice,
+                request.payload.SellNote,
+                request.payload.rental,
+                request.payload.rentalPrice,
+                request.payload.rentalNote
+            )
+                .then((data) => {
+                    reply(data);
+                })
+        },
+        config: {
+            validate: {
+                query: {
+                    authorId: Joi.number().integer(),
+                    title: Joi.string(),
+                    content: Joi.string(),
+                    img: Joi.string(),
+                    subcategory0: Joi.string(),
+                    subcategory1: Joi.string(),
+                    styles: Joi.array(),
+                    sex: Joi.string(),
+                    subImg1: Joi.string(),
+                    subImg2: Joi.string(),
+                    subImg3: Joi.string(),
+                    subImg4: Joi.string(),
+                    subImg5: Joi.string(),
+                    subImg6: Joi.string(),
+                    productionCost: Joi.number().integer(),
+                    sell: Joi.string(),
+                    sellPrice: Joi.number().integer(),
+                    sellNote: Joi.string(),
+                    rental: Joi.string(),
+                    rentalPrice: Joi.number().integer(),
+                    rentalNote: Joi.string()
                 }
             },
             description: 'Create a new Product',
