@@ -207,7 +207,7 @@ var products = [
         handler: function(request, reply) {
             ProductsService.createProduct(
                 request.payload.nonce,
-                request.payload.author,
+                request.payload.authorId,
                 request.payload.title,
                 request.payload.content,
                 request.payload.status,
@@ -223,7 +223,7 @@ var products = [
             validate: {
                 query: {
                     nonce: Joi.string(),
-                    author: Joi.string(),
+                    authorId: Joi.number().integer(),
                     title: Joi.string(),
                     content: Joi.string(),
                     status: Joi.string(),
@@ -240,7 +240,7 @@ var products = [
         path: _prefix + '/createnew',
         handler: function(request, reply) {
             ProductsService.createNewProduct(
-                request.payload.author,
+                request.payload.authorId,
                 request.payload.title,
                 request.payload.content,
                 request.payload.img,
@@ -269,7 +269,7 @@ var products = [
         config: {
             validate: {
                 query: {
-                    author: Joi.string(),
+                    authorId: Joi.number().integer(),
                     title: Joi.string(),
                     content: Joi.string(),
                     img: Joi.string(),

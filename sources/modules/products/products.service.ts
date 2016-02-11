@@ -24,8 +24,8 @@ export interface IProductsService {
     getProductsRankingByLikes(): Q.IPromise<{}>;
     getProductsRankingByVisits(): Q.IPromise<{}>;
     // POST
-    createProduct(nonce, author, title, content, status, school, subcategory0, subcategory1, styles): Q.IPromise<{}>;
-    createNewProduct(author, title, content,
+    createProduct(nonce, authorId, title, content, status, school, subcategory0, subcategory1, styles): Q.IPromise<{}>;
+    createNewProduct(authorId, title, content,
                     img, subcategory0, subcategory1, styles, sex, subimg1, subimg2, subimg3, subimg4, subimg5, subimg6,
                     productionCost, sell, sellPrice, sellNote, rental, rentalPrice, rentalNote): Q.IPromise<{}>;
     createComment(productId, cookie, content): Q.IPromise<{}>;
@@ -371,9 +371,9 @@ export class ProductsService implements IProductsService {
         return _listPromise.promise;
     }
 
-    createProduct(nonce, author, title, content, status, school, subcategory0, subcategory1, styles): Q.IPromise<{}> {
+    createProduct(nonce, authorId, title, content, status, school, subcategory0, subcategory1, styles): Q.IPromise<{}> {
         return this.db.query('posts/create_post/?nonce=' + nonce +
-                             '&author=' + author +
+                             '&author=' + authorId +
                              '&title=' + title +
                              '&content=' + content +
                              '&status=' + status)
@@ -386,14 +386,14 @@ export class ProductsService implements IProductsService {
             })
     }
 
-    createNewProduct(author, title, content,
+    createNewProduct(authorId, title, content,
                     img, subcategory0, subcategory1, styles, sex, subImg1, subImg2, subImg3, subImg4, subImg5, subImg6,
                     productionCost, sell, sellPrice, sellNote, rental, rentalPrice, rentalNote): Q.IPromise<{}> {
 
         var _promise = Q.defer();
         var now = new Date();
         var query = "INSERT INTO wp2_posts (ID, post_author, post_content, post_title, post_status, comment_status, ping_status, post_name, post_type, post_date, post_date_gmt) " +
-                    "VALUES (NULL, '" + author + "', '" + content + "', '" + title + "', 'publish', 'open', 'open', '" + title + "', 'post', '" + now.toISOString() + "','" + now.toISOString() + "')";
+                    "VALUES (NULL, '" + authorId + "', '" + content + "', '" + title + "', 'publish', 'open', 'open', '" + title + "', 'post', '" + now.toISOString() + "','" + now.toISOString() + "')";
 
         this.db.query_db(query)
             .then((data) => {
