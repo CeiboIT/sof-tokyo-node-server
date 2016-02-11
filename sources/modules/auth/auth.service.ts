@@ -40,6 +40,12 @@ export class AuthService implements IAuthService {
                         var fieldValues = [display_name, years, country, school, ob];
 
                         if (results['status'] == 'error') {
+                            if(results['error'] == "E-mail address is already in use.") {
+                                results['code'] = '000';
+                            };
+                            if(results['error'] == "Username already exists.") {
+                                results['code'] = '001';
+                            };
                             registerPromise.resolve(results);
                             return registerPromise.promise;
                         } else {
