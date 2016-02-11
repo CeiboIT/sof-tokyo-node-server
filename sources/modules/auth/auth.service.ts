@@ -41,10 +41,10 @@ export class AuthService implements IAuthService {
 
                         if (results['status'] == 'error') {
                             if(results['error'] == "E-mail address is already in use.") {
-                                results['code'] = 000;
+                                results['code'] = '000';
                             };
                             if(results['error'] == "Username already exists.") {
-                                results['code'] = 001;
+                                results['code'] = '001';
                             };
                             registerPromise.resolve(results);
                             return registerPromise.promise;
