@@ -19,10 +19,10 @@ export class BlogService implements IBlogService {
 
     getBanners(): Q.IPromise<{}> {
         var _promise = Q.defer();
-
-        this.db.query_db("SELECT * FROM `wp2_posts` " +
-                         "INNER JOIN `wp2_users` ON `wp2_posts`.`post_author` = `wp2_users`.`ID` " +
-                         "WHERE `wp2_posts`.`post_type` = 'info' AND `wp2_posts`.`post_status` = 'publish'")
+        var query = "SELECT * FROM `wp2_posts` " +
+                    "JOIN (SELECT ID as user_id, display_name FROM wp2_users ) AS table2 ON `wp2_posts`.`post_author` = table2.user_id " +
+                    "WHERE `wp2_posts`.`post_type` = 'info' AND `wp2_posts`.`post_status` = 'publish'";
+        this.db.query_db(query)
             .then((data) => {
                 _promise.resolve(data);
             })
