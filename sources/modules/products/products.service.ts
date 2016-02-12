@@ -5,9 +5,11 @@ import Q = require("q");
 import connection = require('../connection/connection.service')
 import auth = require("../auth/auth.service")
 import metadata = require("../metadata/metadata.service");
+import images = require("../images/images.service");
 
 var authServ = new auth.AuthService();
 var metadataServ = new metadata.MetadataService();
+var imagesServ = new images.ImagesService();
 
 export interface IProductsService {
     // GET
@@ -489,6 +491,7 @@ export class ProductsService implements IProductsService {
                     productionCost, sell, sellPrice, sellNote, rental, rentalPrice, rentalNote): Q.IPromise<{}> {
 
         var _promise = Q.defer();
+        var promisesList = [];
         var now = new Date();
         var query = "INSERT INTO wp2_posts (ID, post_author, post_content, post_title, post_status, comment_status, ping_status, post_name, post_type, post_date, post_date_gmt) " +
                     "VALUES (NULL, '" + authorId + "', '" + content + "', '" + title + "', 'publish', 'open', 'open', '" + title + "', 'post', '" + now.toISOString() + "','" + now.toISOString() + "')";
@@ -503,8 +506,15 @@ export class ProductsService implements IProductsService {
                         var query3 = "INSERT INTO wp2_postmeta (meta_id, post_id, meta_key, meta_value)" +
                                     "VALUES ";
 
-                        if (img) query3 = query3.concat("(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__postImage','" + img + "') ");
-                        if (subcategory0) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__category_0','" + subcategory0 + "') ");
+                        if (img) {
+                            var imagePromise = Q.defer();
+                            promisesList.push(imagePromise.promise);
+                            imagesServ.uploadImage(img, data['insertId'], 'sofbackend__sof_work_meta__postImage')
+                            .then((result) => {
+                                imagePromise.resolve(result);
+                            });
+                        };
+                        if (subcategory0) query3 = query3.concat("(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__category_0','" + subcategory0 + "') ");
                         if (subcategory1) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__category_1','" + subcategory1 + "') ");
                         if (styles) {
                             for (var i in styles) {
@@ -512,12 +522,54 @@ export class ProductsService implements IProductsService {
                             }
                         };
                         if (sex) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__sex','" + sex + "') ");
-                        if (subImg1) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__subImage1','" + subImg1 + "') ");
-                        if (subImg2) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__subImage2','" + subImg2 + "') ");
-                        if (subImg3) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__subImage3','" + subImg3 + "') ");
-                        if (subImg4) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__subImage4','" + subImg4 + "') ");
-                        if (subImg5) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__subImage5','" + subImg5 + "') ");
-                        if (subImg6) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__subImage6','" + subImg6 + "') ");
+                        if (subImg1) {
+                            var subimage1Promise = Q.defer();
+                            promisesList.push(subimage1Promise.promise);
+                            imagesServ.uploadImage(img, data['insertId'], 'sofbackend__sof_work_meta__subImage1')
+                            .then((result) => {
+                                subimage1Promise.resolve(result);
+                            });
+                        };
+                        if (subImg2) {
+                            var subimage2Promise = Q.defer();
+                            promisesList.push(subimage2Promise.promise);
+                            imagesServ.uploadImage(img, data['insertId'], 'sofbackend__sof_work_meta__subImage2')
+                            .then((result) => {
+                                subimage2Promise.resolve(result);
+                            });
+                        };
+                        if (subImg3) {
+                            var subimage3Promise = Q.defer();
+                            promisesList.push(subimage3Promise.promise);
+                            imagesServ.uploadImage(img, data['insertId'], 'sofbackend__sof_work_meta__subImage3')
+                            .then((result) => {
+                                subimage3Promise.resolve(result);
+                            });
+                        };
+                        if (subImg4) {
+                            var subimage4Promise = Q.defer();
+                            promisesList.push(subimage4Promise.promise);
+                            imagesServ.uploadImage(img, data['insertId'], 'sofbackend__sof_work_meta__subImage4')
+                            .then((result) => {
+                                subimage4Promise.resolve(result);
+                            });
+                        };
+                        if (subImg5) {
+                            var subimage5Promise = Q.defer();
+                            promisesList.push(subimage1Promise.promise);
+                            imagesServ.uploadImage(img, data['insertId'], 'sofbackend__sof_work_meta__subImage5')
+                            .then((result) => {
+                                subimage5Promise.resolve(result);
+                            });
+                        };
+                        if (subImg6) {
+                            var subimage6Promise = Q.defer();
+                            promisesList.push(subimage1Promise.promise);
+                            imagesServ.uploadImage(img, data['insertId'], 'sofbackend__sof_work_meta__subImage6')
+                            .then((result) => {
+                                subimage6Promise.resolve(result);
+                            });
+                        };
                         if (productionCost) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__productionCost'," + productionCost + ") ");
                         if (sell) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__sell','" + sell + "') ");
                         if (sellPrice) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__sellPrice'," + sellPrice + ") ");
@@ -526,11 +578,18 @@ export class ProductsService implements IProductsService {
                         if (rentalPrice) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__rentalPrice'," + rentalPrice + ") ");
                         if (rentalNote) query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__rentalNote','" + rentalNote + "') ");
 
+                        var query3Promise = Q.defer();
+                        promisesList.push(query3Promise.promise);
                         this.db.query_db(query3)
                             .then((data3) => {
-                                _promise.resolve(data);
+                                query3Promise.resolve(data3);
                             });
                     });
+
+                    Q.all(promisesList)
+                        .then((values) => {
+                            _promise.resolve(data);
+                        });
             });
 
             return _promise.promise;

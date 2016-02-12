@@ -19,7 +19,7 @@ export interface IImagesService {
     uploadImage(file, productId, field): Q.IPromise<{}>;
 }
 
-export class ImageService implements IImagesService {
+export class ImagesService implements IImagesService {
 
     uploadImage(file, productId, field): Q.IPromise<{}> {
         var _uploadPromise = Q.defer();
