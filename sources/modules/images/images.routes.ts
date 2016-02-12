@@ -5,7 +5,7 @@
 import service = require('./images.service');
 import Joi = require('joi');
 
-var ImagesService = new service.ImageService();
+var ImagesService = new service.ImagesService();
 var _prefix = '/images';
 var images = [
     {
