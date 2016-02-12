@@ -94,8 +94,19 @@ export class AuthService implements IAuthService {
     }
 
     login(username, password): Q.IPromise<{}> {
-        return this.db.query('user/generate_auth_cookie/?username=' + username +
+        var loginPromise = Q.defer();
+        this.db.query('user/generate_auth_cookie/?username=' + username +
                              '&password=' + password)
+        .then((results) => {
+            if (results['status'] == 'error') {
+                if(results['error'] == "Invalid username and/or password.") {
+                    results['code'] = '100';
+                };
+            };
+            loginPromise.resolve(results);
+        });
+
+        return loginPromise.promise;
     }
 
     fbLogin(token): Q.IPromise<{}> {
