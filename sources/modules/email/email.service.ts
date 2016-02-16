@@ -43,21 +43,37 @@ export class EmailService implements IEmailService {
         return _promise.promise;
     }
 
-    sendNewEmail(fromEmail, fromName, to, subject, schools): Q.IPromise<{}> {
+    sendNewEmail(fromEmail, fromName, schools): Q.IPromise<{}> {
         var _promise = Q.defer();
 
         var message = {
-            "from_email": fromEmail,
-            "from_name": fromName,
+            "subject": "User " + fromName + " requires a book",
+            "from_email": "matias.caputti@gmail.com",
+            "from_name": "Info sof-tokyo",
             "to": [{
-                "email": to,
+                "email": "matias.caputti@gmail.com",
+                //"email": "info@sof.tokyo",
                 "type": "to"
             }],
-            schools: schools,
-            content: "Content"
+            "merge": true,
+            "merge_language": "handlebars",
+            "global_merge_vars": [
+                {
+                    "name": "username",
+                    "content": fromName
+                },
+                {
+                    "name": "email",
+                    "content": fromEmail
+                },
+                {
+                    "name": "schools",
+                    "content": schools
+                }
+            ]
         };
 
-        emailClient.messages.send({
+        emailClient.messages.sendTemplate({
             template_name: 'sofTokyoBooksSales',
             template_content: {},
             message: message,
