@@ -31,8 +31,6 @@ var email = [
             EmailService.sendNewEmail(
                 request.payload.fromEmail,
                 request.payload.fromName,
-                request.payload.to,
-                request.payload.subject,
                 request.payload.schools)
                 .then((data) => {
                     reply(data);
@@ -43,9 +41,7 @@ var email = [
                 query: {
                     fromEmail: Joi.string(),
                     fromName: Joi.string(),
-                    to: Joi.string(),
-                    subject: Joi.string(),
-                    content: Joi.string()
+                    schools: Joi.array()
                 }
             },
             description: 'Send a new Email',
