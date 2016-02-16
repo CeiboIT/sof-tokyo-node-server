@@ -47,9 +47,9 @@ export class EmailService implements IEmailService {
         var _promise = Q.defer();
 
         var message = {
-            "subject": fromName + " requires a book",
-            "from_email": fromEmail,
-            "from_name": fromName,
+            "subject": "User " + fromName + " requires a book",
+            "from_email": "matias.caputti@gmail.com",
+            "from_name": "Info sof-tokyo",
             "to": [{
                 "email": "matias.caputti@gmail.com",
                 //"email": "info@sof.tokyo",
