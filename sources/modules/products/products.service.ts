@@ -53,7 +53,7 @@ export class ProductsService implements IProductsService {
 
     getProductsNew(page): Q.IPromise<{}> {
         var _listPromise = Q.defer();
-        this.db.query('core/?json=get_recent_posts&count=4&page=' + page)
+        this.db.query('core/?json=get_recent_posts&count=6&page=' + page)
             .then((results) => {
                 var _postAuthorPopulate = [];
                 var _postMetadataPopulate = [];
@@ -250,6 +250,9 @@ export class ProductsService implements IProductsService {
 
     getProductsBySchool(schoolId, page): Q.IPromise<{}> {
         var _listPromise = Q.defer();
+        var _postAuthorPopulate = [];
+        var _postMetadataPopulate = [];
+
         this.db.query('core/?json=get_posts&count=200')
             .then((results) => {
                 var posts = results['posts'];
@@ -272,7 +275,31 @@ export class ProductsService implements IProductsService {
                         results['count'] = schoolPosts.length;
                         results['count_total'] = schoolPosts.length;
 
-                        _listPromise.resolve(results);
+                        results['posts'].forEach((result) => {
+                            var authorPromise = Q.defer();
+                            var metadataPromise = Q.defer();
+                            _postAuthorPopulate.push(authorPromise.promise);
+                            _postMetadataPopulate.push(metadataPromise.promise);
+
+                            // populate author's avatar
+                            authServ.getUserAvatar(result.author.id, "thumb")
+                                .then((data) => {
+                                    result['author']['avatar'] = data['avatar'];
+                                    authorPromise.resolve(data);
+
+                                    // populate metadatagi
+                                    metadataServ.getProductMetadata(result.id)
+                                        .then((data2) => {
+                                            result['metadata'] = data2;
+                                            metadataPromise.resolve(data2);
+                                        })
+                                })
+                        });
+
+                        Q.all(_postAuthorPopulate.concat(_postMetadataPopulate))
+                            .then((values) => {
+                                _listPromise.resolve(results);
+                            });
                     })
             })
         return _listPromise.promise;
@@ -377,6 +404,9 @@ export class ProductsService implements IProductsService {
 
     getProductsBySubcategory0(subcategory0Id, page): Q.IPromise<{}>  {
         var _listPromise = Q.defer();
+        var _postAuthorPopulate = [];
+        var _postMetadataPopulate = [];
+
         this.db.query('core/?json=get_posts&count=200')
             .then((results) => {
                 var posts = results['posts'];
@@ -394,13 +424,40 @@ export class ProductsService implements IProductsService {
                 results['count'] = subcategory0Posts.length;
                 results['count_total'] = subcategory0Posts.length;
 
-                _listPromise.resolve(results);
+                results['posts'].forEach((result) => {
+                    var authorPromise = Q.defer();
+                    var metadataPromise = Q.defer();
+                    _postAuthorPopulate.push(authorPromise.promise);
+                    _postMetadataPopulate.push(metadataPromise.promise);
+
+                    // populate author's avatar
+                    authServ.getUserAvatar(result.author.id, "thumb")
+                        .then((data) => {
+                            result['author']['avatar'] = data['avatar'];
+                            authorPromise.resolve(data);
+
+                            // populate metadatagi
+                            metadataServ.getProductMetadata(result.id)
+                                .then((data2) => {
+                                    result['metadata'] = data2;
+                                    metadataPromise.resolve(data2);
+                                })
+                        })
+                });
+
+                Q.all(_postAuthorPopulate.concat(_postMetadataPopulate))
+                    .then((values) => {
+                        _listPromise.resolve(results);
+                    });
             })
         return _listPromise.promise;
     }
 
     getProductsBySubcategory1(subcategory1Id, page): Q.IPromise<{}>  {
         var _listPromise = Q.defer();
+        var _postAuthorPopulate = [];
+        var _postMetadataPopulate = [];
+
         this.db.query('core/?json=get_posts&count=200')
             .then((results) => {
                 var posts = results['posts'];
@@ -418,13 +475,40 @@ export class ProductsService implements IProductsService {
                 results['count'] = subcategory1Posts.length;
                 results['count_total'] = subcategory1Posts.length;
 
-                _listPromise.resolve(results);
+                results['posts'].forEach((result) => {
+                    var authorPromise = Q.defer();
+                    var metadataPromise = Q.defer();
+                    _postAuthorPopulate.push(authorPromise.promise);
+                    _postMetadataPopulate.push(metadataPromise.promise);
+
+                    // populate author's avatar
+                    authServ.getUserAvatar(result.author.id, "thumb")
+                        .then((data) => {
+                            result['author']['avatar'] = data['avatar'];
+                            authorPromise.resolve(data);
+
+                            // populate metadatagi
+                            metadataServ.getProductMetadata(result.id)
+                                .then((data2) => {
+                                    result['metadata'] = data2;
+                                    metadataPromise.resolve(data2);
+                                })
+                        })
+                });
+
+                Q.all(_postAuthorPopulate.concat(_postMetadataPopulate))
+                    .then((values) => {
+                        _listPromise.resolve(results);
+                    });
             })
         return _listPromise.promise;
     }
 
     getProductsByStyle(styleId, page): Q.IPromise<{}>  {
         var _listPromise = Q.defer();
+        var _postAuthorPopulate = [];
+        var _postMetadataPopulate = [];
+
         this.db.query('core/?json=get_posts&count=200')
             .then((results) => {
                 var posts = results['posts'];
@@ -442,13 +526,40 @@ export class ProductsService implements IProductsService {
                 results['count'] = stylePosts.length;
                 results['count_total'] = stylePosts.length;
 
-                _listPromise.resolve(results);
+                results['posts'].forEach((result) => {
+                    var authorPromise = Q.defer();
+                    var metadataPromise = Q.defer();
+                    _postAuthorPopulate.push(authorPromise.promise);
+                    _postMetadataPopulate.push(metadataPromise.promise);
+
+                    // populate author's avatar
+                    authServ.getUserAvatar(result.author.id, "thumb")
+                        .then((data) => {
+                            result['author']['avatar'] = data['avatar'];
+                            authorPromise.resolve(data);
+
+                            // populate metadatagi
+                            metadataServ.getProductMetadata(result.id)
+                                .then((data2) => {
+                                    result['metadata'] = data2;
+                                    metadataPromise.resolve(data2);
+                                })
+                        })
+                });
+
+                Q.all(_postAuthorPopulate.concat(_postMetadataPopulate))
+                    .then((values) => {
+                        _listPromise.resolve(results);
+                    });
             })
         return _listPromise.promise;
     }
 
     getProductsBySex(sexId, page): Q.IPromise<{}>  {
         var _listPromise = Q.defer();
+        var _postAuthorPopulate = [];
+        var _postMetadataPopulate = [];
+
         this.db.query('core/?json=get_posts&count=200')
             .then((results) => {
                 var posts = results['posts'];
@@ -461,12 +572,46 @@ export class ProductsService implements IProductsService {
                     };
                 };
 
+                // pagination
+                var count = 6;
+                results['count_total'] = sexPosts.length;
+                results['pages'] = Math.floor(sexPosts.length / count);
+                if (sexPosts.length > 5) {
+                    var from = -count + (count * page);
+                    var to = 0 + (count * page)
+                    sexPosts = sexPosts.slice(from, to);
+                };
+
                 results['posts'] = sexPosts;
                 results['sex'] = sexId;
                 results['count'] = sexPosts.length;
-                results['count_total'] = sexPosts.length;
 
-                _listPromise.resolve(results);
+                results['posts'].forEach((result) => {
+                    var authorPromise = Q.defer();
+                    var metadataPromise = Q.defer();
+                    _postAuthorPopulate.push(authorPromise.promise);
+                    _postMetadataPopulate.push(metadataPromise.promise);
+
+                    // populate author's avatar
+                    authServ.getUserAvatar(result.author.id, "thumb")
+                        .then((data) => {
+                            result['author']['avatar'] = data['avatar'];
+                            authorPromise.resolve(data);
+
+                            // populate metadatagi
+                            metadataServ.getProductMetadata(result.id)
+                                .then((data2) => {
+                                    result['metadata'] = data2;
+                                    metadataPromise.resolve(data2);
+                                })
+                        })
+                });
+
+                Q.all(_postAuthorPopulate.concat(_postMetadataPopulate))
+                    .then((values) => {
+                        _listPromise.resolve(results);
+                    });
+
             })
         return _listPromise.promise;
     }
