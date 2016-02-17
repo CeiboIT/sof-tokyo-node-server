@@ -270,10 +270,20 @@ export class ProductsService implements IProductsService {
                                 schoolPosts.push(posts[j]);
                             };
                         };
+
+                        // pagination
+                        var count = 6;
+                        results['count_total'] = schoolPosts.length;
+                        results['pages'] = Math.floor(schoolPosts.length / count);
+                        if (schoolPosts.length > 5) {
+                            var from = -count + (count * page);
+                            var to = 0 + (count * page)
+                            schoolPosts = schoolPosts.slice(from, to);
+                        };
+
                         results['posts'] = schoolPosts;
                         results['school'] = schoolId;
                         results['count'] = schoolPosts.length;
-                        results['count_total'] = schoolPosts.length;
 
                         results['posts'].forEach((result) => {
                             var authorPromise = Q.defer();
@@ -419,10 +429,19 @@ export class ProductsService implements IProductsService {
                     };
                 };
 
+                // pagination
+                var count = 6;
+                results['count_total'] = subcategory0Posts.length;
+                results['pages'] = Math.floor(subcategory0Posts.length / count);
+                if (subcategory0Posts.length > 5) {
+                    var from = -count + (count * page);
+                    var to = 0 + (count * page)
+                    subcategory0Posts = subcategory0Posts.slice(from, to);
+                };
+
                 results['posts'] = subcategory0Posts;
                 results['subcategory0'] = subcategory0Id;
                 results['count'] = subcategory0Posts.length;
-                results['count_total'] = subcategory0Posts.length;
 
                 results['posts'].forEach((result) => {
                     var authorPromise = Q.defer();
@@ -470,10 +489,19 @@ export class ProductsService implements IProductsService {
                     };
                 };
 
+                // pagination
+                var count = 6;
+                results['count_total'] = subcategory1Posts.length;
+                results['pages'] = Math.floor(subcategory1Posts.length / count);
+                if (subcategory1Posts.length > 5) {
+                    var from = -count + (count * page);
+                    var to = 0 + (count * page)
+                    subcategory1Posts = subcategory1Posts.slice(from, to);
+                };
+
                 results['posts'] = subcategory1Posts;
                 results['subcategory1'] = subcategory1Id;
                 results['count'] = subcategory1Posts.length;
-                results['count_total'] = subcategory1Posts.length;
 
                 results['posts'].forEach((result) => {
                     var authorPromise = Q.defer();
@@ -521,10 +549,19 @@ export class ProductsService implements IProductsService {
                     };
                 };
 
+                // pagination
+                var count = 6;
+                results['count_total'] = stylePosts.length;
+                results['pages'] = Math.floor(stylePosts.length / count);
+                if (stylePosts.length > 5) {
+                    var from = -count + (count * page);
+                    var to = 0 + (count * page)
+                    stylePosts = stylePosts.slice(from, to);
+                };
+
                 results['posts'] = stylePosts;
                 results['style'] = styleId;
                 results['count'] = stylePosts.length;
-                results['count_total'] = stylePosts.length;
 
                 results['posts'].forEach((result) => {
                     var authorPromise = Q.defer();
