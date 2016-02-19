@@ -206,40 +206,6 @@ var products = [
         path: _prefix + '/create',
         handler: function(request, reply) {
             ProductsService.createProduct(
-                request.payload.nonce,
-                request.payload.authorId,
-                request.payload.title,
-                request.payload.content,
-                request.payload.status,
-                request.payload.school,
-                request.payload.subcategory0,
-                request.payload.subcategory1,
-                request.payload.styles)
-                .then((data) => {
-                    reply(data);
-                })
-        },
-        config: {
-            validate: {
-                query: {
-                    nonce: Joi.string(),
-                    authorId: Joi.number().integer(),
-                    title: Joi.string(),
-                    content: Joi.string(),
-                    status: Joi.string(),
-                    categorias: Joi.array(),
-                    tags: Joi.array()
-                }
-            },
-            description: 'Create a new Product',
-            tags: ['products']
-        }
-    },
-    {
-        method: 'POST',
-        path: _prefix + '/createnew',
-        handler: function(request, reply) {
-            ProductsService.createNewProduct(
                 request.payload.authorId,
                 request.payload.title,
                 request.payload.content,

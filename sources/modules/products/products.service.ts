@@ -27,8 +27,7 @@ export interface IProductsService {
     getProductsRankingByLikes(): Q.IPromise<{}>;
     getProductsRankingByVisits(): Q.IPromise<{}>;
     // POST
-    createProduct(nonce, authorId, title, content, status, school, subcategory0, subcategory1, styles): Q.IPromise<{}>;
-    createNewProduct(authorId, title, content,
+    createProduct(authorId, title, content,
                     img, subcategory0, subcategory1, styles, sex, subimg1, subimg2, subimg3, subimg4, subimg5, subimg6,
                     productionCost, sell, sellPrice, sellNote, rental, rentalPrice, rentalNote): Q.IPromise<{}>;
     createComment(productId, cookie, content): Q.IPromise<{}>;
@@ -471,22 +470,7 @@ export class ProductsService implements IProductsService {
         return _listPromise.promise;
     }
 
-    createProduct(nonce, authorId, title, content, status, school, subcategory0, subcategory1, styles): Q.IPromise<{}> {
-        return this.db.query('posts/create_post/?nonce=' + nonce +
-                             '&author=' + authorId +
-                             '&title=' + title +
-                             '&content=' + content +
-                             '&status=' + status)
-            .then((post) => {
-                console.log(post);
-
-                // FALTA GUARDAR SCHOOL, SUBCATEGORY, STYLES
-
-                return post;
-            })
-    }
-
-    createNewProduct(authorId, title, content,
+    createProduct(authorId, title, content,
                     img, subcategory0, subcategory1, styles, sex, subImg1, subImg2, subImg3, subImg4, subImg5, subImg6,
                     productionCost, sell, sellPrice, sellNote, rental, rentalPrice, rentalNote): Q.IPromise<{}> {
 
