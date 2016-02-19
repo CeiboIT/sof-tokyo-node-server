@@ -623,6 +623,24 @@ export class ProductsService implements IProductsService {
             });
         };
 
+        if (subcategory1) {
+            var subcat1Promise = Q.defer();
+            promisesList.push(subcat1Promise.promise);
+            this.db.query_db("UPDATE wp2_postmeta SET meta_value=" + subcategory1 + " WHERE meta_key='sofbackend__sof_work_meta__category_1' AND post_id=" + productId)
+            .then(() => {
+                subcat1Promise.resolve(true);
+            });
+        };
+
+        if (sex) {
+            var sexPromise = Q.defer();
+            promisesList.push(sexPromise.promise);
+            this.db.query_db("UPDATE wp2_postmeta SET meta_value=" + sex + " WHERE meta_key='sofbackend__sof_work_meta__sex' AND post_id=" + productId)
+            .then(() => {
+                sexPromise.resolve(true);
+            });
+        };
+
         Q.all(promisesList)
             .then((values) => {
                 _promise.resolve(true);
