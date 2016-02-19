@@ -266,15 +266,29 @@ var products = [
         method: 'PUT',
         path: _prefix + '/update',
         handler: function(request, reply) {
-            ProductsService.updateProduct(
-                request.payload.nonce,
+            ProductsService.createProduct(
                 request.payload.productId,
-                request.payload.author,
                 request.payload.title,
                 request.payload.content,
-                request.payload.status,
-                request.payload.categories,
-                request.payload.tags)
+                request.payload.img,
+                request.payload.subcategory0,
+                request.payload.subcategory1,
+                request.payload.styles,
+                request.payload.sex,
+                request.payload.subImg1,
+                request.payload.subImg2,
+                request.payload.subImg3,
+                request.payload.subImg4,
+                request.payload.subImg5,
+                request.payload.subImg6,
+                request.payload.productionCost,
+                request.payload.sell,
+                request.payload.sellPrice,
+                request.payload.SellNote,
+                request.payload.rental,
+                request.payload.rentalPrice,
+                request.payload.rentalNote
+            )
                 .then((data) => {
                     reply(data);
                 })
@@ -282,14 +296,27 @@ var products = [
         config: {
             validate: {
                 query: {
-                    nonce: Joi.string(),
                     productId: Joi.number().integer(),
-                    author: Joi.string(),
                     title: Joi.string(),
                     content: Joi.string(),
-                    status: Joi.string(),
-                    categorias: Joi.array(),
-                    tags: Joi.array()
+                    img: Joi.string(),
+                    subcategory0: Joi.string(),
+                    subcategory1: Joi.string(),
+                    styles: Joi.array(),
+                    sex: Joi.string(),
+                    subImg1: Joi.string(),
+                    subImg2: Joi.string(),
+                    subImg3: Joi.string(),
+                    subImg4: Joi.string(),
+                    subImg5: Joi.string(),
+                    subImg6: Joi.string(),
+                    productionCost: Joi.number().integer(),
+                    sell: Joi.string(),
+                    sellPrice: Joi.number().integer(),
+                    sellNote: Joi.string(),
+                    rental: Joi.string(),
+                    rentalPrice: Joi.number().integer(),
+                    rentalNote: Joi.string()
                 }
             },
             description: 'Update a Product',

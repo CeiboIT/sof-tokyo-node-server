@@ -318,4 +318,13 @@ export class MetadataService implements IMetadataService {
         return _promise.promise;
     }
 
+    updateProductImage(productId, field, url): Q.IPromise<{}> {
+        var _promise = Q.defer();
+        this.db.query_db("UPDATE wp2_postmeta SET meta_value=" + url + " WHERE post_id=" + productId + " AND meta_key=" + field)
+            .then((data) => {
+                _promise.resolve(data);
+            })
+        return _promise.promise;
+    }
+
 };

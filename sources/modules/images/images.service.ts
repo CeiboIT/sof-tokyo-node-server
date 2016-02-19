@@ -17,6 +17,7 @@ cloudinary.config({
 export interface IImagesService {
     // POST
     uploadImage(file, productId, field): Q.IPromise<{}>;
+    updateImage(file, productId, field): Q.IPromise<{}>;
 }
 
 export class ImagesService implements IImagesService {
@@ -35,5 +36,22 @@ export class ImagesService implements IImagesService {
         });
 
         return _uploadPromise.promise;
+    }
+
+    updateImage(file, productId, field): Q.IPromise<{}> {
+        var _updatePromise = Q.defer();
+
+        // upload -base64 data- to cloudinary
+        cloudinary.uploader.upload(file, function (result) {
+
+            // save cloudinary result url as post metadata field
+            metadataServ.updateProductImage(productId, field, result.url)
+                .then((result2) => {
+                    _updatePromise.resolve(result);
+                })
+        });
+
+        return _updatePromise.promise;
+
     }
 };

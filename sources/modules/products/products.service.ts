@@ -32,7 +32,9 @@ export interface IProductsService {
                     productionCost, sell, sellPrice, sellNote, rental, rentalPrice, rentalNote): Q.IPromise<{}>;
     createComment(productId, cookie, content): Q.IPromise<{}>;
     // PUT
-    updateProduct(nonce, productId, author, title, content, status, categories, tags): Q.IPromise<{}>;
+    updateProduct(productId, title, content,
+                    img, subcategory0, subcategory1, styles, sex, subimg1, subimg2, subimg3, subimg4, subimg5, subimg6,
+                    productionCost, sell, sellPrice, sellNote, rental, rentalPrice, rentalNote): Q.IPromise<{}>;
     // DELETE
     deleteProduct(nonce, productId): Q.IPromise<{}>;
 }
@@ -579,15 +581,54 @@ export class ProductsService implements IProductsService {
             return _promise.promise;
     }
 
-    updateProduct(nonce, productId, author, title, content, status, categories, tags): Q.IPromise<{}> {
-        return this.db.query('posts/update_post/?nonce=' + nonce +
-                             '&id=' + productId +
-                             '&author=' + author +
-                             '&title=' + title +
-                             '&content=' + content +
-                             '&status=' + status +
-                             '&categories=' + categories +
-                             '&tags=' + tags)
+    updateProduct(productId, title, content,
+                    img, subcategory0, subcategory1, styles, sex, subImg1, subImg2, subImg3, subImg4, subImg5, subImg6,
+                    productionCost, sell, sellPrice, sellNote, rental, rentalPrice, rentalNote): Q.IPromise<{}> {
+        var _promise = Q.defer();
+        var promisesList = [];
+
+        if (title) {
+            var titlePromise = Q.defer();
+            promisesList.push(titlePromise.promise);
+            this.db.query_db("UPDATE wp2_posts SET post_title=" + title + " WHERE ID=" + productId)
+            .then(() => {
+                titlePromise.resolve(true);
+            });
+        };
+
+        if (content) {
+            var contentPromise = Q.defer();
+            promisesList.push(contentPromise.promise);
+            this.db.query_db("UPDATE wp2_posts SET post_content=" + content + " WHERE ID=" + productId)
+            .then(() => {
+                contentPromise.resolve(true);
+            });
+        };
+
+        if (img) {
+            var imagePromise = Q.defer();
+            promisesList.push(imagePromise.promise);
+            imagesServ.updateImage(img, productId, 'sofbackend__sof_work_meta__postImage')
+            .then((result) => {
+                imagePromise.resolve(result);
+            });
+        };
+
+        if (subcategory0) {
+            var subcat0Promise = Q.defer();
+            promisesList.push(subcat0Promise.promise);
+            this.db.query_db("UPDATE wp2_postmeta SET meta_value=" + subcategory0 + " WHERE meta_key='sofbackend__sof_work_meta__category_0' AND post_id=" + productId)
+            .then(() => {
+                subcat0Promise.resolve(true);
+            });
+        };
+
+        Q.all(promisesList)
+            .then((values) => {
+                _promise.resolve(true);
+            });
+
+        return _promise.promise;
     }
 
     deleteProduct(nonce, productId): Q.IPromise<{}> {
