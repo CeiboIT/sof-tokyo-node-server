@@ -54,7 +54,7 @@ export class ProductsService implements IProductsService {
 
     getProductsNew(page): Q.IPromise<{}> {
         var _listPromise = Q.defer();
-        this.db.query('core/?json=get_recent_posts&count=6&page=' + page)
+        this.db.query('core/?json=get_recent_posts&count=10&page=' + page)
             .then((results) => {
                 var _postAuthorPopulate = [];
                 var _postMetadataPopulate = [];
@@ -91,7 +91,7 @@ export class ProductsService implements IProductsService {
 
     getProductsList(page): Q.IPromise<{}> {
         var _listPromise = Q.defer();
-        var count = 6;
+        var count = 10;
         this.db.query('core/?json=get_posts&count=' + count + '&page=' + page)
             .then((results) => {
 
@@ -209,7 +209,7 @@ export class ProductsService implements IProductsService {
 
     getProductsByAuthor(authorId): Q.IPromise<{}> {
         var _promise = Q.defer();
-        this.db.query('core/get_author_posts/?count=4&id=' + authorId)
+        this.db.query('core/get_author_posts/?count=10&id=' + authorId)
             .then((results) => {
                 var _postAuthorPopulate = [];
                 var _postMetadataPopulate = [];
@@ -273,10 +273,10 @@ export class ProductsService implements IProductsService {
                         };
 
                         // pagination
-                        var count = 6;
+                        var count = 10;
                         results['count_total'] = schoolPosts.length;
                         results['pages'] = Math.floor(schoolPosts.length / count);
-                        if (schoolPosts.length > 5) {
+                        if (schoolPosts.length > count-1) {
                             var from = -count + (count * page);
                             var to = 0 + (count * page)
                             schoolPosts = schoolPosts.slice(from, to);
@@ -431,10 +431,10 @@ export class ProductsService implements IProductsService {
                 };
 
                 // pagination
-                var count = 6;
+                var count = 10;
                 results['count_total'] = subcategory0Posts.length;
                 results['pages'] = Math.floor(subcategory0Posts.length / count);
-                if (subcategory0Posts.length > 5) {
+                if (subcategory0Posts.length > count-1) {
                     var from = -count + (count * page);
                     var to = 0 + (count * page)
                     subcategory0Posts = subcategory0Posts.slice(from, to);
@@ -491,10 +491,10 @@ export class ProductsService implements IProductsService {
                 };
 
                 // pagination
-                var count = 6;
+                var count = 10;
                 results['count_total'] = subcategory1Posts.length;
                 results['pages'] = Math.floor(subcategory1Posts.length / count);
-                if (subcategory1Posts.length > 5) {
+                if (subcategory1Posts.length > count-1) {
                     var from = -count + (count * page);
                     var to = 0 + (count * page)
                     subcategory1Posts = subcategory1Posts.slice(from, to);
@@ -551,10 +551,10 @@ export class ProductsService implements IProductsService {
                 };
 
                 // pagination
-                var count = 6;
+                var count = 10;
                 results['count_total'] = stylePosts.length;
                 results['pages'] = Math.floor(stylePosts.length / count);
-                if (stylePosts.length > 5) {
+                if (stylePosts.length > count-1) {
                     var from = -count + (count * page);
                     var to = 0 + (count * page)
                     stylePosts = stylePosts.slice(from, to);
@@ -845,7 +845,7 @@ export class ProductsService implements IProductsService {
 
     getProductsBySearch(search, page): Q.IPromise<{}> {
         var _searchPromise = Q.defer();
-        this.db.query('core/get_search_results/?count=4&search=' + search +
+        this.db.query('core/get_search_results/?count=10&search=' + search +
             '&page=' + page).then((results) => {
             var _postAuthorPopulate = [];
 
