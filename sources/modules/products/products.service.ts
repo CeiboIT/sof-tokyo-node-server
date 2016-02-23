@@ -662,7 +662,7 @@ export class ProductsService implements IProductsService {
         var promisesList = [];
         var now = new Date();
         var query = "INSERT INTO wp2_posts (ID, post_author, post_content, post_title, post_status, comment_status, ping_status, post_name, post_type, post_date, post_date_gmt) " +
-                    "VALUES (NULL, '" + authorId + "', '" + content + "', '" + title + "', 'publish', 'open', 'open', '" + title + "', 'post', '" + now.toISOString() + "','" + now.toISOString() + "')";
+                    "VALUES (NULL, '" + authorId + "', '" + content + "', '" + title + "', 'publish', 'open', 'open', '" + title.replace(/\s/g , '-') + "', 'post', '" + now.toISOString() + "','" + now.toISOString() + "')";
 
         this.db.query_db(query)
             .then((data) => {
