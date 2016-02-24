@@ -19,8 +19,8 @@ export class ConnectionService implements IConnectionService {
             host: 'gator2009.hostgator.com',
             user: 'tdnb1207_sof',
             password: 'pkc~^_9WZ(us',
-            //database: 'tdnb1207_sof', // production
-            database: 'tdnb1207_sof_develop', // develop
+            database: 'tdnb1207_sof', // production
+            //database: 'tdnb1207_sof_develop', // develop
             debug: false,
             insecureAuth: true
         }
