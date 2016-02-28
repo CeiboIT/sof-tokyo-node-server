@@ -449,6 +449,34 @@ var products = [
             description: 'Retrieve Products Ranking by Visits',
             tags: ['products']
         }
+    },
+    {
+        method: 'GET',
+        path: _prefix + '/test1',
+        handler: function(request, reply) {
+            ProductsService.test1ProductList()
+                .then((data) => {
+                    reply({ products: data });
+                })
+        },
+        config: {
+            description: 'Retrieve Products',
+            tags: ['products']
+        }
+    },
+    {
+        method: 'GET',
+        path: _prefix + '/test2',
+        handler: function(request, reply) {
+            ProductsService.test2ProductList()
+                .then((data) => {
+                    reply({ products: data });
+                })
+        },
+        config: {
+            description: 'Retrieve Products',
+            tags: ['products']
+        }
     }
 ]
 

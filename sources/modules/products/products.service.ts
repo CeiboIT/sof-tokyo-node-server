@@ -37,6 +37,9 @@ export interface IProductsService {
                     productionCost, sell, sellPrice, sellNote, rental, rentalPrice, rentalNote): Q.IPromise<{}>;
     // DELETE
     deleteProduct(nonce, productId): Q.IPromise<{}>;
+
+    test1ProductList(): Q.IPromise<{}>;
+    test2ProductList(): Q.IPromise<{}>;
 }
 
 var inArray = function(myArray, myValue) {
@@ -81,9 +84,9 @@ export class ProductsService implements IProductsService {
                 });
 
                 Q.all(_postAuthorPopulate.concat(_postMetadataPopulate))
-                    .then((values) => {
-                        _listPromise.resolve(results);
-                    });
+                .then((values) => {
+                    _listPromise.resolve(results);
+                });
             });
 
         return _listPromise.promise;
@@ -946,4 +949,88 @@ export class ProductsService implements IProductsService {
         return _promise.promise;
     }
 
+    test1ProductList(): Q.IPromise<{}> {
+        var _promise = Q.defer();
+        var count = 10;
+        var query = "SELECT wp2_posts.ID AS post_id, post_title, wp2_users.display_name AS author, wp2_users.id AS author_id, " +
+                    "wp2_posts.post_content, wp2_posts.post_date_gmt, " +
+                    "views_table.post_views, " +
+                    "CONCAT('{', GROUP_CONCAT(CONCAT('\"', meta_key, '\": ', '\"', meta_value, '\"') SEPARATOR ', '), '}') AS metadata " +
+                    "FROM wp2_posts " +
+
+                        "INNER JOIN wp2_postmeta " +
+                        "ON wp2_posts.ID = wp2_postmeta.post_id " +
+
+                        "INNER JOIN wp2_users " +
+                        "ON wp2_posts.post_author = wp2_users.ID " +
+
+                        "INNER JOIN ( " +
+                            "SELECT id AS post_id, count AS post_views " +
+                            "FROM wp2_post_views " +
+                            "WHERE wp2_post_views.type = 4 " +
+                        ") AS views_table " +
+                        "ON wp2_posts.ID = views_table.post_id " +
+
+                    "WHERE wp2_posts.post_type = 'post' " +
+                    "GROUP BY wp2_posts.ID " +
+                    "ORDER BY RAND() " +
+                    "LIMIT " + count;
+        this.db.query_db(query)
+            .then((data) => {
+                _promise.resolve(data);
+            });
+
+        return _promise.promise;
+    }
+
+    test2ProductList(): Q.IPromise<{}> {
+        var _promise = Q.defer();
+        var count = 10;
+        var query = "SELECT wp2_posts.ID AS post_id, post_title, wp2_users.display_name AS author, wp2_users.id AS author_id, " +
+                    "wp2_posts.post_content, wp2_posts.post_date_gmt, " +
+                    "views_table.post_views, " +
+                    "CONCAT('{', GROUP_CONCAT(CONCAT('\"', meta_key, '\": ', '\"', meta_value, '\"') SEPARATOR ', '), '}') AS metadata " +
+                    "FROM wp2_posts " +
+
+                        "INNER JOIN wp2_postmeta " +
+                        "ON wp2_posts.ID = wp2_postmeta.post_id " +
+
+                        "INNER JOIN wp2_users " +
+                        "ON wp2_posts.post_author = wp2_users.ID " +
+
+                        "INNER JOIN ( " +
+                            "SELECT id AS post_id, count AS post_views " +
+                            "FROM wp2_post_views " +
+                            "WHERE wp2_post_views.type = 4 " +
+                        ") AS views_table " +
+                        "ON wp2_posts.ID = views_table.post_id " +
+
+                    "WHERE wp2_posts.post_type = 'post' " +
+                    "GROUP BY wp2_posts.ID " +
+                    "ORDER BY RAND() " +
+                    "LIMIT " + count;
+        this.db.query_db(query)
+            .then((data) => {
+                var dataJson = JSON.parse(JSON.stringify(data));
+                var _postAuthorPopulate = [];
+
+                dataJson.forEach((product) => {
+                    var authorPromise = Q.defer();
+                    _postAuthorPopulate.push(authorPromise.promise);
+
+                    authServ.getUserAvatar(product.author_id, "thumb")
+                    .then((data) => {
+                        product['author_avatar'] = data['avatar'];
+                        authorPromise.resolve(data);
+                    });
+                });
+
+                Q.all(_postAuthorPopulate)
+                .then((values) => {
+                    _promise.resolve(dataJson);
+                });
+            });
+
+        return _promise.promise;
+    }
 };
