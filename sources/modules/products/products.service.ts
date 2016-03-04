@@ -2,6 +2,7 @@
 /// <reference path="../connection/connection.service.ts" />
 
 import Q = require("q");
+import _ = require('lodash');
 import connection = require('../connection/connection.service')
 import auth = require("../auth/auth.service")
 import metadata = require("../metadata/metadata.service");
@@ -115,20 +116,18 @@ export class ProductsService implements IProductsService {
                     _postMetadataPopulate.push(metadataPromise.promise);
 
                     // populate author's avatar
-                    authServ.getUserAvatar(result.author.id, "thumb")
+                    authServ.getUserAvatarUrl(result.author.id)
                         .then((data) => {
-                            result['author']['avatar'] = data['avatar'];
+                            result['author']['avatar'] = data.avatar;    
                             authorPromise.resolve(data);
-
-                            // populate metadatagi
-                            metadataServ.getProductMetadata(result.id)
-                                .then((data2) => {
-                                    result['metadata'] = data2;
-                                    metadataPromise.resolve(data2);
-                                })
-                        })
+                        });
+                    // populate metadatagi
+                    metadataServ.getProductMetadata(result.id)
+                        .then((data2) => {
+                            result['metadata'] = data2;
+                            metadataPromise.resolve(data2);
+                        });
                 });
-
                 Q.all(_postAuthorPopulate.concat(_postMetadataPopulate))
                     .then((values) => {
                         _listPromise.resolve(results);
@@ -955,7 +954,7 @@ export class ProductsService implements IProductsService {
         var query = "SELECT wp2_posts.ID AS post_id, post_title, wp2_users.display_name AS author, wp2_users.id AS author_id, " +
                     "wp2_posts.post_content, wp2_posts.post_date_gmt, " +
                     "views_table.post_views, " +
-                    "CONCAT('{', GROUP_CONCAT(CONCAT('\"', meta_key, '\": ', '\"', meta_value, '\"') SEPARATOR ', '), '}') AS metadata " +
+                    "GROUP_CONCAT(CONCAT('\"', meta_key, '\": ', '\"', meta_value, '\"') SEPARATOR ', ') AS metadata " +
                     "FROM wp2_posts " +
 
                         "INNER JOIN wp2_postmeta " +

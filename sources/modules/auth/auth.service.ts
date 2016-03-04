@@ -4,11 +4,25 @@
 import Q = require("q");
 import connection = require('../connection/connection.service');
 
+export class UserAvatar {
+    private _avatar: string;
+    
+    constructor (avatarUrl: string) {
+        this._avatar = avatarUrl;
+    }
+
+    get avatar(): string {
+        return this._avatar;
+    }
+}
+
 export interface IAuthService {
     // GET
     getNonce(controller, method): Q.IPromise<{}>;
     getUserInfo(userId): Q.IPromise<{}>;
     getUserAvatar(userId, type): Q.IPromise<{}>;
+    getUserAvatarUrl(userId): Q.IPromise<UserAvatar>;
+    
     // POST
     register(username, email, password, display_name, years, country, school, ob): Q.IPromise<{}>;
     login(username, password): Q.IPromise<{}>;
@@ -121,9 +135,27 @@ export class AuthService implements IAuthService {
         return this.db.query('user/get_userinfo/?user_id=' + userId)
     }
 
-    getUserAvatar(userId, type): Q.IPromise<{}> {
+    getUserAvatarUrl(userId): Q.IPromise<UserAvatar> {
+        var deferred = Q.defer();
+        var query = "SELECT meta_value FROM wp2_usermeta WHERE user_id=" + userId + " AND meta_key='kleo_fb_picture' ";
+        try {
+            this.db.query_db(query)
+                .then((response: any[]) => {
+                    if (response.length > 0) {
+                        deferred.resolve(new UserAvatar(response[0].meta_value));
+                    } else {
+                        deferred.resolve(new UserAvatar(''));
+                    }
+                });
+        } catch (error) {
+            console.error('getUserAvatarUrl error ', error);
+        }
+        return deferred.promise;
+    }
+
+    getUserAvatar(userId, type): Q.IPromise<UserAvatar> {
         return this.db.query('user/get_avatar/?user_id=' + userId +
-                             '&type=' + type)
+                             '&type=' + type);
     }
 
     resetPassword(username): Q.IPromise<{}> {
