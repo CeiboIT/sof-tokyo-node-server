@@ -135,22 +135,25 @@ export class AuthService implements IAuthService {
         return this.db.query('user/get_userinfo/?user_id=' + userId)
     }
 
-    getUserAvatarUrl(userId): Q.IPromise<UserAvatar> {
-        var deferred = Q.defer();
-        var query = "SELECT meta_value FROM wp2_usermeta WHERE user_id=" + userId + " AND meta_key='kleo_fb_picture' ";
-        try {
-            this.db.query_db(query)
-                .then((response: any[]) => {
-                    if (response.length > 0) {
-                        deferred.resolve(new UserAvatar(response[0].meta_value));
-                    } else {
-                        deferred.resolve(new UserAvatar(''));
-                    }
-                });
-        } catch (error) {
-            console.error('getUserAvatarUrl error ', error);
-        }
-        return deferred.promise;
+    getUserAvatarUrl(userId): Q.IPromise<{}> {
+        // var deferred = Q.defer();
+        // var query = "SELECT meta_value FROM wp2_usermeta WHERE user_id=" + userId + " AND meta_key='kleo_fb_picture' ";
+        // try {
+        //     this.db.query_db(query)
+        //         .then((response: any[]) => {
+        //             if (response.length > 0) {
+        //                 deferred.resolve(new UserAvatar(response[0].meta_value));
+        //             } else {
+        //                 deferred.resolve(new UserAvatar(''));
+        //             }
+        //         });
+        // } catch (error) {
+        //     console.error('getUserAvatarUrl error ', error);
+        // }
+        // return deferred.promise;
+        return this.db.query('user/get_avatar_url/?user_id=' + userId +
+                             '&type=' + type);
+
     }
 
     getUserAvatar(userId, type): Q.IPromise<UserAvatar> {
