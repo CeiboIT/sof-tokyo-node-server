@@ -19,8 +19,8 @@ export class ConnectionService implements IConnectionService {
             host: 'gator2009.hostgator.com',
             user: 'tdnb1207_sof',
             password: 'pkc~^_9WZ(us',
-            database: 'tdnb1207_sof', // production
-            //database: 'tdnb1207_sof_develop', // develop
+            // database: 'tdnb1207_sof', // production
+            database: 'tdnb1207_sof_develop', // develop
             debug: false,
             insecureAuth: true
         }
@@ -32,7 +32,9 @@ export class ConnectionService implements IConnectionService {
             if (!error && response.statusCode == 200) {
                 _queryPromise.resolve(JSON.parse(body)) // Show the HTML for the Google homepage.
             } else {
-                _queryPromise.resolve(JSON.parse(body))
+                console.error('connection.service > query error ', error);
+                _queryPromise.reject(error);
+                // _queryPromise.resolve(JSON.parse(body))
             }
         })
         return _queryPromise.promise;
