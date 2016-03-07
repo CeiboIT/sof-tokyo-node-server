@@ -3,19 +3,26 @@
 
 import hapi = require('hapi');
 import routes = require("./routes");
+// var Catbox = require('catbox');
+// var mongoDb = require('catbox-mongodb');
 
+
+// this.client = new Catbox.Client(mongoDb, {
+//         location: 'mongodb://heroku_pbrg0ccm:e4o3nqu0m472a7riofofa5psib@ds019498.mlab.com:19498/heroku_pbrg0ccm',
+//         partition: 'cache'
+//     });
 
 this.server = new hapi.Server({
     cache: [{
-        debug: {
-            log: ['error']
-        },
-        name: 'mongodb',
+        name: 'mongoCache',
         engine: require('catbox-mongodb'),
-        uri: 'mongodb://heroku_pbrg0ccm:e4o3nqu0m472a7riofofa5psib@ds019498.mlab.com:19498/heroku_pbrg0ccm',
-        partition: 'cache'
+        location: 'mongodb://heroku_pbrg0ccm:e4o3nqu0m472a7riofofa5psib@ds019498.mlab.com:19498/heroku_pbrg0ccm',
+        partition: 'cache' 
     }]
 });
+
+// this.client.start();
+
 
 var _host;
 var lout_status = false;

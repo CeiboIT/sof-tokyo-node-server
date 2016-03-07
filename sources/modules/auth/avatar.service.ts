@@ -15,7 +15,7 @@ export class AvatarService {
             console.log('avatarService > constructor > adding method');
             hapiServer.server.method('getCachedAvatar', this.getUserAvatarUrl, {
                 cache: {
-                    cache: 'mongodb',
+                    cache: 'mongoCache',
                     expiresIn: 300 * 1000,
                     generateTimeout: 10000
                 }
