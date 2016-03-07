@@ -7,6 +7,7 @@ import connection = require('../connection/connection.service')
 import auth = require("../auth/auth.service")
 import metadata = require("../metadata/metadata.service");
 import images = require("../images/images.service");
+import avatar = require('../auth/avatar.service');
 
 var authServ = new auth.AuthService();
 var metadataServ = new metadata.MetadataService();
@@ -96,6 +97,8 @@ export class ProductsService implements IProductsService {
     getProductsList(page): Q.IPromise<{}> {
         var _listPromise = Q.defer();
         var count = 10;
+        var avatarService = new avatar.AvatarService();
+
         this.db.query('core/?json=get_posts&count=' + count + '&page=' + page)
             .then((results) => {
 
@@ -116,9 +119,9 @@ export class ProductsService implements IProductsService {
                     _postMetadataPopulate.push(metadataPromise.promise);
 
                     // populate author's avatar
-                    authServ.getUserAvatarUrl(result.author.id)
+                    avatarService.getUserAvatar(result.author.id, 'thumb')
                         .then((data) => {
-                            result['author']['avatar'] = data.avatar;    
+                            result['author']['avatar'] = data['avatar'];    
                             authorPromise.resolve(data);
                         });
                     // populate metadatagi
