@@ -10,9 +10,9 @@ this.server = new hapi.Server({
         debug: {
             log: ['error']
         },
-        name: 'memcached',
-        engine: require('catbox-memcached'),
-        host: '127.0.0.1',
+        name: 'mongodb',
+        engine: require('catbox-mongodb'),
+        uri: 'mongodb://heroku_pbrg0ccm:e4o3nqu0m472a7riofofa5psib@ds019498.mlab.com:19498/heroku_pbrg0ccm',
         partition: 'cache'
     }]
 });
