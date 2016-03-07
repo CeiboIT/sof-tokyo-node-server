@@ -1,10 +1,21 @@
 ///<reference path='../typings/hapi/hapi.d.ts' />
 'use strict';
 
-import hapi = require("hapi");
+import hapi = require('hapi');
 import routes = require("./routes");
 
-this.server = new hapi.Server();
+
+this.server = new hapi.Server({
+    cache: [{
+        debug: {
+            log: ['error']
+        },
+        name: 'memcached',
+        engine: require('catbox-memcached'),
+        host: '127.0.0.1',
+        partition: 'cache'
+    }]
+});
 
 var _host;
 var lout_status = false;
@@ -40,5 +51,6 @@ this.server.register([require('vision'), require('inert'), {
 this.server.start(() => {
     if (lout_status == true) console.log('✓ lout: API Documentation generated at ' + this.server.info.uri + '/api');
     console.log('✓ Hapi: Server started at ' + this.server.info.uri);
-})
+});
 
+module.exports = this.server;
