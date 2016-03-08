@@ -1,6 +1,6 @@
 {
   "name": "sof-tokyo-node-server",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "description",
   "main": "tmp/index.js",
   "repository": {
