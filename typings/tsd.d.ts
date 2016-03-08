@@ -23,3 +23,4 @@
 /// <reference path="request/request.d.ts" />
 /// <reference path="joi/joi.d.ts" />
 /// <reference path="mandrill-api/mandrill-api.d.ts" />
+/// <reference path="mongodb/mongodb.d.ts" />
