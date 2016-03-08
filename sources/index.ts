@@ -9,13 +9,8 @@ this.server = new hapi.Server({
         name: 'mongoCache',
         engine: require('catbox-memory'),
         maxByteSize: '26214400'
-        // location: 'mongodb://heroku_pbrg0ccm:e4o3nqu0m472a7riofofa5psib@ds019498.mlab.com:19498/heroku_pbrg0ccm',
-        // partition: 'cache' 
     }]
 });
-
-// this.client.start();
-
 
 var _host;
 var lout_status = false;

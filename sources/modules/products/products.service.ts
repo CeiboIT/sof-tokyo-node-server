@@ -98,7 +98,7 @@ export class ProductsService implements IProductsService {
         var _listPromise = Q.defer();
         var count = 10;
         var avatarService = new avatar.AvatarService();
-
+        console.log('products.service > getProductsList start ', new Date());
         this.db.query('core/?json=get_posts&count=' + count + '&page=' + page)
             .then((results) => {
 
@@ -133,6 +133,7 @@ export class ProductsService implements IProductsService {
                 });
                 Q.all(_postAuthorPopulate.concat(_postMetadataPopulate))
                     .then((values) => {
+                        console.log('products.service > getProductsList finish ', new Date());
                         _listPromise.resolve(results);
                     });
             });
