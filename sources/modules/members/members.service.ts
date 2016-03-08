@@ -5,8 +5,8 @@ import Q = require("q");
 import connection = require('../connection/connection.service')
 import Products = require('../products/products.service')
 import Auth =require('../auth/auth.service')
+import avatar = require('../auth/avatar.service');
 
-var authorsServ = new Auth.AuthService();
 var productsServ = new Products.ProductsService();
 
 export interface IMembersService {
@@ -30,11 +30,14 @@ export class MembersService implements IMembersService {
 
     getMemberById(memberId): Q.IPromise<{}> {
         var _promise = Q.defer();
+        var avatarService = new avatar.AvatarService();
+
         productsServ.getProductsByAuthor(memberId).then(result => {
-            authorsServ.getUserAvatar(memberId, "thumb").then(avatarInfo => {
-                 result['author']['avatar'] = avatarInfo['avatar'];
-                _promise.resolve(result);
-            })
+            avatarService.getUserAvatar(memberId, "thumb")
+                .then(avatarInfo => {
+                     result['author']['avatar'] = avatarInfo['avatar'];
+                    _promise.resolve(result);
+                });
         });
         return _promise.promise;
     }
