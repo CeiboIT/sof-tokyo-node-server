@@ -7,8 +7,11 @@ import routes = require("./routes");
 this.server = new hapi.Server({
     cache: [{
         name: 'mongoCache',
-        engine: require('catbox-memory'),
-        maxByteSize: '26214400'
+        engine: require('catbox-mongodb'),
+        uri: 'mongodb://softokyo:softokyo@ds019498.mlab.com:19498/',
+        partition: 'heroku_pbrg0ccm'
+        // engine: require('catbox-memory'),
+        // maxByteSize: '26214400'
     }]
 });
 
