@@ -17,7 +17,7 @@ export class ConnectionService implements IConnectionService {
     constructor() {
         this.dbConfig = {
             host: 'gator2009.hostgator.com',
-            user: 'tdnb1207_sof',
+            user: 'tdnb1207_sof_backup',
             password: 'pkc~^_9WZ(us',
             database: 'tdnb1207_sof', // production
             // database: 'tdnb1207_sof_develop', // develop
