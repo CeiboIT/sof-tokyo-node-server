@@ -7,7 +7,7 @@ var ConnectionService = (function () {
     function ConnectionService() {
         this.dbConfig = {
             host: 'gator2009.hostgator.com',
-            user: 'tdnb1207_sof_backup',
+            user: 'tdnb1207_sof',
             password: 'pkc~^_9WZ(us',
             database: 'tdnb1207_sof',
             // database: 'tdnb1207_sof_develop', // develop
