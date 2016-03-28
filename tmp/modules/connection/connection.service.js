@@ -11,7 +11,7 @@ var ConnectionService = (function () {
             password: 'pkc~^_9WZ(us',
             // database: 'tdnb1207_sof',
             // database: 'tdnb1207_sof_develop', // develop
-            database: 'tdnb1207_sof_backup'
+            database: 'tdnb1207_sof_backup',
             debug: false,
             insecureAuth: true
         };
