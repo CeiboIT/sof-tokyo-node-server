@@ -474,7 +474,6 @@ var ProductsService = (function () {
                 query2 = "UPDATE wp2_posts SET guid = '" + guid + "' WHERE ID = " + data['insertId'];
             _this.db.query_db(query2).then(function (data2) {
                 var query3 = "INSERT INTO wp2_postmeta (meta_id, post_id, meta_key, meta_value)" + "VALUES ";
-                query3 = query3.concat("(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta','prueba  git commit') ");
                 if (img) {
                     var imagePromise = Q.defer();
                     promisesList.push(imagePromise.promise);
@@ -484,6 +483,7 @@ var ProductsService = (function () {
                 }
                 ;
                 if (subcategory0)
+                    query3 = query3.concat("(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta','asdasd') ");
                     query3 = query3.concat("(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__category_0','" + subcategory0 + "') ");
                 if (subcategory1)
                     query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__category_1','" + subcategory1 + "') ");
