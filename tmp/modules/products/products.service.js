@@ -484,6 +484,9 @@ var ProductsService = (function () {
                 ;
                 if (subcategory0){
                     query3 = query3.concat("(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta','" + subcategory0 + "') ");
+                }
+                ;
+                if (subcategory0){
                     query3 = query3.concat("(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__category_0','" + subcategory0 + "') ");
                 }
                 ;
