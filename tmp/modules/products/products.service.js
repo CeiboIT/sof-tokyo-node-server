@@ -463,15 +463,15 @@ var ProductsService = (function () {
         });
         return _listPromise.promise;
     };
-    ProductsService.prototype.createProduct = function (authorId, title, content, img, subcategory0, subcategory1, styles, sex, subImg1, subImg2, subImg3, subImg4, subImg5, subImg6, productionCost, sell, sellPrice, sellNote, rental, rentalPrice, rentalNote) {
-        var _this = this;
-        var _promise = Q.defer();
-        var promisesList = [];
-        var now = new Date();
-        var query = "INSERT INTO wp2_posts (ID, post_author, post_content, post_title, post_status, comment_status, ping_status, post_name, post_type, post_date, post_date_gmt) " + "VALUES (NULL, '" + authorId + "', '" + content + "', '" + title + "', 'publish', 'open', 'open', '" + title.replace(/\s/g, '-') + "', 'post', '" + now.toISOString() + "','" + now.toISOString() + "')";
+    ProductsService.prototype.createProduct = function (authorId, title, content, img, subcategory0, subcategory1, styles, sex, subImg1, subImg2, subImg3, subImg4, subImg5, subImg6, subImg7, subImg8, subImg9, productionCost, sell, sellPrice, sellNote, rental, rentalPrice, rentalNote) {
+        var _this = this,
+            _promise = Q.defer(),
+            promisesList = [],
+            now = new Date(),
+            query = "INSERT INTO wp2_posts (ID, post_author, post_content, post_title, post_status, comment_status, ping_status, post_name, post_type, post_date, post_date_gmt) " + "VALUES (NULL, '" + authorId + "', '" + content + "', '" + title + "', 'draft', 'open', 'open', '" + title.replace(/\s/g, '-') + "', 'post', '" + now.toISOString() + "','" + now.toISOString() + "')";
         this.db.query_db(query).then(function (data) {
-            var guid = "http://sof.tokyo/?p=" + data['insertId'];
-            var query2 = "UPDATE wp2_posts SET guid = '" + guid + "' WHERE ID = " + data['insertId'];
+            var guid = "http://sof.tokyo/?p=" + data['insertId'],
+                query2 = "UPDATE wp2_posts SET guid = '" + guid + "' WHERE ID = " + data['insertId'];
             _this.db.query_db(query2).then(function (data2) {
                 var query3 = "INSERT INTO wp2_postmeta (meta_id, post_id, meta_key, meta_value)" + "VALUES ";
                 if (img) {
@@ -497,7 +497,7 @@ var ProductsService = (function () {
                 if (subImg1) {
                     var subimage1Promise = Q.defer();
                     promisesList.push(subimage1Promise.promise);
-                    imagesServ.uploadImage(img, data['insertId'], 'sofbackend__sof_work_meta__subImage1').then(function (result) {
+                    imagesServ.uploadImage(subImg1, data['insertId'], 'sofbackend__sof_work_meta__subImage1').then(function (result) {
                         subimage1Promise.resolve(result);
                     });
                 }
@@ -505,7 +505,7 @@ var ProductsService = (function () {
                 if (subImg2) {
                     var subimage2Promise = Q.defer();
                     promisesList.push(subimage2Promise.promise);
-                    imagesServ.uploadImage(img, data['insertId'], 'sofbackend__sof_work_meta__subImage2').then(function (result) {
+                    imagesServ.uploadImage(subImg2, data['insertId'], 'sofbackend__sof_work_meta__subImage2').then(function (result) {
                         subimage2Promise.resolve(result);
                     });
                 }
@@ -513,7 +513,7 @@ var ProductsService = (function () {
                 if (subImg3) {
                     var subimage3Promise = Q.defer();
                     promisesList.push(subimage3Promise.promise);
-                    imagesServ.uploadImage(img, data['insertId'], 'sofbackend__sof_work_meta__subImage3').then(function (result) {
+                    imagesServ.uploadImage(subImg3, data['insertId'], 'sofbackend__sof_work_meta__subImage3').then(function (result) {
                         subimage3Promise.resolve(result);
                     });
                 }
@@ -521,24 +521,48 @@ var ProductsService = (function () {
                 if (subImg4) {
                     var subimage4Promise = Q.defer();
                     promisesList.push(subimage4Promise.promise);
-                    imagesServ.uploadImage(img, data['insertId'], 'sofbackend__sof_work_meta__subImage4').then(function (result) {
+                    imagesServ.uploadImage(subImg4, data['insertId'], 'sofbackend__sof_work_meta__subImage4').then(function (result) {
                         subimage4Promise.resolve(result);
                     });
                 }
                 ;
                 if (subImg5) {
                     var subimage5Promise = Q.defer();
-                    promisesList.push(subimage1Promise.promise);
-                    imagesServ.uploadImage(img, data['insertId'], 'sofbackend__sof_work_meta__subImage5').then(function (result) {
+                    promisesList.push(subimage5Promise.promise);
+                    imagesServ.uploadImage(subImg5, data['insertId'], 'sofbackend__sof_work_meta__subImage5').then(function (result) {
                         subimage5Promise.resolve(result);
                     });
                 }
                 ;
                 if (subImg6) {
                     var subimage6Promise = Q.defer();
-                    promisesList.push(subimage1Promise.promise);
-                    imagesServ.uploadImage(img, data['insertId'], 'sofbackend__sof_work_meta__subImage6').then(function (result) {
+                    promisesList.push(subimage6Promise.promise);
+                    imagesServ.uploadImage(subImg6, data['insertId'], 'sofbackend__sof_work_meta__subImage6').then(function (result) {
                         subimage6Promise.resolve(result);
+                    });
+                }
+                ;
+                if (subImg7) {
+                    var subimage7Promise = Q.defer();
+                    promisesList.push(subimage7Promise.promise);
+                    imagesServ.uploadImage(subImg7, data['insertId'], 'sofbackend__sof_work_meta__subImage7').then(function (result) {
+                        subimage7Promise.resolve(result);
+                    });
+                }
+                ;
+                if (subImg8) {
+                    var subimage8Promise = Q.defer();
+                    promisesList.push(subimage8Promise.promise);
+                    imagesServ.uploadImage(subImg8, data['insertId'], 'sofbackend__sof_work_meta__subImage8').then(function (result) {
+                        subimage8Promise.resolve(result);
+                    });
+                }
+                ;
+                if (subImg9) {
+                    var subimage9Promise = Q.defer();
+                    promisesList.push(subimage9Promise.promise);
+                    imagesServ.uploadImage(subImg9, data['insertId'], 'sofbackend__sof_work_meta__subImage9').then(function (result) {
+                        subimage9Promise.resolve(result);
                     });
                 }
                 ;
