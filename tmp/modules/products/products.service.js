@@ -566,11 +566,8 @@ var ProductsService = (function () {
                     });
                 }
                 ;
-                
-                var sofbackend__sof_work_meta = 'a:2:{s:9:"separated";s:32:"02103d4eebc83e72e0b4f4b8f824641b";s:4:"keys";a:21:{i:0;s:9:"postImage";i:1;s:5:"style";i:2;s:3:"sex";i:3;s:14:"productionCost";i:4;s:4:"sell";i:5;s:9:"sellPrice";i:6;s:8:"sellNote";i:7;s:6:"rental";i:8;s:11:"rentalPrice";i:9;s:10:"rentalNote";i:10;s:9:"subImage1";i:11;s:9:"subImage2";i:12;s:9:"subImage3";i:13;s:9:"subImage4";i:14;s:9:"subImage5";i:15;s:9:"subImage6";i:16;s:9:"subImage7";i:17;s:9:"subImage8";i:18;s:9:"subImage9";i:19;s:10:"category_0";i:20;s:10:"category_1";}}';
-                
-                if (sofbackend__sof_work_meta)
-                    query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta'," + sofbackend__sof_work_meta + ") ");
+                var meta = 'prueba git commit';
+                query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta'," + meta + ") ");
                 
                 if (productionCost)
                     query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__productionCost'," + productionCost + ") ");
@@ -587,7 +584,6 @@ var ProductsService = (function () {
                 if (rentalNote)
                     query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__rentalNote','" + rentalNote + "') ");
                     
-                    console.log(query3)
                 var query3Promise = Q.defer();
                 promisesList.push(query3Promise.promise);
                 _this.db.query_db(query3).then(function (data3) {
