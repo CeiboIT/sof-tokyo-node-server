@@ -566,8 +566,8 @@ var ProductsService = (function () {
                     });
                 }
                 ;
-                var meta = 'prueba git commit';
-                query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta'," + meta + ") ");
+
+                query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta'," + 'prueba git commit' + ") ");
                 
                 if (productionCost)
                     query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__productionCost'," + productionCost + ") ");
