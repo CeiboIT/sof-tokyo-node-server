@@ -486,7 +486,7 @@ var ProductsService = (function () {
                             
                             thumbnailPostID = resQuery4['insertId'];
                             
-                            var query5 = "INSERT INTO wp2_postmeta (meta_id, post_id, meta_key, meta_value) " + "VALUES (NULL," + data['insertId'] + ",'_thumbnail_id','" + thumbnailPostID + "') ");
+                            var query5 = "INSERT INTO wp2_postmeta (meta_id, post_id, meta_key, meta_value) " + "VALUES (NULL, '" + data['insertId'] + ",'_thumbnail_id','" + thumbnailPostID + "') ");
                             
                             _this.db.query_db(query5).then(function (resQuery5) {
                                 imagePromise.resolve(result);
