@@ -479,7 +479,7 @@ var ProductsService = (function () {
                     promisesList.push(imagePromise.promise);
                     imagesServ.uploadImage(img, data['insertId'], 'sofbackend__sof_work_meta__postImage').then(function (result) {
                         
-                        var query4 = "INSERT INTO wp2_posts (ID, post_author, post_content, post_title, post_status, comment_status, ping_status, post_name, post_type, post_mime_type, post_date, post_date_gmt) " + "VALUES (NULL, '" + authorId + "', '" + '' + "', '" + '' + "', 'inherit', 'open', 'closed', '" + '' + "', 'attachment', '" + 'image/jpeg' + now.toISOString() + "','" + now.toISOString() + "')";
+                        var query4 = "INSERT INTO wp2_posts (ID, post_author, post_content, post_title, post_status, comment_status, ping_status, post_name, post_type, post_mime_type, post_date, post_date_gmt) " + "VALUES (NULL, '" + authorId + "', '" + '' + "', '" + '' + "', 'inherit', 'open', 'closed', '" + '' + "', 'attachment', '" + "', 'image/jpeg', '" + now.toISOString() + "','" + now.toISOString() + "')";
                         _this.db.query_db(query4).then(function (result) {
                             imagePromise.resolve(result);
                         });    
