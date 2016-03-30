@@ -468,33 +468,14 @@ var ProductsService = (function () {
             _promise = Q.defer(),
             promisesList = [],
             now = new Date(),
-            thumbnailPostID = null,
+            thumbnailPostID = '',
             query = "INSERT INTO wp2_posts (ID, post_author, post_content, post_title, post_status, comment_status, ping_status, post_name, post_type, post_date, post_date_gmt) " + "VALUES (NULL, '" + authorId + "', '" + content + "', '" + title + "', 'draft', 'open', 'open', '" + title.replace(/\s/g, '-') + "', 'post', '" + now.toISOString() + "','" + now.toISOString() + "')";
         this.db.query_db(query).then(function (data) {
             var guid = "http://sof.tokyo/?p=" + data['insertId'],
                 query2 = "UPDATE wp2_posts SET guid = '" + guid + "' WHERE ID = " + data['insertId'];
             _this.db.query_db(query2).then(function (data2) {
                 var query3 = "INSERT INTO wp2_postmeta (meta_id, post_id, meta_key, meta_value)" + "VALUES ";
-                if (img) {
-                    var imagePromise = Q.defer();
-                    promisesList.push(imagePromise.promise);
-                    imagesServ.uploadImage(img, data['insertId'], 'sofbackend__sof_work_meta__postImage').then(function (result) {
-                        
-                        var query4 = "INSERT INTO wp2_posts (ID, post_author, post_content, post_title, post_status, comment_status, ping_status, post_name, post_type, post_mime_type, post_date, post_date_gmt) " + "VALUES (NULL, '" + authorId + "', '" + content + "', '" + title + "', 'inherit', 'open', 'closed', '" + title.replace(/\s/g, '-') + "', 'attachment', '" + "', 'image/jpeg', '" + now.toISOString() + "','" + now.toISOString() + "')";
-                        
-                        _this.db.query_db(query4).then(function (resQuery4) {
-                            
-                            thumbnailPostID = resQuery4['insertId'];
-                            
-                             var query5 = "INSERT INTO wp2_postmeta (meta_id, post_id, meta_key, meta_value) " + "VALUES (NULL, '" + data['insertId'] + "', '_thumbnail_id', '" + thumbnailPostID + "')";
-                            
-                            _this.db.query_db(query5).then(function (resQuery5) {
-                                imagePromise.resolve(result);
-                            });
-                        });    
-                    });
-                }
-                ;
+                
                 if (subcategory0){
                     query3 = query3.concat("(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__category_0','" + subcategory0 + "') ");
                     var meta = 'a:2:{s:9:"separated";s:32:"02103d4eebc83e72e0b4f4b8f824641b";s:4:"keys";a:21:{i:0;s:9:"postImage";i:1;s:5:"style";i:2;s:3:"sex";i:3;s:14:"productionCost";i:4;s:4:"sell";i:5;s:9:"sellPrice";i:6;s:8:"sellNote";i:7;s:6:"rental";i:8;s:11:"rentalPrice";i:9;s:10:"rentalNote";i:10;s:9:"subImage1";i:11;s:9:"subImage2";i:12;s:9:"subImage3";i:13;s:9:"subImage4";i:14;s:9:"subImage5";i:15;s:9:"subImage6";i:16;s:9:"subImage7";i:17;s:9:"subImage8";i:18;s:9:"subImage9";i:19;s:10:"category_0";i:20;s:10:"category_1";}}';
@@ -511,6 +492,22 @@ var ProductsService = (function () {
                 ;
                 if (sex)
                     query3 = query3.concat(",(NULL," + data['insertId'] + ",'sofbackend__sof_work_meta__sex','" + sex + "') ");
+                    
+                if (img) {
+                    var imagePromise = Q.defer();
+                    promisesList.push(imagePromise.promise);
+                    imagesServ.uploadImage(img, data['insertId'], 'sofbackend__sof_work_meta__postImage').then(function (result) {
+                        
+                        var query4 = "INSERT INTO wp2_posts (ID, post_author, post_content, post_title, post_status, comment_status, ping_status, post_name, post_type, post_mime_type, post_date, post_date_gmt) " + "VALUES (NULL, '" + authorId + "', '" + content + "', '" + title + "', 'inherit', 'open', 'closed', '" + title.replace(/\s/g, '-') + "', 'attachment', '" + "', 'image/jpeg', '" + now.toISOString() + "','" + now.toISOString() + "')";
+                        
+                        _this.db.query_db(query4).then(function (resQuery4) {
+                            //thumbnailPostID = resQuery4['insertId'];
+                            query3 = query3.concat(",(NULL," + data['insertId'] + ",'_thumbnail_id','" + resQuery4['insertId'] + "') ");
+                            imagePromise.resolve(result);
+                        });    
+                    });
+                }
+                ;
                 if (subImg1) {
                     var subimage1Promise = Q.defer();
                     promisesList.push(subimage1Promise.promise);
