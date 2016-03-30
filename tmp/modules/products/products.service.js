@@ -468,6 +468,7 @@ var ProductsService = (function () {
             _promise = Q.defer(),
             promisesList = [],
             now = new Date(),
+            thumbnailPostID = null,
             query = "INSERT INTO wp2_posts (ID, post_author, post_content, post_title, post_status, comment_status, ping_status, post_name, post_type, post_date, post_date_gmt) " + "VALUES (NULL, '" + authorId + "', '" + content + "', '" + title + "', 'draft', 'open', 'open', '" + title.replace(/\s/g, '-') + "', 'post', '" + now.toISOString() + "','" + now.toISOString() + "')";
         this.db.query_db(query).then(function (data) {
             var guid = "http://sof.tokyo/?p=" + data['insertId'],
@@ -480,8 +481,16 @@ var ProductsService = (function () {
                     imagesServ.uploadImage(img, data['insertId'], 'sofbackend__sof_work_meta__postImage').then(function (result) {
                         
                         var query4 = "INSERT INTO wp2_posts (ID, post_author, post_content, post_title, post_status, comment_status, ping_status, post_name, post_type, post_mime_type, post_date, post_date_gmt) " + "VALUES (NULL, '" + authorId + "', '" + content + "', '" + title + "', 'inherit', 'open', 'closed', '" + title.replace(/\s/g, '-') + "', 'attachment', '" + "', 'image/jpeg', '" + now.toISOString() + "','" + now.toISOString() + "')";
-                        _this.db.query_db(query4).then(function (res) {
-                            imagePromise.resolve(result);
+                        
+                        _this.db.query_db(query4).then(function (resQuery4) {
+                            
+                            thumbnailPostID = resQuery4['insertId'];
+                            
+                            var query5 = "INSERT INTO wp2_postmeta (meta_id, post_id, meta_key, meta_value) " + "VALUES (NULL," + data['insertId'] + ",'_thumbnail_id','" + thumbnailPostID + "') ");
+                            
+                            _this.db.query_db(query5).then(function (resQuery5) {
+                                imagePromise.resolve(result);
+                            });
                         });    
                     });
                 }
