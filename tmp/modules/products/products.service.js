@@ -1,15 +1,15 @@
 /// <reference path="../../../typings/tsd.d.ts" />
 /// <reference path="../connection/connection.service.ts" />
-var Q = require("q");
-var connection = require('../connection/connection.service');
-var auth = require("../auth/auth.service");
-var metadata = require("../metadata/metadata.service");
-var images = require("../images/images.service");
-var avatar = require('../auth/avatar.service');
-var authServ = new auth.AuthService();
-var metadataServ = new metadata.MetadataService();
-var imagesServ = new images.ImagesService();
-var inArray = function (myArray, myValue) {
+var Q = require("q"),
+    connection = require('../connection/connection.service'),
+    auth = require("../auth/auth.service"),
+    metadata = require("../metadata/metadata.service"),
+    images = require("../images/images.service"),
+    avatar = require('../auth/avatar.service'),
+    authServ = new auth.AuthService(),
+    metadataServ = new metadata.MetadataService(),
+    imagesServ = new images.ImagesService(),
+    inArray = function (myArray, myValue) {
     var inArray = false;
     myArray.map(function (key) {
         if (key === myValue) {
@@ -478,7 +478,11 @@ var ProductsService = (function () {
                     var imagePromise = Q.defer();
                     promisesList.push(imagePromise.promise);
                     imagesServ.uploadImage(img, data['insertId'], 'sofbackend__sof_work_meta__postImage').then(function (result) {
-                        imagePromise.resolve(result);
+                        
+                        var query4 = "INSERT INTO wp2_posts (ID, post_author, post_content, post_title, post_status, comment_status, ping_status, post_name, post_type, post_mime_type, post_date, post_date_gmt) " + "VALUES (NULL, '" + authorId + "', '" + '' + "', '" + '' + "', 'inherit', 'open', 'closed', '" + '' + "', 'attachment', '" + 'image/jpeg' + + now.toISOString() + "','" + now.toISOString() + "')";
+                        _this.db.query_db(query4).then(function (result) {
+                            imagePromise.resolve(result);
+                        });    
                     });
                 }
                 ;
