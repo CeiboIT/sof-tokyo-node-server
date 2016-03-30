@@ -499,8 +499,10 @@ var ProductsService = (function () {
                         var query4 = "INSERT INTO wp2_posts (ID, post_author, post_content, post_title, post_status, comment_status, ping_status, post_name, post_type, post_mime_type, post_date, post_date_gmt) " + "VALUES (NULL, '" + authorId + "', '" + content + "', '" + title + "', 'inherit', 'open', 'closed', '" + title.replace(/\s/g, '-') + "', 'attachment', 'image/jpeg', '" + now.toISOString() + "','" + now.toISOString() + "')";
                         
                         _this.db.query_db(query4).then(function (resQuery4) {
-                            query3 = query3.concat(",(NULL," + data['insertId'] + ",'_thumbnail_id','" + resQuery4['insertId'] + "') ");
-                            imagePromise.resolve(result);
+                            // query3 = query3.concat(",(NULL," + data['insertId'] + ",'_thumbnail_id','" + resQuery4['insertId'] + "') ");
+                            metadataServ.createProductImageID(data['insertId'], '_thumbnail_id', resQuery4['insertId']).then(function (res) {
+                                imagePromise.resolve(result);
+                            });
                         });    
                     });
                 }
