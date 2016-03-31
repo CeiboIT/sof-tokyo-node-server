@@ -234,6 +234,13 @@ var MetadataService = (function () {
         });
         return _promise.promise;
     };
+    MetadataService.prototype.createMetadata = function (post_id, meta_key, meta_value) {
+        var _promise = Q.defer();
+        this.db.query_db("INSERT INTO wp2_postmeta (meta_id, post_id, meta_key, meta_value) VALUES (NULL," + post_id + ",'" + meta_key + "','" + meta_value + "')").then(function (data) {
+            _promise.resolve(data);
+        });
+        return _promise.promise;
+    };
     MetadataService.prototype.createProductLike = function (productId) {
         var _promise = Q.defer();
         this.db.query_db("UPDATE wp2_postmeta SET meta_value = meta_value + 1 WHERE meta_key='_item_likes' AND post_id=" + productId).then(function (data) {
