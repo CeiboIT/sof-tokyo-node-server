@@ -496,14 +496,14 @@ var ProductsService = (function () {
                     promisesList.push(imagePromise.promise);
                     imagesServ.uploadImage(img, data['insertId'], 'sofbackend__sof_work_meta__postImage').then(function (result) {
                         
-                        var query4 = "INSERT INTO wp2_posts (ID, post_author, post_content, post_title, post_status, comment_status, ping_status, post_name, post_type, post_mime_type, post_date, post_date_gmt) " + "VALUES (NULL, '" + authorId + "', '" + '' + "', '" + 
+                        var postImg = "INSERT INTO wp2_posts (ID, post_author, post_content, post_title, post_status, comment_status, ping_status, post_name, post_type, post_mime_type, post_date, post_date_gmt) " + "VALUES (NULL, '" + authorId + "', '" + '' + "', '" + 
                         '' + "', 'inherit', 'open', 'closed', '" + '' + "', 'attachment', 'image/jpeg', '" + now.toISOString() + "','" + now.toISOString() + "')";
                         
                         //result.url -> url de la imagen
                         
-                        _this.db.query_db(query4).then(function (resQuery4) {
-                            metadataServ.createProductImageID(data['insertId'], '_thumbnail_id', resQuery4['insertId']).then(function (res) {
-                                metadataServ.createMetadata(resQuery4['insertId'], '_wp_attached_file', result.url).then(function (res2) {
+                        _this.db.query_db(postImg).then(function (resPostImg) {
+                            metadataServ.createProductImageID(data['insertId'], '_thumbnail_id', resPostImg['insertId']).then(function (res) {
+                                metadataServ.createMetadata(resPostImg['insertId'], '_wp_attached_file', result.url).then(function (res2) {
                                     imagePromise.resolve(result);
                                 });
                             });
@@ -515,7 +515,21 @@ var ProductsService = (function () {
                     var subimage1Promise = Q.defer();
                     promisesList.push(subimage1Promise.promise);
                     imagesServ.uploadImage(subImg1, data['insertId'], 'sofbackend__sof_work_meta__subImage1').then(function (result) {
-                        subimage1Promise.resolve(result);
+                        //subimage1Promise.resolve(result);
+                        
+                        var postImg = "INSERT INTO wp2_posts (ID, post_author, post_content, post_title, post_status, comment_status, ping_status, post_name, post_type, post_mime_type, post_date, post_date_gmt) " + "VALUES (NULL, '" + authorId + "', '" + '' + "', '" + 
+                        '' + "', 'inherit', 'open', 'closed', '" + '' + "', 'attachment', 'image/jpeg', '" + now.toISOString() + "','" + now.toISOString() + "')";
+                        
+                        //result.url -> url de la imagen
+                        
+                        _this.db.query_db(postImg).then(function (resPostImg) {
+                            metadataServ.createProductImageID(data['insertId'], '_thumbnail_id', resPostImg['insertId']).then(function (res) {
+                                metadataServ.createMetadata(resPostImg['insertId'], '_wp_attached_file', result.url).then(function (res2) {
+                                    subimage1Promise.resolve(result);
+                                });
+                            });
+                        });   
+                        
                     });
                 }
                 ;
@@ -523,7 +537,21 @@ var ProductsService = (function () {
                     var subimage2Promise = Q.defer();
                     promisesList.push(subimage2Promise.promise);
                     imagesServ.uploadImage(subImg2, data['insertId'], 'sofbackend__sof_work_meta__subImage2').then(function (result) {
-                        subimage2Promise.resolve(result);
+                        //subimage2Promise.resolve(result);
+                        
+                        var postImg = "INSERT INTO wp2_posts (ID, post_author, post_content, post_title, post_status, comment_status, ping_status, post_name, post_type, post_mime_type, post_date, post_date_gmt) " + "VALUES (NULL, '" + authorId + "', '" + '' + "', '" + 
+                        '' + "', 'inherit', 'open', 'closed', '" + '' + "', 'attachment', 'image/jpeg', '" + now.toISOString() + "','" + now.toISOString() + "')";
+                        
+                        //result.url -> url de la imagen
+                        
+                        _this.db.query_db(postImg).then(function (resPostImg) {
+                            metadataServ.createProductImageID(data['insertId'], '_thumbnail_id', resPostImg['insertId']).then(function (res) {
+                                metadataServ.createMetadata(resPostImg['insertId'], '_wp_attached_file', result.url).then(function (res2) {
+                                    subimage2Promise.resolve(result);
+                                });
+                            });
+                        }); 
+                        
                     });
                 }
                 ;
@@ -531,7 +559,19 @@ var ProductsService = (function () {
                     var subimage3Promise = Q.defer();
                     promisesList.push(subimage3Promise.promise);
                     imagesServ.uploadImage(subImg3, data['insertId'], 'sofbackend__sof_work_meta__subImage3').then(function (result) {
-                        subimage3Promise.resolve(result);
+                        //subimage3Promise.resolve(result);
+                        var postImg = "INSERT INTO wp2_posts (ID, post_author, post_content, post_title, post_status, comment_status, ping_status, post_name, post_type, post_mime_type, post_date, post_date_gmt) " + "VALUES (NULL, '" + authorId + "', '" + '' + "', '" + 
+                        '' + "', 'inherit', 'open', 'closed', '" + '' + "', 'attachment', 'image/jpeg', '" + now.toISOString() + "','" + now.toISOString() + "')";
+                        
+                        //result.url -> url de la imagen
+                        
+                        _this.db.query_db(postImg).then(function (resPostImg) {
+                            metadataServ.createProductImageID(data['insertId'], '_thumbnail_id', resPostImg['insertId']).then(function (res) {
+                                metadataServ.createMetadata(resPostImg['insertId'], '_wp_attached_file', result.url).then(function (res2) {
+                                    subimage3Promise.resolve(result);
+                                });
+                            });
+                        });
                     });
                 }
                 ;
@@ -539,7 +579,19 @@ var ProductsService = (function () {
                     var subimage4Promise = Q.defer();
                     promisesList.push(subimage4Promise.promise);
                     imagesServ.uploadImage(subImg4, data['insertId'], 'sofbackend__sof_work_meta__subImage4').then(function (result) {
-                        subimage4Promise.resolve(result);
+                        //subimage4Promise.resolve(result);
+                        var postImg = "INSERT INTO wp2_posts (ID, post_author, post_content, post_title, post_status, comment_status, ping_status, post_name, post_type, post_mime_type, post_date, post_date_gmt) " + "VALUES (NULL, '" + authorId + "', '" + '' + "', '" + 
+                        '' + "', 'inherit', 'open', 'closed', '" + '' + "', 'attachment', 'image/jpeg', '" + now.toISOString() + "','" + now.toISOString() + "')";
+                        
+                        //result.url -> url de la imagen
+                        
+                        _this.db.query_db(postImg).then(function (resPostImg) {
+                            metadataServ.createProductImageID(data['insertId'], '_thumbnail_id', resPostImg['insertId']).then(function (res) {
+                                metadataServ.createMetadata(resPostImg['insertId'], '_wp_attached_file', result.url).then(function (res2) {
+                                    subimage4Promise.resolve(result);
+                                });
+                            });
+                        });
                     });
                 }
                 ;
@@ -547,7 +599,19 @@ var ProductsService = (function () {
                     var subimage5Promise = Q.defer();
                     promisesList.push(subimage5Promise.promise);
                     imagesServ.uploadImage(subImg5, data['insertId'], 'sofbackend__sof_work_meta__subImage5').then(function (result) {
-                        subimage5Promise.resolve(result);
+                        //subimage5Promise.resolve(result);
+                        var postImg = "INSERT INTO wp2_posts (ID, post_author, post_content, post_title, post_status, comment_status, ping_status, post_name, post_type, post_mime_type, post_date, post_date_gmt) " + "VALUES (NULL, '" + authorId + "', '" + '' + "', '" + 
+                        '' + "', 'inherit', 'open', 'closed', '" + '' + "', 'attachment', 'image/jpeg', '" + now.toISOString() + "','" + now.toISOString() + "')";
+                        
+                        //result.url -> url de la imagen
+                        
+                        _this.db.query_db(postImg).then(function (resPostImg) {
+                            metadataServ.createProductImageID(data['insertId'], '_thumbnail_id', resPostImg['insertId']).then(function (res) {
+                                metadataServ.createMetadata(resPostImg['insertId'], '_wp_attached_file', result.url).then(function (res2) {
+                                    subimage5Promise.resolve(result);
+                                });
+                            });
+                        });
                     });
                 }
                 ;
@@ -555,7 +619,19 @@ var ProductsService = (function () {
                     var subimage6Promise = Q.defer();
                     promisesList.push(subimage6Promise.promise);
                     imagesServ.uploadImage(subImg6, data['insertId'], 'sofbackend__sof_work_meta__subImage6').then(function (result) {
-                        subimage6Promise.resolve(result);
+                        //subimage6Promise.resolve(result);
+                        var postImg = "INSERT INTO wp2_posts (ID, post_author, post_content, post_title, post_status, comment_status, ping_status, post_name, post_type, post_mime_type, post_date, post_date_gmt) " + "VALUES (NULL, '" + authorId + "', '" + '' + "', '" + 
+                        '' + "', 'inherit', 'open', 'closed', '" + '' + "', 'attachment', 'image/jpeg', '" + now.toISOString() + "','" + now.toISOString() + "')";
+                        
+                        //result.url -> url de la imagen
+                        
+                        _this.db.query_db(postImg).then(function (resPostImg) {
+                            metadataServ.createProductImageID(data['insertId'], '_thumbnail_id', resPostImg['insertId']).then(function (res) {
+                                metadataServ.createMetadata(resPostImg['insertId'], '_wp_attached_file', result.url).then(function (res2) {
+                                    subimage6Promise.resolve(result);
+                                });
+                            });
+                        });
                     });
                 }
                 ;
@@ -563,7 +639,19 @@ var ProductsService = (function () {
                     var subimage7Promise = Q.defer();
                     promisesList.push(subimage7Promise.promise);
                     imagesServ.uploadImage(subImg7, data['insertId'], 'sofbackend__sof_work_meta__subImage7').then(function (result) {
-                        subimage7Promise.resolve(result);
+                        //subimage7Promise.resolve(result);
+                        var postImg = "INSERT INTO wp2_posts (ID, post_author, post_content, post_title, post_status, comment_status, ping_status, post_name, post_type, post_mime_type, post_date, post_date_gmt) " + "VALUES (NULL, '" + authorId + "', '" + '' + "', '" + 
+                        '' + "', 'inherit', 'open', 'closed', '" + '' + "', 'attachment', 'image/jpeg', '" + now.toISOString() + "','" + now.toISOString() + "')";
+                        
+                        //result.url -> url de la imagen
+                        
+                        _this.db.query_db(postImg).then(function (resPostImg) {
+                            metadataServ.createProductImageID(data['insertId'], '_thumbnail_id', resPostImg['insertId']).then(function (res) {
+                                metadataServ.createMetadata(resPostImg['insertId'], '_wp_attached_file', result.url).then(function (res2) {
+                                    subimage7Promise.resolve(result);
+                                });
+                            });
+                        });
                     });
                 }
                 ;
@@ -571,7 +659,19 @@ var ProductsService = (function () {
                     var subimage8Promise = Q.defer();
                     promisesList.push(subimage8Promise.promise);
                     imagesServ.uploadImage(subImg8, data['insertId'], 'sofbackend__sof_work_meta__subImage8').then(function (result) {
-                        subimage8Promise.resolve(result);
+                        //subimage8Promise.resolve(result);
+                        var postImg = "INSERT INTO wp2_posts (ID, post_author, post_content, post_title, post_status, comment_status, ping_status, post_name, post_type, post_mime_type, post_date, post_date_gmt) " + "VALUES (NULL, '" + authorId + "', '" + '' + "', '" + 
+                        '' + "', 'inherit', 'open', 'closed', '" + '' + "', 'attachment', 'image/jpeg', '" + now.toISOString() + "','" + now.toISOString() + "')";
+                        
+                        //result.url -> url de la imagen
+                        
+                        _this.db.query_db(postImg).then(function (resPostImg) {
+                            metadataServ.createProductImageID(data['insertId'], '_thumbnail_id', resPostImg['insertId']).then(function (res) {
+                                metadataServ.createMetadata(resPostImg['insertId'], '_wp_attached_file', result.url).then(function (res2) {
+                                    subimage8Promise.resolve(result);
+                                });
+                            });
+                        });
                     });
                 }
                 ;
@@ -579,7 +679,19 @@ var ProductsService = (function () {
                     var subimage9Promise = Q.defer();
                     promisesList.push(subimage9Promise.promise);
                     imagesServ.uploadImage(subImg9, data['insertId'], 'sofbackend__sof_work_meta__subImage9').then(function (result) {
-                        subimage9Promise.resolve(result);
+                        //subimage9Promise.resolve(result);
+                        var postImg = "INSERT INTO wp2_posts (ID, post_author, post_content, post_title, post_status, comment_status, ping_status, post_name, post_type, post_mime_type, post_date, post_date_gmt) " + "VALUES (NULL, '" + authorId + "', '" + '' + "', '" + 
+                        '' + "', 'inherit', 'open', 'closed', '" + '' + "', 'attachment', 'image/jpeg', '" + now.toISOString() + "','" + now.toISOString() + "')";
+                        
+                        //result.url -> url de la imagen
+                        
+                        _this.db.query_db(postImg).then(function (resPostImg) {
+                            metadataServ.createProductImageID(data['insertId'], '_thumbnail_id', resPostImg['insertId']).then(function (res) {
+                                metadataServ.createMetadata(resPostImg['insertId'], '_wp_attached_file', result.url).then(function (res2) {
+                                    subimage9Promise.resolve(result);
+                                });
+                            });
+                        });
                     });
                 }
                 ;
