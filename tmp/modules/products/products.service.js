@@ -523,11 +523,11 @@ var ProductsService = (function () {
                         //result.url -> url de la imagen
                         
                         _this.db.query_db(postImg).then(function (resPostImg) {
-                            metadataServ.createProductImageID(data['insertId'], '_thumbnail_id', resPostImg['insertId']).then(function (res) {
+                            //metadataServ.createProductImageID(data['insertId'], '_thumbnail_id', resPostImg['insertId']).then(function (res) {
                                 metadataServ.createMetadata(resPostImg['insertId'], '_wp_attached_file', result.url).then(function (res2) {
                                     subimage1Promise.resolve(result);
                                 });
-                            });
+                            //});
                         });   
                         
                     });
